@@ -2,7 +2,7 @@
 
 AI Canvas 是面向图片、说明与局部视觉任务的桌面画布。图片、选区、快速标注和说明可以一起组织到文件夹中，通过多个标签处理不同项目，并主动将当前工作交接给 Codex。
 
-**AI Canvas 1.0.4 · 公开署名 cue-lae · GPL-3.0-only。** 本目录为本地待上传的公开候选，项目自有代码与自有资产许可见 LICENSE/NOTICE。 第三方材料仍按各自许可使用。当前安装包仅携带 Assistant 字体文件；Liberation 保留底座的上游加载路径。依赖存在不等于随包分发。未来离线携带或嵌入字体输出需按实际情况另行核对，不能宣称所有授权情形都已经完备。
+**AI Canvas 1.0.4 · 公开署名 cue-lae · GPL-3.0-only。** 项目自有代码与自有资产许可见 LICENSE/NOTICE。 第三方材料仍按各自许可使用。当前安装包仅携带 Assistant 字体文件；Liberation 保留底座的上游加载路径。依赖存在不等于随包分发。未来离线携带或嵌入字体输出需按实际情况另行核对，不能宣称所有授权情形都已经完备。
 
 ## 使用
 
@@ -32,4 +32,6 @@ r2源码已在独立虚拟机目录中，使用重新下载的准确版本工具
 
 项目自有部分采用 [GPL第3版](LICENSE)（GPL-3.0-only），版权与公开署名见 [NOTICE](NOTICE)。第三方材料保留原许可，见 [第三方声明](THIRD_PARTY_NOTICES.md)。许可范围说明见 [许可说明](docs/LICENSE_DECISION.md)。
 
-公开仓库与反馈渠道尚未建立。问题报告建议提供版本、操作步骤、预期结果、实际结果和可公开的截图；请移除个人内容与凭据。
+公开仓库：[cue-lae/ai-canvas-public](https://github.com/cue-lae/ai-canvas-public)。安装包与对应源码下载：[v1.0.4](https://github.com/cue-lae/ai-canvas-public/releases/tag/v1.0.4)。问题反馈：[Issues](https://github.com/cue-lae/ai-canvas-public/issues)。请提供版本、操作步骤、预期/实际结果和可公开截图，并移除个人内容与凭据。
+
+`SOURCE_MANIFEST.json` 中的文件摘要对应 Release 内的原始 r3 源码 ZIP；Git 按原属性规范部分文本换行，发布后的首页链接另行维护。运行输入及构建校验仍见 `desktop-package/accepted-source-inputs.json`，其 201 项已由 Git 暂存区导出逐字节复核。
