@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>Assets\AI-Canvas-Logo-Black-AC-V1.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(CanvasInstalledPackage)' == 'true'">
+    <DefineConstants>$(DefineConstants);CANVAS_INSTALLED_PACKAGE</DefineConstants>
+    <DebugType>None</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Update="Microsoft.NETCore.App" RuntimeFrameworkVersion="8.0.31" />
+    <FrameworkReference Update="Microsoft.WindowsDesktop.App.WPF" RuntimeFrameworkVersion="8.0.31" />
+    <Compile Include="../../desktop-package/diagnostics/TimingTrace.cs" Link="TimingTrace.cs" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3912.50" />
+    <Resource Include="Assets\AI-Canvas-Logo-Black-AC-V1.ico" />
+    <Content Include="Assets\AI-Canvas-Document-A.ico" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <PropertyGroup Condition="'$(CanvasTimingDiagnostics)' == 'true'">
+    <DefineConstants>$(DefineConstants);CANVAS_TIMING_DIAGNOSTICS</DefineConstants>
+  </PropertyGroup>
+
+</Project>

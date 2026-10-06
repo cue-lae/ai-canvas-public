@@ -1,0 +1,14 @@
+nameID 0:
+Copyright © 2020 LXGW
+
+nameID 1:
+Xiaolai SC
+
+nameID 2:
+Regular
+
+nameID 5:
+Version 3.11;December 4, 2020;FontCreator 13.0.0.2613 64-bit
+
+nameID 6:
+XiaolaiSC

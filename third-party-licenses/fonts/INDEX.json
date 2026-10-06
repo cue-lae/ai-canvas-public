@@ -1,0 +1,151 @@
+{
+  "basis": "embedded fixed dependency metadata and official upstream sources; not a blanket compatibility approval",
+  "fonts": [
+    {
+      "family": "Assistant",
+      "representativeFile": "Assistant-Bold.woff2",
+      "sha256": "e0cdd332ce039770e93ec44336b6db65f931940f42b0342aad35a06e7f991d29",
+      "version": "Version 3.000",
+      "license": "OFL-1.1",
+      "status": "license-evidence-preserved",
+      "evidenceFiles": [
+        "Assistant-EMBEDDED-NOTICE.txt",
+        "Assistant-OFL.txt"
+      ]
+    },
+    {
+      "family": "CascadiaCode",
+      "representativeFile": "CascadiaCode-Regular.woff2",
+      "sha256": "5bce041e0fcce617e35efbc335b1372d27a84acb65fb464c65ff80ab3424a885",
+      "version": "Version 2005.150",
+      "license": "OFL-1.1",
+      "status": "license-evidence-preserved",
+      "evidenceFiles": [
+        "CascadiaCode-EMBEDDED-NOTICE.txt",
+        "CascadiaCode-OFL.txt"
+      ]
+    },
+    {
+      "family": "ComicShanns",
+      "representativeFile": "ComicShanns-Regular-279a7b317d12eb88de06167bd672b4b4.woff2",
+      "sha256": "fa930fceb529a4b51ba3055d590302722c27704f6a6357495873950136b1e2ea",
+      "version": "1.3.0",
+      "license": "MIT",
+      "status": "license-evidence-preserved",
+      "evidenceFiles": [
+        "ComicShanns-EMBEDDED-NOTICE.txt",
+        "ComicShanns-MIT.txt"
+      ]
+    },
+    {
+      "family": "Excalifont",
+      "representativeFile": "Excalifont-Regular-349fac6ca4700ffec595a7150a0d1e1d.woff2",
+      "sha256": "a0637cff365c7344d2f7a15905a1f74dceaf56b5ac2ff913d150358bed6921f0",
+      "version": "Version 1.000;Glyphs 3.2 (3227)",
+      "license": "OFL-1.1",
+      "status": "license-evidence-preserved",
+      "evidenceFiles": [
+        "Excalifont-EMBEDDED-NOTICE.txt",
+        "Excalifont-UPSTREAM-NOTICE.txt"
+      ]
+    },
+    {
+      "family": "LiberationSans",
+      "representativeFile": "LiberationSans-Regular.woff2",
+      "sha256": "006a2b28cbbeeaec937d1b367d0949f5f48ef4b2e7b4e1d8dc7a799d2d639be8",
+      "version": "Version 1.05 ",
+      "license": "GPL-v2-with-Liberation-exceptions (legacy; correspondence unresolved)",
+      "status": "upstream-resource-reference; not an installer font binary; exact conversion provenance unverified for future redistribution",
+      "evidenceFiles": [
+        "LiberationSans-EMBEDDED-NOTICE.txt"
+      ]
+    },
+    {
+      "family": "Lilita",
+      "representativeFile": "Lilita-Regular-i7dPIFZ9Zz-WBtRtedDbYE98RXi4EwSsbg.woff2",
+      "sha256": "2b6568c7a0f16300bc6c8d292bd426c361fcdb40699c2cbfab2bd3e9e6993dea",
+      "version": "Version 1.002",
+      "license": "OFL-1.1",
+      "status": "license-evidence-preserved",
+      "evidenceFiles": [
+        "Lilita-EMBEDDED-NOTICE.txt",
+        "Lilita-OFL.txt"
+      ]
+    },
+    {
+      "family": "Nunito",
+      "representativeFile": "Nunito-Regular-XRXI3I6Li01BKofiOc5wtlZ2di8HDIkhdTA3j6zbXWjgevT5.woff2",
+      "sha256": "e512f2d7c9fe062b1acf8f6ea64d4bfd89a77d26728150977627e445c7b6e937",
+      "version": "Version 3.602",
+      "license": "OFL-1.1",
+      "status": "license-evidence-preserved",
+      "evidenceFiles": [
+        "Nunito-EMBEDDED-NOTICE.txt",
+        "Nunito-OFL.txt"
+      ]
+    },
+    {
+      "family": "Virgil",
+      "representativeFile": "Virgil-Regular.woff2",
+      "sha256": "2279cf7daf1c42a3a53b2c1437ad72f0050efb67ac263e0245f67612fd766714",
+      "version": "Version 001.001",
+      "license": "OFL-1.1",
+      "status": "license-evidence-preserved",
+      "evidenceFiles": [
+        "Virgil-EMBEDDED-NOTICE.txt",
+        "Virgil-OFL.txt"
+      ]
+    },
+    {
+      "family": "Xiaolai",
+      "representativeFile": "Xiaolai-Regular-019d66dcad46dc156b162d267f981c20.woff2",
+      "sha256": "7404ad8086cf238269c6f6aa3ecb754dac903c7b28be88d1f683b9eab7c463e6",
+      "version": "Version 3.11;December 4, 2020;FontCreator 13.0.0.2613 64-bit",
+      "license": "OFL-1.1",
+      "status": "license-evidence-preserved",
+      "evidenceFiles": [
+        "Xiaolai-EMBEDDED-NOTICE.txt",
+        "Xiaolai-UPSTREAM-NOTICE.txt"
+      ]
+    }
+  ],
+  "downloadedOriginals": [
+    {
+      "file": "CascadiaCode-OFL.txt",
+      "source": "https://raw.githubusercontent.com/microsoft/cascadia-code/main/LICENSE",
+      "sha256": "51882cd3cdba4e16f220f44ddb08a635c38c44ea6e0975db2574f4be6f958238"
+    },
+    {
+      "file": "Assistant-OFL.txt",
+      "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/assistant/OFL.txt",
+      "sha256": "7eaf6282cfab122b99ffd62a122fc27b6c3c8f2c65b56ff9b3a25badbc64887d"
+    },
+    {
+      "file": "Lilita-OFL.txt",
+      "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/lilitaone/OFL.txt",
+      "sha256": "255d5debbb80eb2ea762644311f266a279e8778f00156655a516e2b7781a63e1"
+    },
+    {
+      "file": "Nunito-OFL.txt",
+      "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/nunito/OFL.txt",
+      "sha256": "580df76c95a1ec5ab878ceb25bb3d85c6a076804e9c970c8c6972aea775fdf65"
+    },
+    {
+      "file": "Liberation-v1-COPYING.txt",
+      "source": "https://raw.githubusercontent.com/liberationfonts/liberation-1.7-fonts/master/COPYING",
+      "sha256": "ab15fd526bd8dd18a9e77ebc139656bf4d33e97fc7238cd11bf60e2b9b8666c6"
+    },
+    {
+      "file": "Liberation-v1-License.txt",
+      "source": "https://raw.githubusercontent.com/liberationfonts/liberation-1.7-fonts/master/License.txt",
+      "sha256": "c40dd6adebad817defd68c7edad151d9c13d2ac3b4e1790ce2b727b024438b6d"
+    }
+  ],
+  "publicationGate": "own project GPL-3.0-only and attribution confirmed; external upload pending; future font binary redistribution requires applicable review",
+  "actualInstallerFontFamilies": [
+    "Assistant"
+  ],
+  "LiberationInInstallerAsBinary": false,
+  "LiberationResourceSource": "https://esm.sh/@excalidraw/excalidraw@0.18.1/dist/prod/fonts/Liberation/LiberationSans-Regular.woff2",
+  "runtimeNetworkVerified": false
+}

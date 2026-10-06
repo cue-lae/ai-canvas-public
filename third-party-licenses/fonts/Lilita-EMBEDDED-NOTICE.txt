@@ -1,0 +1,17 @@
+nameID 0:
+Copyright (c) 2011 Juan Montoreano (juan@remolacha.biz), with Reserved Font Names "Lilita One"
+
+nameID 1:
+Lilita One
+
+nameID 2:
+Regular
+
+nameID 5:
+Version 1.002
+
+nameID 6:
+LilitaOne
+
+nameID 14:
+http://scripts.sil.org/OFL

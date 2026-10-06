@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable><DefineConstants>CANVAS_INSTALLED_PACKAGE</DefineConstants></PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../../webview-host/AiCanvas.WebViewHost/InstalledPackagePolicy.cs" Link="InstalledPackagePolicy.cs" />
+    <Compile Include="../../../webview-host/AiCanvas.WebViewHost/HostPaths.cs" Link="HostPaths.cs" />
+  </ItemGroup>
+</Project>

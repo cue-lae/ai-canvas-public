@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>AI-Canvas-Setup</AssemblyName>
+    <ApplicationIcon>../../webview-host/AiCanvas.WebViewHost/Assets/AI-Canvas-Logo-Black-AC-V1.ico</ApplicationIcon>
+    <DebugType>None</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <PublishSingleFile>true</PublishSingleFile>
+    <EnableCompressionInSingleFile>false</EnableCompressionInSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+  </PropertyGroup>
+  <ItemGroup>
+    <FrameworkReference Update="Microsoft.NETCore.App" RuntimeFrameworkVersion="8.0.31" />
+    <FrameworkReference Update="Microsoft.WindowsDesktop.App.WPF" RuntimeFrameworkVersion="8.0.31" />
+    <Compile Include="../diagnostics/TimingTrace.cs" Link="TimingTrace.cs" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3912.50" />
+    <EmbeddedResource Include="../../assets/installer-flow-preview.html" LogicalName="ApprovedPreview" />
+    <EmbeddedResource Include="controller.js" LogicalName="Controller" />
+    <EmbeddedResource Include="../release.json" LogicalName="Release" />
+    <EmbeddedResource Include="../../webview-host/AiCanvas.WebViewHost/Assets/AI-Canvas-Logo-Black-AC-V1.ico" LogicalName="AppIcon" />
+    <EmbeddedResource Include="$(InstallerEnginePath)" LogicalName="InstallerEngine" />
+  </ItemGroup>
+  <PropertyGroup Condition="'$(CanvasTimingDiagnostics)' == 'true'">
+    <DefineConstants>$(DefineConstants);CANVAS_TIMING_DIAGNOSTICS</DefineConstants>
+  </PropertyGroup>
+  <Target Name="RequireInstallerEngine" BeforeTargets="PrepareForBuild">
+    <Error Condition="!Exists('$(InstallerEnginePath)')" Text="A real, freshly built Inno installer engine is required." />
+  </Target>
+</Project>

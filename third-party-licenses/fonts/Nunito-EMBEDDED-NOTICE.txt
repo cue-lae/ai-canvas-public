@@ -1,0 +1,17 @@
+nameID 0:
+Copyright 2014 The Nunito Project Authors (https://github.com/googlefonts/nunito)
+
+nameID 1:
+Nunito ExtraLight Medium
+
+nameID 2:
+Regular
+
+nameID 5:
+Version 3.602
+
+nameID 6:
+NunitoExtraLight-Medium
+
+nameID 14:
+https://scripts.sil.org/OFL

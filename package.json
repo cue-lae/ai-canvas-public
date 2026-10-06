@@ -1,0 +1,35 @@
+{
+  "name": "ai-canvas",
+  "version": "1.0.4",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.16.1",
+  "scripts": {
+    "dev": "vite",
+    "canvas:start": "node scripts/ai-canvas-local.mjs",
+    "bridge:serve": "node scripts/canvas-context-bridge.mjs",
+    "bridge:stop": "node scripts/canvas-context-bridge-stop.mjs",
+    "package:build": "node desktop-package/build.mjs",
+    "build": "tsc --noEmit && vite build",
+    "test": "vitest run",
+    "test:bridge": "node --test scripts/canvas-context-mcp.test.mjs",
+    "test:watch": "vitest",
+    "licenses": "pnpm licenses list --prod --json",
+    "host:publish": "dotnet publish webview-host/AiCanvas.WebViewHost/AiCanvas.WebViewHost.csproj -c Release -r win-x64 --self-contained true -o .build/dev-host"
+  },
+  "dependencies": {
+    "@excalidraw/excalidraw": "0.18.1",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.31",
+    "@types/react-dom": "18.3.7",
+    "jsdom": "25.0.1",
+    "typescript": "5.7.3",
+    "vite": "6.1.0",
+    "vitest": "3.0.5"
+  },
+  "license": "GPL-3.0-only",
+  "author": "cue-lae"
+}

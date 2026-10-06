@@ -1,0 +1,53 @@
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Operating system and editor files
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs, caches, and temporary files
+*.log
+temp/*
+!temp/.gitkeep
+reports/raw/*
+!reports/raw/.gitkeep
+
+# Common build and dependency outputs
+node_modules/
+.pnpm-store/
+dist/
+build/
+coverage/
+.cache/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Large binary and archive files require an explicit tracking decision
+*.zip
+*.7z
+*.rar
+*.tar
+*.gz
+*.mp4
+*.mov
+*.psd
+*.psb
+
+# Local build inputs and verification output
+.build/
+runtime/
+**/bin/
+**/obj/

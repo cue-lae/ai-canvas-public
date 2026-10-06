@@ -1,0 +1,811 @@
+{
+  "schema": "ai-canvas-accepted-sources-v1",
+  "releaseVersion": "1.0.4",
+  "sources": [
+    {
+      "path": "desktop-package/tests/DocumentSessionTests/DocumentSessionTests.csproj",
+      "sha256": "3063c00558790ac5a6278f91c8b32459712ba5d577124bd6633f329672e1599d"
+    },
+    {
+      "path": "desktop-package/tests/DocumentSessionTests/Program.cs",
+      "sha256": "625835a3202ab03165264adb0e3762ece6d4364ba3a16e60fffa6c22c5718031"
+    },
+    {
+      "path": "src/App.tsx",
+      "sha256": "4ec4a1fe7140d59c04c689c54d7dc06c03973a369b3793db8a2ba03aba29afdf"
+    },
+    {
+      "path": "src/domain/annotationSelection.test.ts",
+      "sha256": "b7ff1c348333b666bbb6098fdac7589a1ee41d2e53209f81b25cca337a8fc1fd"
+    },
+    {
+      "path": "src/domain/canvasArrangeLayout.test.ts",
+      "sha256": "8934af97072483cbdf8e1678c121cdbe166090102d5695b603b91cbf7547dd30"
+    },
+    {
+      "path": "src/domain/canvasArrangeLayout.ts",
+      "sha256": "67a8d684ac53a1e734ae47f9f52ea12c7be76635b404cd4f68ca8abe133cdecd"
+    },
+    {
+      "path": "src/domain/canvasClipboard.test.ts",
+      "sha256": "9d6d399aabb264ece0cd2ef269e7a4d5e2aabd8295a0bf98545b8c0c0854117b"
+    },
+    {
+      "path": "src/domain/canvasClipboard.ts",
+      "sha256": "ea89cb795b34198e6324d0a1572e86f4b981fdec0f6fca2569151642873e1e78"
+    },
+    {
+      "path": "src/domain/codexContext.test.ts",
+      "sha256": "7ff6f8dcd4e9cc45940fe23e4960ed85844bc719c4642570b4922cd621ba545f"
+    },
+    {
+      "path": "src/domain/codexContext.ts",
+      "sha256": "4e0b6784470b36a5fbe5dff2c39f987fb8dd43808076e7bf36c2cd3d3ded3ef0"
+    },
+    {
+      "path": "src/domain/descriptionImageBinding.test.ts",
+      "sha256": "cc2348ec43b1ddab4f8f27558b47d869854124a18f3ef1e445e9487f6fb5186d"
+    },
+    {
+      "path": "src/domain/descriptionImageBinding.ts",
+      "sha256": "ff137e26f7ed4f303bf53941e777bf7c45f536e93795269bc34b6a1778ff4c0d"
+    },
+    {
+      "path": "src/domain/descriptions.test.ts",
+      "sha256": "c34012b6fb9795575b225f0dd2d580bf86c14a1177b84d63d6cc9570c37c9a88"
+    },
+    {
+      "path": "src/domain/descriptions.ts",
+      "sha256": "6db1afb7eca69eaa7f45a933ab00fc6b9970a7a9bb1f71a454885d8dcb40343e"
+    },
+    {
+      "path": "src/domain/focusedPublish.test.ts",
+      "sha256": "c4804b83b74dfd804c8605ad90bb0260ee43e9c6f5df8271ec85f06b865725b6"
+    },
+    {
+      "path": "src/domain/focusedPublish.ts",
+      "sha256": "ecdb2bb4bdf60ad8c8b1b31874002cb0711d680460836b761d2a2469376e2564"
+    },
+    {
+      "path": "src/domain/folderNames.test.ts",
+      "sha256": "80150e66b811fdb1fd8f3bfb38a4b193a2b36cce9d0a8c782f86c052e0887b3e"
+    },
+    {
+      "path": "src/domain/folderNames.ts",
+      "sha256": "195924491e4540bd6a1e27a0f61440b41bdb15cffc93cf152459433e7330d648"
+    },
+    {
+      "path": "src/domain/folderScene.test.ts",
+      "sha256": "815efd75e32b2e18df395ece09caa128df69ea32c45e8e30a829250be7969d6f"
+    },
+    {
+      "path": "src/domain/folderScene.ts",
+      "sha256": "f9c5f256472d203509146beba06f2bf6f73d12a7d189acf6edf4313d0a25b915"
+    },
+    {
+      "path": "src/domain/geometry.test.ts",
+      "sha256": "f6cd0541884dfcf9d6a50b0f72eb236d628ae7656e9b7df14d0058d3d6c47c6c"
+    },
+    {
+      "path": "src/domain/geometry.ts",
+      "sha256": "dfce0efb95400f0abc53016ac56da742f60d50dcb4467aa5c8157fa0300751d8"
+    },
+    {
+      "path": "src/domain/globalHistoryTimeline.test.ts",
+      "sha256": "683851451c256f3302542e81202d4540c99b3243dcb8015737b69d372e0b6afc"
+    },
+    {
+      "path": "src/domain/globalHistoryTimeline.ts",
+      "sha256": "b5a276dbbb4d92e5f0f8c43ab08aee4ed20df67f927567940fae6e167ea714b4"
+    },
+    {
+      "path": "src/domain/imageAnnotationBinding.test.ts",
+      "sha256": "2372576df80cfa423926cdc4e9f00d6d620c0da8b28ca176231c5f3304088d3c"
+    },
+    {
+      "path": "src/domain/imageAnnotationBinding.ts",
+      "sha256": "ef78a51aee6f20f0d4d5b071772af5c8232a1e64af8db96c21cb1e3e36f2f963"
+    },
+    {
+      "path": "src/domain/imageLayerOrder.test.ts",
+      "sha256": "e1be85f9d042b164befe5d06df5e56d468242b48a0c8f5cb12a6e953a0f48a49"
+    },
+    {
+      "path": "src/domain/imageLayerOrder.ts",
+      "sha256": "5f96729f070c08d1e53feb9c3b7c3cbf3fdc089a957c7cb8c6d7e6846832a564"
+    },
+    {
+      "path": "src/domain/projectFile.test.ts",
+      "sha256": "2f91722f7ed74497aaaf6299f6e7e35c8b2122c140eadd875d05ce0f0b7b03ab"
+    },
+    {
+      "path": "src/domain/projectFile.ts",
+      "sha256": "72aa0adfa7c6caed6a48ee66b7be771cb58ec7bb134e8038963e58c5e2a1ae33"
+    },
+    {
+      "path": "src/domain/reconcile.test.ts",
+      "sha256": "d5278e035292fe8e12a7d01b3fa22f53f9c145977d31ea4c22e8f64de2950c98"
+    },
+    {
+      "path": "src/domain/reconcile.ts",
+      "sha256": "b2575a3ae16453d96a33566ccb56d3526d9a4b3457d8b05756e7039a9dfa3a94"
+    },
+    {
+      "path": "src/domain/types.ts",
+      "sha256": "b5daad59f739988791e2ed6fa765e5f589c6a935b506820fada386ef2a6a1bb4"
+    },
+    {
+      "path": "src/excalidraw/annotationCard.ts",
+      "sha256": "bce207244dc036728d3ce98d6f7d4908ebe0c468733afc377ce540f24375efa5"
+    },
+    {
+      "path": "src/excalidraw/annotationToolInteraction.test.ts",
+      "sha256": "75966c9fa640d64035cdbe985e34e1696671240b86fcac1279d282f389073208"
+    },
+    {
+      "path": "src/excalidraw/annotationToolInteraction.ts",
+      "sha256": "2484b96cb6da2a8dca4c98bc6a69081fbba1e93aa2e619f3b7c95164659c586f"
+    },
+    {
+      "path": "src/excalidraw/scene.test.ts",
+      "sha256": "134a91045ed074a46a74613a833e93f26812cb8e4c5ffd3409eb9110fb669d2e"
+    },
+    {
+      "path": "src/excalidraw/scene.ts",
+      "sha256": "e116370b2385f7a272139459e9519def5fbf2b39bd14be7d152f713ef3a3d19d"
+    },
+    {
+      "path": "src/global.d.ts",
+      "sha256": "9b5605be52239e44f3dd9b05eeddab568349ac5bac15e150127f2db72bc94f1d"
+    },
+    {
+      "path": "src/main.tsx",
+      "sha256": "665b7547a22efe89e88b7a05ba05fba6edd7969a78d37f60edf61c4fd4366f8a"
+    },
+    {
+      "path": "src/performance/benchmark.ts",
+      "sha256": "c277186b9f5ef029a16fabb9bc762b6c695de7eacf777e5c18b20bc55a9a7075"
+    },
+    {
+      "path": "src/services/canvasBridgeConnection.test.ts",
+      "sha256": "e38a1415751a67f827e88d4f0d29ea4222958c5e53367f3f216521c495e190d3"
+    },
+    {
+      "path": "src/services/canvasBridgeConnection.ts",
+      "sha256": "5b8da61fbefaf1d587dc3d5008d8980b616dfb6d9e0b2bfc80c6722734affef7"
+    },
+    {
+      "path": "src/services/canvasClipboard.test.ts",
+      "sha256": "0485422cf1044eacd4371e0fc53ebb220345e1610e7979b4819b09ccbd695c07"
+    },
+    {
+      "path": "src/services/canvasClipboard.ts",
+      "sha256": "1b87cb3b2fc9da387b6c7df221618abc9aeb4c604ef445f6f1b70175dceec1fc"
+    },
+    {
+      "path": "src/services/canvasContextBridge.test.ts",
+      "sha256": "b77f91d98d88791009e6453c86b06bc371cbaed62fd068f1290120acf3520160"
+    },
+    {
+      "path": "src/services/canvasContextBridge.ts",
+      "sha256": "46f97cd03442bb606d4e2800c4061cdeadc281203e9d4429c331a5368089650e"
+    },
+    {
+      "path": "src/services/canvasHostReady.test.ts",
+      "sha256": "5ede6432c1ea50251940c21d1a6a53100dc733da71871c718ebd23ddab263f2b"
+    },
+    {
+      "path": "src/services/canvasHostReady.ts",
+      "sha256": "ceb1b00bd3a61b13aba07ffe11c0de7b098a73faa9e6659aac9507ef68cf7e6c"
+    },
+    {
+      "path": "src/services/canvasSnapshot.test.ts",
+      "sha256": "1c9fe07817dde2ead03aa5194ff40c375256eebc2ac790ac84df16a11f5f1044"
+    },
+    {
+      "path": "src/services/canvasSnapshot.ts",
+      "sha256": "2ebe2ba8383360918f37455e87b659fdecc6fcc2c6eeac6baea959da407af2bc"
+    },
+    {
+      "path": "src/services/documentFiles.test.ts",
+      "sha256": "30bfd02d5a70c9b3039f4414d13bb8ba2c2c9af2713c68a48cac4ac0cdca57fb"
+    },
+    {
+      "path": "src/services/documentFiles.ts",
+      "sha256": "5cc6b0741bc83327fa160278bf8f96cd4e71bbfc789e4b23f2b5cbd0a4153286"
+    },
+    {
+      "path": "src/services/documentSaveState.test.ts",
+      "sha256": "c6d3eadabd40591db03cf0cadecc6c1b841c7ffc5a42215b854f7a574b480274"
+    },
+    {
+      "path": "src/services/documentSaveState.ts",
+      "sha256": "757d11cc107952e1063d8c1b7eccd3b938ebde0240dd59b33cadfe09afaec591"
+    },
+    {
+      "path": "src/services/hostDocumentOpen.test.ts",
+      "sha256": "3234e2f4a69883044e41a0c500d9e79918a90a7437ff35571014a3fcbd8dec0c"
+    },
+    {
+      "path": "src/services/hostDocumentOpen.ts",
+      "sha256": "d237e42e4522f0a8c7589adc72c9756c69de0cd1f49adbfbd9eb6f318e6e20a7"
+    },
+    {
+      "path": "src/services/hostDocumentSession.test.ts",
+      "sha256": "9994eeeb971a29960fbf66a0c1ecf6cf14f01f69b28d4efe156d5c9dc304b4da"
+    },
+    {
+      "path": "src/services/hostDocumentSession.ts",
+      "sha256": "27bf8bb5984a315c657d82ff02de131f752492cf3dcefe5c65d62c0ba1f38532"
+    },
+    {
+      "path": "src/services/imageProcessing.ts",
+      "sha256": "f627389a86f6c27056f48bf86b52ec554187bd54a0c3e7039dd59d8c4a64109a"
+    },
+    {
+      "path": "src/services/persistence.test.ts",
+      "sha256": "13f1471f77767ef05c4fc83283bed7e6e3cdc80434b889791dc218824739e071"
+    },
+    {
+      "path": "src/services/persistence.ts",
+      "sha256": "73a4171ecd22d1bc180b1d4146067b29c21a48d3e70e8b37d2ef2768bef6b5d7"
+    },
+    {
+      "path": "src/styles.css",
+      "sha256": "b22557da7740b5ef9eecb83709e8d2d571f68cac17fe97f8961989f4399f6782"
+    },
+    {
+      "path": "src/test/canvasClipboardFixture.ts",
+      "sha256": "f927b7a6de6176515d3e8742c7b25236b4731daec152df430cf92858ab14123a"
+    },
+    {
+      "path": "src/test/vitest.setup.ts",
+      "sha256": "373fad8e0b28f198e722418b4a24af566119d77ae0b5a6e75d5b7a6a1a6b5982"
+    },
+    {
+      "path": "src/ui/BubbleCanvasOverlay.tsx",
+      "sha256": "df68b8eddf4a4c09d13a3b6fd2be687bcc64a63ea77047501703f5b4c205a77c"
+    },
+    {
+      "path": "src/ui/CanvasBridgeConnection.test.ts",
+      "sha256": "76218cfb61ca8fbc4cb34cbf6061ed6e00574eacf51e1675b1936253674f2d27"
+    },
+    {
+      "path": "src/ui/CanvasBridgeConnection.tsx",
+      "sha256": "f49be069afa4cdd840c841dadc3e65cbaba11c9ef2b468db99fa5e655963c109"
+    },
+    {
+      "path": "src/ui/CanvasBusinessNotice.test.tsx",
+      "sha256": "5524c49b7d7a40ba57e8fd5cb3859d966c98130adc5033274fd6780386c13c2f"
+    },
+    {
+      "path": "src/ui/CanvasBusinessNotice.tsx",
+      "sha256": "cba59c2ee776d4e6ed312b3da5f0fb5f3c1b911a60a06fbb2872e259e0c68419"
+    },
+    {
+      "path": "src/ui/CanvasContextMenu.test.tsx",
+      "sha256": "229755ab806e3d84539ee587269e76fd2fe4b992814b122d419a5438cf455a90"
+    },
+    {
+      "path": "src/ui/CanvasContextMenu.tsx",
+      "sha256": "02d204a8682ba5447422b51cfc330ebd9ab0daa174d62c096826a5090ebad848"
+    },
+    {
+      "path": "src/ui/CanvasToolIcon.tsx",
+      "sha256": "5bba695c9846273f83bd717ef762c019becbfc01f71f1feb3b6e8dbe96f768a1"
+    },
+    {
+      "path": "src/ui/DescriptionCanvasOverlay.tsx",
+      "sha256": "7c54d1095c3a46b2f1599e87c5bcef3a7479b39894c5d699892be57b3533088e"
+    },
+    {
+      "path": "src/ui/DescriptionCanvasOverlayAdapter.tsx",
+      "sha256": "1d66c9b1c1bf9061f78124e734ef877b636ed1a69b135eef51ee8d0edac00abd"
+    },
+    {
+      "path": "src/ui/DescriptionWorkspace.tsx",
+      "sha256": "c6334d9ae667a6128bafe4c19894fe6401a65c78ad17605f41f40f8ab396b4cd"
+    },
+    {
+      "path": "src/ui/ImageRotationFeedback.test.tsx",
+      "sha256": "0109aac7eb1001754610ec1396779c685730320d27f0c36525e9e02235ca4f43"
+    },
+    {
+      "path": "src/ui/ImageRotationFeedback.tsx",
+      "sha256": "0e1ac128271636e4db22a7bdb37073a98cc38a633411e4cc4ea98c179a2838a9"
+    },
+    {
+      "path": "src/ui/QuickAnnotationOverlay.tsx",
+      "sha256": "db78a1a7f47674568521ae6b9b7eb70ee89dba178034d99b1262d4b5e2ae2484"
+    },
+    {
+      "path": "src/ui/SelectionCanvasOverlay.tsx",
+      "sha256": "170901e9de1c8e0ae7d244413cb4ee3a1171b8f6a1676c820ec2120b4c66496f"
+    },
+    {
+      "path": "src/ui/canvasCardShadowVisibility.test.ts",
+      "sha256": "5fe30e86139d1e279eba9d6b4c502e2d3e64c633e12434037b89066f6b0ef4f3"
+    },
+    {
+      "path": "src/ui/canvasCardShadowVisibility.ts",
+      "sha256": "b71593c4ce4e532a159011e1d3a9e2698850a895eeb660b038689009c58c6705"
+    },
+    {
+      "path": "src/ui/canvasContextMenuPolicy.test.ts",
+      "sha256": "b01c11eedc0d8992cb47a1e1981fd05d44adda47798534f4f30bc9ecc277c939"
+    },
+    {
+      "path": "src/ui/canvasContextMenuPolicy.ts",
+      "sha256": "43318a84387a7b43ec01eb13f93ca875084884daed50164019cbb091b625ecc5"
+    },
+    {
+      "path": "src/ui/canvasInteractionHostController.test.ts",
+      "sha256": "3fb4c294cc3920c6fa8daaee73d703267c7705f0a62c1c83aa797e15f6376b8c"
+    },
+    {
+      "path": "src/ui/canvasInteractionHostController.ts",
+      "sha256": "576ea9cad62fbcee51ff9c4f1c45bc442bfaef87a3580ff361a9f2977e1c7e3a"
+    },
+    {
+      "path": "src/ui/canvasInteractionRuntime.test.ts",
+      "sha256": "42302b78cf8d686b6fa5826a8d228fb065281f1b96924b6ce3e9c84c08c4f67c"
+    },
+    {
+      "path": "src/ui/canvasInteractionRuntime.ts",
+      "sha256": "4a0d7bb6eeaece128e6d06d7273566eae64028131de4a4abf105b9546edbfa56"
+    },
+    {
+      "path": "src/ui/canvasKeyboardRouter.test.ts",
+      "sha256": "89ecd7cb0cbab665f9b8e66fa8c8ead0029570d36f5c1aa6cc805bf04a83eeb5"
+    },
+    {
+      "path": "src/ui/canvasKeyboardRouter.ts",
+      "sha256": "9c0faaed0412d85a572093fc4da21ad7065fc7c7fbe1291f1953fef2956bec01"
+    },
+    {
+      "path": "src/ui/canvasMenuState.test.ts",
+      "sha256": "e4d51ecac531746b8d4d0e6adfe4651433ecaeacd512eae230c240eb6fc2f907"
+    },
+    {
+      "path": "src/ui/canvasMenuState.ts",
+      "sha256": "a72f491743744e94ff812423b4c30d934f48b1c046b9a7f2801d0a165840f157"
+    },
+    {
+      "path": "src/ui/canvasObjectSelection.test.ts",
+      "sha256": "3c246ee1ae9a3ed1d76ef90fa5ad58d6892335571c204c13a38b5c81c7e43637"
+    },
+    {
+      "path": "src/ui/canvasObjectSelection.ts",
+      "sha256": "06aba84fcc5b50fa34e9106e984e9c73457353e0d2925c0afcd121eebec69f94"
+    },
+    {
+      "path": "src/ui/canvasPointerArbitration.test.ts",
+      "sha256": "7c4b45027b53ba6b4f161854bb352d9a42cd7af125eab37c427f0bd9338c5591"
+    },
+    {
+      "path": "src/ui/canvasPointerArbitration.ts",
+      "sha256": "bb605263947ae8581de7e65f2decc36f29c4d2d79e17666c80c23c006f4266fb"
+    },
+    {
+      "path": "src/ui/canvasSelection.test.ts",
+      "sha256": "97dc8796db9614ec183778251c33d115ee175c1b9fa43e104d3313859ce0e615"
+    },
+    {
+      "path": "src/ui/canvasSelection.ts",
+      "sha256": "15c180279e99c55e30ccccd88df8246d0caf8b34db7b3d0f497ed9f4aa5732b8"
+    },
+    {
+      "path": "src/ui/canvasSelectionIntegrationContract.test.ts",
+      "sha256": "c424819b0845d6bfe7f261893c3929fa7af67580398cf911e616aa7cf9d7a527"
+    },
+    {
+      "path": "src/ui/canvasSessionReset.test.ts",
+      "sha256": "f52b51c2470615636e392977b4927bf99580bdba54b73a29d81bd5e9e4322f42"
+    },
+    {
+      "path": "src/ui/canvasSessionReset.ts",
+      "sha256": "8ddd7677413ea8a58247ef5edc3b8cedb50cd9f1cffbee445d2f32d2d730934f"
+    },
+    {
+      "path": "src/ui/canvasShortcutPreferences.test.ts",
+      "sha256": "f5e54af2f315f45c175a01db4328aa21336db24b6f5e5c9556d0d3f9978f55bb"
+    },
+    {
+      "path": "src/ui/canvasShortcutPreferences.ts",
+      "sha256": "d2f9b08c5e23e7c5e7440b8dabfbfe567e8dccd9c03b125ec100f8862d14fe9a"
+    },
+    {
+      "path": "src/ui/canvasStatusPresentation.test.ts",
+      "sha256": "3df588da2985ee868e23aaf0d76f880ca075f77cb26c5e9461f03289c9c815dd"
+    },
+    {
+      "path": "src/ui/canvasStatusPresentation.ts",
+      "sha256": "4d5c3233fb92ac1fd9eb1a9c3c6717d6b8a24c2fe403b661845edd02b23bc708"
+    },
+    {
+      "path": "src/ui/canvasThemeContract.test.ts",
+      "sha256": "521ab18cf1bc8147ea497b040c8b9f0798c41842cd2e09f540fd5675129a032a"
+    },
+    {
+      "path": "src/ui/canvasThemeContract.ts",
+      "sha256": "d08311487e5e44b29e871862198b1d13bdb6c439e937beb7b30a8ebafedb7077"
+    },
+    {
+      "path": "src/ui/canvasWorkspaceContract.test.ts",
+      "sha256": "5c2fca0fe7ae3307612fbfe83ecc0e4cc6f742e0147a6b975d73a31f06725abc"
+    },
+    {
+      "path": "src/ui/canvasWorkspaceContract.ts",
+      "sha256": "2e0fded26f7c65a27a96fc8c33d5532710e7305c8813b45e40b5bd6a5358ccd7"
+    },
+    {
+      "path": "src/ui/contextInformationSelection.test.ts",
+      "sha256": "1cea361eb869aa8515a0fc2bea6b0b1df0220b22b9a1fb8cb3feba9145b3631d"
+    },
+    {
+      "path": "src/ui/contextInformationSelection.ts",
+      "sha256": "2490b5366869811359dc8e73b34313b93c0a4054359b868e7e17442c7ba52bf4"
+    },
+    {
+      "path": "src/ui/descriptionCanvasSelectionAdapter.test.ts",
+      "sha256": "7a409d50906ff1ddae505c988bef79fc4abef821b8da2b04dc7a99da2213545f"
+    },
+    {
+      "path": "src/ui/descriptionCanvasSelectionAdapter.ts",
+      "sha256": "c6e13d23d6f01e97b07f4cb0b2f909dc1d7bc1abf6d939963f83261060fc3643"
+    },
+    {
+      "path": "src/ui/descriptionCreationPlacement.test.ts",
+      "sha256": "3730fef82f388966deb5e70d6ce27047ea9b0b35a895fc208cf8ef57371d5e58"
+    },
+    {
+      "path": "src/ui/descriptionCreationPlacement.ts",
+      "sha256": "f4020b879af08cbe716242a32ea8f72f31abe7d0e0f1891533f89923edf99b67"
+    },
+    {
+      "path": "src/ui/descriptionHostController.test.ts",
+      "sha256": "01590ba174f2511887e51d0ff6f7b287ecb00e10921ee0c52a104b5cd2379dc8"
+    },
+    {
+      "path": "src/ui/descriptionHostController.ts",
+      "sha256": "f2f5c2e6f8851a8307ddc586257074c76adcde1d52dc89eeadef44af4df69224"
+    },
+    {
+      "path": "src/ui/descriptionInteraction.test.ts",
+      "sha256": "4c7cd3040a3cdb5befaced568a80802238330d52c31771bf6242c220d0983d77"
+    },
+    {
+      "path": "src/ui/descriptionInteraction.ts",
+      "sha256": "162fed4d4fd9371a94a7c3b568bb14c327d171e3a5a910ccf69f9e37c60d5cc4"
+    },
+    {
+      "path": "src/ui/descriptionLayout.test.ts",
+      "sha256": "721f16d32e034947b772131ef1b39904e9f61f4d65805e4e9fb2d54a38a048ff"
+    },
+    {
+      "path": "src/ui/descriptionLayout.ts",
+      "sha256": "4e672cfdcbccbc16f7af11c5aa309c612f5246143d0b8061779cb1aa0fc0e2b3"
+    },
+    {
+      "path": "src/ui/descriptionPresentation.test.ts",
+      "sha256": "f244f17b728acb02e8354c512d7dd035b3c17d76b70abade3882a6c98940d05d"
+    },
+    {
+      "path": "src/ui/descriptionPresentation.ts",
+      "sha256": "64c44fd8d1597686a7c1b22cf5db6904c81fe0b5b3a4f8b6feb69a375b325626"
+    },
+    {
+      "path": "src/ui/descriptionWorkspaceInteraction.test.ts",
+      "sha256": "4fd7dd8524515af7126272a921388ac1044252a594c79a6ba3b53c472fd4a57f"
+    },
+    {
+      "path": "src/ui/descriptionWorkspaceInteraction.ts",
+      "sha256": "1c751341b9d2dd5f739ce2e02ded4a30058abaac7eafd366c1d4da691e0290a4"
+    },
+    {
+      "path": "src/ui/descriptionWorkspaceStyleContract.test.ts",
+      "sha256": "1baae7802bf0266a51aa3c6f4f0de747d9a861bfae2d1da732ffe8a4432a64d1"
+    },
+    {
+      "path": "src/ui/folderMiddlePan.test.ts",
+      "sha256": "16b87de770b3dea4e632a4c73880c2238e3c9f6f99d6c09ee6c40cbb8d05fe35"
+    },
+    {
+      "path": "src/ui/folderPreviewMotion.test.ts",
+      "sha256": "fb92985cc239386c9fe8ad05720ea865203f8782018caf2e8ae916bacc7723a3"
+    },
+    {
+      "path": "src/ui/folderPreviewMotion.ts",
+      "sha256": "513e98bba9402d40a5c42a340e10ad7647b0795b7968d83a64bad3d3883d9bcd"
+    },
+    {
+      "path": "src/ui/folderPreviewPresentation.test.ts",
+      "sha256": "05350de3bef9139157668e9104cf5eae37396eb56d3a33ce32f81a85218b55e9"
+    },
+    {
+      "path": "src/ui/folderWorkspace.test.tsx",
+      "sha256": "6d76ccef8dcca6b12495268b6758323bf0fd9d9b538f7f657e49d26b491df260"
+    },
+    {
+      "path": "src/ui/folderWorkspace.tsx",
+      "sha256": "49456cbff38bc7dd195744f0469d3372b0010de15968f274af79fd5074714f74"
+    },
+    {
+      "path": "src/ui/globalHistorySceneSync.test.ts",
+      "sha256": "566d9b936645a85cb0e62b9b39bb0b8f065958ff6fe7eddea8581ed330dc906a"
+    },
+    {
+      "path": "src/ui/globalHistorySceneSync.ts",
+      "sha256": "78b9390436b66fef95677cf1dde7dba2a3181ba3eac9b75f22cc2ed63c4adb64"
+    },
+    {
+      "path": "src/ui/importViewContract.test.ts",
+      "sha256": "3c9b01ac32b24a3efaabc53a616cc7a02309684dd8bd707e3c04c08c09a2902b"
+    },
+    {
+      "path": "src/ui/nativeToolShortcutGuard.test.ts",
+      "sha256": "f0551d43d3c91051317943890b3ef39ee482b35aa0d41d9022dc0982cb885438"
+    },
+    {
+      "path": "src/ui/nativeToolShortcutGuard.ts",
+      "sha256": "5c7b108e7de73676df8359039e75c0346e5e544b36123d1b825536661ab8bdfe"
+    },
+    {
+      "path": "src/ui/quickAnnotationConnector.test.ts",
+      "sha256": "909d49dca02d78f895f3b4c9a472246426201ffd471d1c5cfe10ad71eeea6736"
+    },
+    {
+      "path": "src/ui/quickAnnotationConnector.ts",
+      "sha256": "8fa8bc07b04957290c934b9e3c4427dbb7e7f2bc2b1882b36d03040998e13423"
+    },
+    {
+      "path": "src/ui/quickAnnotationPreview.test.ts",
+      "sha256": "2a80bbab1b487bd1a56927637fc042814c5e9235d07c56e832a8f5e8e8586f99"
+    },
+    {
+      "path": "src/ui/quickAnnotationPreview.ts",
+      "sha256": "db124c7dbd60a973ae8ed3efa421466b094861451839c311772f6105155ef8e0"
+    },
+    {
+      "path": "src/ui/quickAnnotationPreviewInteraction.test.tsx",
+      "sha256": "14315a4d061c2f34d5b999b7c987e00fc5898b4548dc25479e96b961f68777b1"
+    },
+    {
+      "path": "src/ui/quickAnnotationVisualInteraction.test.ts",
+      "sha256": "eb030911c5b1a2bd95489c23c3c90872845ed8c1ff4d721f8774073d6c9f27f5"
+    },
+    {
+      "path": "src/ui/quickAnnotations.test.ts",
+      "sha256": "bf860e8dd671c800786020de58d57df0b6ae08be5491d69ed8658d2e49b9bb8b"
+    },
+    {
+      "path": "src/ui/quickAnnotations.ts",
+      "sha256": "2b2c22dc78c9bec8339f123c85f58f802f275d7656128835827c83f5715997be"
+    },
+    {
+      "path": "src/ui/rotationFeedbackPresentation.test.ts",
+      "sha256": "b940bba05c686304c8fe7b7bf4de87391fda3c1277e758a9df5f762348b73227"
+    },
+    {
+      "path": "src/ui/rotationFeedbackPresentation.ts",
+      "sha256": "0bae15244baa29c9774cd85e8a3fce247c700a6103dde7cf7e94b8e3c188f4c3"
+    },
+    {
+      "path": "src/ui/selectionBindingBadge.test.ts",
+      "sha256": "2331a7a102d70e09bc0f5251823d2a8c9c1787f5acba7548ecaf107d98e2b64c"
+    },
+    {
+      "path": "src/ui/selectionBindingBadge.ts",
+      "sha256": "6895fdd7d8d8bda24aca67b2a6d3e5246ebedbfbebc69dd1dd19fca5966fe32f"
+    },
+    {
+      "path": "src/ui/selectionGeometry.test.ts",
+      "sha256": "30d14b1271ea0675c2edcd8f205f34c4952a68fb93481f2fbe3ca91bcf8c630c"
+    },
+    {
+      "path": "src/ui/selectionGeometry.ts",
+      "sha256": "7901270014479eb75680ee337c282bc6b477e93b85b6b9a57a54bf9baa931f47"
+    },
+    {
+      "path": "src/ui/selectionOcclusion.test.ts",
+      "sha256": "671011027759456eb11548bd3e57ea8990ced7f19f985a60de93cddb91b0f389"
+    },
+    {
+      "path": "src/ui/selectionOcclusion.ts",
+      "sha256": "84afca37fe946fcbfedf09e3d9e74dea9eda51d255f01d45875ef71af77d682b"
+    },
+    {
+      "path": "src/ui/selectionOrdinalBadge.test.ts",
+      "sha256": "f0a38e1ccc31c6fa71344d44c7ae18683138ea99dfced5a309584b7c4d6f5656"
+    },
+    {
+      "path": "src/ui/selectionOrdinalBadge.ts",
+      "sha256": "f82461223017cb246ef15f317fb4bf48b68dca497dc4210a44ad160d109d3a78"
+    },
+    {
+      "path": "src/ui/selectionOrdinalLayout.test.ts",
+      "sha256": "773e651f0c7c24141280f26567bc967cf174fed3d0afbb8d8d0034045d7fc8fc"
+    },
+    {
+      "path": "src/ui/selectionOrdinalLayout.ts",
+      "sha256": "c8e1b1aed9b883607dec41a39d27e77ad64af0d952f59f43c2b3e6a8f8961baf"
+    },
+    {
+      "path": "src/ui/selectionOverlayContract.test.ts",
+      "sha256": "85b3c010803b7f0527a6ee36787186037cf9041220c974c6f66c54cab4fb3040"
+    },
+    {
+      "path": "src/ui/selectionPathDraft.test.ts",
+      "sha256": "752d498f01bf7576f7d7588f282cba0e09206a6660335d2abe7d206124bb8d83"
+    },
+    {
+      "path": "src/ui/selectionPathDraft.ts",
+      "sha256": "2e8e8a9bf137189b453ecad4bdae9ccbb09cab83012207b2fb7185e2a687f23e"
+    },
+    {
+      "path": "src/ui/selectionToolFocus.test.ts",
+      "sha256": "26e011d169b141b0d3757c855e7f6a84a3b00061beaaadc37c97e5c6da6cddf4"
+    },
+    {
+      "path": "src/ui/selectionToolFocus.ts",
+      "sha256": "a8fcfc631afd6bb4a4ae476b052e9a79906e49e44119f606eb8ebd26d614e107"
+    },
+    {
+      "path": "src/ui/workbenchPreferences.test.ts",
+      "sha256": "1d927b26737db2350a74ebba813633247c8051b8160349439128bf3be0163362"
+    },
+    {
+      "path": "src/ui/workbenchPreferences.ts",
+      "sha256": "8282148f762d095e5f222401c20e6c6526fc3d3535c847d5d0ac0b82ade7692e"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/AiCanvas.WebViewHost.csproj",
+      "sha256": "75ee91ac95c39b21fb2f225675e878ecf5a28deaacfc257703b8b348a749f13e"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/App.xaml",
+      "sha256": "d41ee38144b9bd8e53e38ac8da16270c86e4655c56cf6db0f940d4829c26a195"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/App.xaml.cs",
+      "sha256": "fbdf2de43565d80007833d3b314ffbe1b99abcf32b5fc51fd9f11ae1dd9e1a9f"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/AssemblyInfo.cs",
+      "sha256": "3fac2af92385f676e9a941befd23fe38f0a5fa6167d4a3a88f07e730c5595ca3"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/Assets/AI-Canvas-Document-A.ico",
+      "sha256": "82ea5aef1c605588e62891deb440fa3848a5957047e87f70fc178e23aff5ad88"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/Assets/AI-Canvas-Document-A.svg",
+      "sha256": "4fdf103c27bd1726f0634de1278247b50c7bf8ef2df67a1b8ea572d69aef6cbb"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/Assets/AI-Canvas-Logo-Black-AC-V1.ico",
+      "sha256": "5371ade1a03d48cbc2fe9ef437444346b8f0c5a4d1fcf1be0c39649584e85169"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/BridgeServiceController.cs",
+      "sha256": "5ca5cf774fdab26cafb75b8a9a4ef5b3efee56c9b5d1919cf753874e8fbbb7b0"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/DocumentCloseDialog.cs",
+      "sha256": "c56d897057ae129aabdb23a2528f3ed68d164ffd31ae6b738c472a9092f16094"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/DocumentCloseStateBarrier.cs",
+      "sha256": "e268b3f0ed9ca81524bb558b2bd2c9b85666530fbc7338a996ac25222d37f552"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/DocumentContextMenu.cs",
+      "sha256": "5f9ad26d9d213e8dafe462ebd9601393ec985339368301479c98325d96736957"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/DocumentDispatchBroker.cs",
+      "sha256": "1590ec3503e3b20825d768475aeea475cd68d547c4ee56969a4c699d34b10ca8"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/DocumentDispatchProtocol.cs",
+      "sha256": "11635f4d253bcfadee3baa4a7f8a068478ff37cd5457c07339741eee864cd31d"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/DocumentDragGeometry.cs",
+      "sha256": "bfe4520eca29fbf71b54f55b6c0a754f63e42c907214e77c9fa3f1a331ad3dcd"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/DocumentDragPreview.cs",
+      "sha256": "37a851d6a365d45f4c346ffd92c8dbc186e4a422634a7d28416bdffe2f3fd58d"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/DocumentFileStore.cs",
+      "sha256": "b46fdae5430fc8d95c9eda0291442af1603208c0be434b6e5ab54312e3bbdbc7"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/DocumentOpenOperation.cs",
+      "sha256": "bda08ded5bbf65a92f9135c9dfbfbba2a2ad474239d4b797918161da2257c5ae"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/DocumentOpenRequest.cs",
+      "sha256": "2d7a5eed028d4c8e4241e706bd9d67df5e5074fa07a9356a617c8992dde84747"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/DocumentPathIdentity.cs",
+      "sha256": "5281d1024adf9c83b0e2ef6f93937c1af09a897fbc62a77a128ee82b9231a582"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/DocumentRenamePolicy.cs",
+      "sha256": "a9692a7fae93c1cfd347edfe2851a85324891a7f154706199218dc295bec9947"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/DocumentRunScope.cs",
+      "sha256": "3ed3f5938f47ab9a4c8ec00bfcd363c0ab3e514b9f4ce72878d1c0c4866ac67c"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/DocumentSaveQueue.cs",
+      "sha256": "3dc0ad57ff7552cfacaa749aa2598df18b608a6810bdcb6d2f31f472bb069800"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/DocumentSession.cs",
+      "sha256": "5da117b1b4d7e964ad73099d3fc93a1b12fee01640d7b4fc105df80e3df12842"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/DocumentSessionState.cs",
+      "sha256": "90815a3e05bd8fc20f4d2c0ce725092441e40046277c3e62e21e067c6fcb02af"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/DocumentTabController.cs",
+      "sha256": "980f06f958428b06301c9f08f5e0561a8f078a6d7f642e34d42c8597d4430f43"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/DocumentThemeTokens.cs",
+      "sha256": "274dfcee18f7a301e71c840906a50349d9cc38f7dd2421121d9ae5c3a7a6fb03"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/HostNavigationPolicy.cs",
+      "sha256": "348f59185d52c23303630f64799b4deeaef20d6823bc4d7bcce8c86ad3180005"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/HostPaths.cs",
+      "sha256": "412575fd3888836339adbb548e9f6dfd0fce449760eca89037a98ad981edaea5"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/InstalledPackagePolicy.cs",
+      "sha256": "491748f7320e7e658b79419a19ee856220a4e7ab1f1ee5c8c6e7c64ef6ccd637"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/MainWindow.xaml",
+      "sha256": "da359340aeee914297b9e671f3f0aaa48c967feaa5dd10119acdd172b0fca9fe"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/MainWindow.xaml.cs",
+      "sha256": "47f5e548b4916e7e5ee7eb9d926cf3b6566ee934f76a1ee24c12974ea77da1f4"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/PackageWindowLifetime.cs",
+      "sha256": "dfe6e93c770e6a607189c44ce6759483fdde7f56ec966fcf01d94c0278bcfd1d"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/StartupConnectionCoordinator.cs",
+      "sha256": "00bcf808e461adb0eb1a65cf9b608d22c9090b7e1c5014446fb4f54d48c219be"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/StartupLoadingSurface.cs",
+      "sha256": "1c270212e8b76470e9e161d638fb7f41053361ecceab8b369f8e495edc26a17f"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/StartupNavigationState.cs",
+      "sha256": "95df7ee7d6f0cb1a4984db9cd8cccafb73fd6870336a0b8b2d8a2ce79795bfae"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/StartupOverlay.js",
+      "sha256": "872966c65002cbfc8de764d5dd76c9246fce1c942ddb70e7da85e10b6f8447e0"
+    },
+    {
+      "path": "webview-host/tests/HostContract.Tests.ps1",
+      "sha256": "82412c04233a938144e9cce864928044f51da2ed3d1e9a21d396799b963ca1a7"
+    }
+  ],
+  "basis": "content-addressed public source snapshot; no private Git history required"
+}

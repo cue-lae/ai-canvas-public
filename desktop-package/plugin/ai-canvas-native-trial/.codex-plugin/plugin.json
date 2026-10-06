@@ -1,0 +1,26 @@
+{
+  "name": "ai-canvas-native-trial",
+  "version": "1.0.0",
+  "description": "AI Canvas：读取主动交接的画布，并按精确选区进行视觉编辑。",
+  "author": {
+    "name": "AI Canvas project"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "AI Canvas",
+    "shortDescription": "读取画布、图片与说明，按选区进行视觉编辑。",
+    "longDescription": "AI Canvas 初版。读取用户主动交接的画布，提供生成式与确定性局部视觉工作流程和选区保护工具。",
+    "developerName": "AI Canvas project",
+    "category": "Productivity",
+    "capabilities": [
+      "Read"
+    ],
+    "defaultPrompt": [
+      "读取我已在 AI Canvas 中主动交接的画布。",
+      "按我的选区和说明进行局部图像处理。"
+    ],
+    "composerIcon": "./assets/logo.png",
+    "logo": "./assets/logo.png"
+  },
+  "mcpServers": "./.mcp.json"
+}

@@ -1,0 +1,211 @@
+<Window x:Class="AiCanvas.WebViewHost.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        mc:Ignorable="d"
+        Title=""
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        Height="800"
+        Width="1280"
+        MinHeight="600"
+        MinWidth="900"
+        WindowStartupLocation="CenterScreen"
+        PreviewKeyDown="OnPreviewKeyDown">
+    <shell:WindowChrome.WindowChrome>
+        <shell:WindowChrome CaptionHeight="0"
+                            ResizeBorderThickness="6"
+                            GlassFrameThickness="0"
+                            CornerRadius="0" />
+    </shell:WindowChrome.WindowChrome>
+    <Grid x:Name="ChromeRoot" Background="{Binding Background, ElementName=TitleBar}">
+        <Grid.Resources>
+            <SolidColorBrush x:Key="CaptionHoverBackground" Color="#E6E0F4" />
+            <SolidColorBrush x:Key="CaptionHoverForeground" Color="#392B68" />
+            <SolidColorBrush x:Key="CaptionPressedBackground" Color="#D9D0EE" />
+            <DataTemplate x:Key="MinimizeGlyphTemplate">
+                <Path Width="10"
+                      Height="10"
+                      Data="M 1,6 L 11,6"
+                      Stretch="Fill"
+                      Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                      StrokeEndLineCap="Square"
+                      StrokeStartLineCap="Square"
+                      StrokeThickness="1.3" />
+            </DataTemplate>
+            <DataTemplate x:Key="MaximizeGlyphTemplate">
+                <Rectangle Width="10"
+                           Height="10"
+                           RadiusX="1.5"
+                           RadiusY="1.5"
+                           Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                           StrokeThickness="1.3" />
+            </DataTemplate>
+            <DataTemplate x:Key="CloseGlyphTemplate">
+                <Path Width="10"
+                      Height="10"
+                      Data="M 2,2 L 10,10 M 10,2 L 2,10"
+                      Stretch="Fill"
+                      Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                      StrokeEndLineCap="Square"
+                      StrokeStartLineCap="Square"
+                      StrokeThickness="1.3" />
+            </DataTemplate>
+            <ControlTemplate x:Key="WindowControlTemplate"
+                             TargetType="Button">
+                <Border Background="{TemplateBinding Background}">
+                    <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center" />
+                </Border>
+            </ControlTemplate>
+            <Style x:Key="WindowControlButton" TargetType="Button">
+                <Setter Property="Width" Value="46" />
+                <Setter Property="Height" Value="34" />
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="Foreground" Value="#3F4148" />
+                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                <Setter Property="OverridesDefaultStyle" Value="True" />
+                <Setter Property="Template" Value="{StaticResource WindowControlTemplate}" />
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="{DynamicResource CaptionHoverBackground}" />
+                        <Setter Property="Foreground" Value="{DynamicResource CaptionHoverForeground}" />
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="{DynamicResource CaptionPressedBackground}" />
+                        <Setter Property="Foreground" Value="{DynamicResource CaptionHoverForeground}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="CloseWindowControlButton"
+                   TargetType="Button"
+                   BasedOn="{StaticResource WindowControlButton}">
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#C42B1C" />
+                        <Setter Property="Foreground" Value="#FFFFFF" />
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="#A82217" />
+                        <Setter Property="Foreground" Value="#FFFFFF" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition x:Name="TitleBarRow" Height="34" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Border x:Name="TitleBar"
+                Grid.Row="0"
+                Background="#FFFFFF">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Border x:Name="DocumentMergeHighlight" Grid.ColumnSpan="2"
+                        IsHitTestVisible="False" Visibility="Collapsed" />
+                <Border Grid.Column="0"
+                        Background="Transparent"
+                        MouseLeftButtonDown="OnTitleBarMouseLeftButtonDown" />
+                <StackPanel x:Name="DocumentTabs" Grid.Column="0" Orientation="Horizontal" Margin="8,0,0,0" Visibility="Hidden" />
+
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal">
+                    <Button x:Name="MinimizeButton"
+                            Style="{StaticResource WindowControlButton}"
+                            ContentTemplate="{StaticResource MinimizeGlyphTemplate}"
+                            AutomationProperties.Name="最小化"
+                            Click="OnMinimizeClick" />
+                    <Button x:Name="MaximizeButton"
+                            Style="{StaticResource WindowControlButton}"
+                            ContentTemplate="{StaticResource MaximizeGlyphTemplate}"
+                            AutomationProperties.Name="最大化"
+                            Click="OnMaximizeClick" />
+                    <Button x:Name="CloseButton"
+                            Style="{StaticResource CloseWindowControlButton}"
+                            ContentTemplate="{StaticResource CloseGlyphTemplate}"
+                            AutomationProperties.Name="关闭"
+                            Click="OnCloseClick" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Grid x:Name="DocumentViews" Margin="4,0,4,4" Grid.Row="1">
+            <wv2:WebView2 x:Name="Browser" Visibility="Hidden" />
+        </Grid>
+
+        <Grid x:Name="LoadingOverlay"
+              Grid.Row="1"
+              Background="#FFFFFF"
+              Panel.ZIndex="200">
+            <Image x:Name="LoadingLogo"
+                   Width="64"
+                   Height="64"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Opacity="0.78"
+                   RenderOptions.BitmapScalingMode="HighQuality">
+                <Image.RenderTransform>
+                    <ScaleTransform x:Name="LoadingLogoScale"
+                                    CenterX="32"
+                                    CenterY="32"
+                                    ScaleX="0.94"
+                                    ScaleY="0.94" />
+                </Image.RenderTransform>
+                <Image.Triggers>
+                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                        <BeginStoryboard Name="LoadingBreath" >
+                            <Storyboard AutoReverse="True"
+                                        RepeatBehavior="Forever">
+                                <DoubleAnimation Storyboard.TargetName="LoadingLogoScale"
+                                                 Storyboard.TargetProperty="ScaleX"
+                                                 From="0.94"
+                                                 To="1"
+                                                 Duration="0:0:1.2" />
+                                <DoubleAnimation Storyboard.TargetName="LoadingLogoScale"
+                                                 Storyboard.TargetProperty="ScaleY"
+                                                 From="0.94"
+                                                 To="1"
+                                                 Duration="0:0:1.2" />
+                                <DoubleAnimation Storyboard.TargetName="LoadingLogo"
+                                                 Storyboard.TargetProperty="Opacity"
+                                                 From="0.72"
+                                                 To="1"
+                                                 Duration="0:0:1.2" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Image.Triggers>
+            </Image>
+        </Grid>
+
+        <Border x:Name="ErrorPanel"
+                Visibility="Collapsed"
+                Background="#F8F8F8"
+                Padding="32"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                MaxWidth="720"
+                Grid.Row="1">
+            <StackPanel>
+                <TextBlock Text="AI Canvas 无法启动"
+                           FontSize="24"
+                           FontWeight="SemiBold"
+                           Foreground="#222222" />
+                <TextBlock x:Name="ErrorMessage"
+                           Margin="0,12,0,0"
+                           TextWrapping="Wrap"
+                           Foreground="#555555" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

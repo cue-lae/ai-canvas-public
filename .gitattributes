@@ -1,0 +1,261 @@
+# Preserve the exact approved source bytes across checkouts.
+/.gitattributes -text
+/vitest.config.ts -text
+/src/App.tsx -text
+/src/styles.css -text
+/src/services/canvasHostReady.ts -text
+/src/services/canvasHostReady.test.ts -text
+/src/services/hostDocumentOpen.ts -text
+/src/services/hostDocumentOpen.test.ts -text
+/webview-host/AiCanvas.WebViewHost/DocumentOpenRequest.cs -text
+/webview-host/AiCanvas.WebViewHost/Assets/AI-Canvas-Document-A.ico -text
+/webview-host/AiCanvas.WebViewHost/Assets/AI-Canvas-Document-A.svg -text
+/desktop-package/file-association.ps1 -text
+/desktop-package/tests/file-association.test.ps1 -text
+/desktop-package/installer-file-association.ps1 -text
+/desktop-package/installer-file-association.iss -text
+/desktop-package/tests/installer-file-association.test.ps1 -text
+/desktop-package/CONNECTION-GUIDE-ZH.md -text
+/desktop-package/README-ZH.txt -text
+/desktop-package/accepted-source-inputs.json -text
+/desktop-package/accepted-source-policy.mjs -text
+/desktop-package/build.mjs -text
+/desktop-package/diagnostics/TimingTrace.cs -text
+/desktop-package/image-tools/AiCanvas.ImageTools.csproj -text
+/desktop-package/image-tools/Program.cs -text
+/desktop-package/installer-policy.mjs -text
+/desktop-package/installer-shell/InstallerShell.csproj -text
+/desktop-package/installer-shell/Program.cs -text
+/desktop-package/installer-shell/controller.js -text
+/desktop-package/installer-ui.iss -text
+/desktop-package/installer.iss -text
+/desktop-package/package-entry.mjs -text
+/desktop-package/package-policy.mjs -text
+/desktop-package/plugin-install.mjs -text
+/desktop-package/plugin-legacy-hashes.json -text
+/desktop-package/plugin/ai-canvas-native-trial/.codex-plugin/plugin.json -text
+/desktop-package/plugin/ai-canvas-native-trial/.mcp.json -text
+/desktop-package/plugin/ai-canvas-native-trial/assets/logo.png -text
+/desktop-package/plugin/ai-canvas-native-trial/assets/logo.svg -text
+/desktop-package/plugin/ai-canvas-native-trial/scripts/launch-reader.ps1 -text
+/desktop-package/plugin/ai-canvas-native-trial/skills/canvas-visual-execution/SKILL.md -text
+/desktop-package/plugin/ai-canvas-native-trial/skills/canvas-visual-execution/scripts/locate-canvas.ps1 -text
+/desktop-package/plugin/ai-canvas-native-trial/skills/canvas-visual-execution/scripts/make-mask.mjs -text
+/desktop-package/plugin/ai-canvas-native-trial/skills/canvas-visual-execution/scripts/run-visual.ps1 -text
+/desktop-package/plugin/ai-canvas-native-trial/skills/read-canvas/SKILL.md -text
+/desktop-package/release.json -text
+/desktop-package/tests/DocumentSessionTests/DocumentSessionTests.csproj -text
+/desktop-package/tests/DocumentSessionTests/Program.cs -text
+/desktop-package/tests/PackagePolicyTests/PackagePolicyTests.csproj -text
+/desktop-package/tests/PackagePolicyTests/Program.cs -text
+/desktop-package/tests/StartupConnectionTests/Program.cs -text
+/desktop-package/tests/StartupConnectionTests/StartupConnectionTests.csproj -text
+/desktop-package/tests/WindowLifetimeTests/Program.cs -text
+/desktop-package/tests/WindowLifetimeTests/WindowLifetimeTests.csproj -text
+/desktop-package/tests/accepted-source-policy.test.mjs -text
+/desktop-package/tests/image-tools.check.py -text
+/desktop-package/tests/installer-policy.test.mjs -text
+/desktop-package/tests/package.test.mjs -text
+/desktop-package/tests/v1-package.test.mjs -text
+/desktop-package/vite.package.config.ts -text
+/package.json text eol=crlf
+/pnpm-lock.yaml text eol=crlf
+/scripts/canvas-context-bridge-runtime.mjs -text
+/scripts/canvas-context-bridge.mjs -text
+/scripts/canvas-context-mcp-core.mjs text eol=crlf
+/src/domain/annotationSelection.test.ts -text
+/src/domain/canvasArrangeLayout.test.ts text eol=crlf
+/src/domain/canvasArrangeLayout.ts text eol=crlf
+/src/domain/canvasClipboard.test.ts -text
+/src/domain/canvasClipboard.ts -text
+/src/domain/codexContext.test.ts text eol=crlf
+/src/domain/codexContext.ts text eol=crlf
+/src/domain/descriptionImageBinding.test.ts -text
+/src/domain/descriptionImageBinding.ts -text
+/src/domain/descriptions.test.ts text eol=crlf
+/src/domain/descriptions.ts text eol=crlf
+/src/domain/focusedPublish.test.ts text eol=crlf
+/src/domain/focusedPublish.ts text eol=crlf
+/src/domain/folderNames.test.ts -text
+/src/domain/folderNames.ts -text
+/src/domain/folderScene.test.ts -text
+/src/domain/folderScene.ts -text
+/src/domain/geometry.test.ts -text
+/src/domain/geometry.ts -text
+/src/domain/globalHistoryTimeline.test.ts -text
+/src/domain/globalHistoryTimeline.ts -text
+/src/domain/imageAnnotationBinding.test.ts -text
+/src/domain/imageAnnotationBinding.ts -text
+/src/domain/imageLayerOrder.test.ts text eol=crlf
+/src/domain/imageLayerOrder.ts text eol=crlf
+/src/domain/projectFile.test.ts text eol=crlf
+/src/domain/projectFile.ts text eol=crlf
+/src/domain/reconcile.test.ts text eol=crlf
+/src/domain/reconcile.ts text eol=crlf
+/src/domain/types.ts text eol=crlf
+/src/excalidraw/annotationCard.ts -text
+/src/excalidraw/annotationToolInteraction.test.ts -text
+/src/excalidraw/annotationToolInteraction.ts -text
+/src/excalidraw/scene.test.ts -text
+/src/excalidraw/scene.ts text eol=crlf
+/src/global.d.ts -text
+/src/main.tsx -text
+/src/performance/benchmark.ts -text
+/src/services/canvasBridgeConnection.test.ts -text
+/src/services/canvasBridgeConnection.ts -text
+/src/services/canvasClipboard.test.ts -text
+/src/services/canvasClipboard.ts -text
+/src/services/canvasContextBridge.test.ts text eol=crlf
+/src/services/canvasContextBridge.ts -text
+/src/services/canvasSnapshot.test.ts text eol=crlf
+/src/services/canvasSnapshot.ts text eol=crlf
+/src/services/documentFiles.test.ts -text
+/src/services/documentFiles.ts -text
+/src/services/documentSaveState.test.ts -text
+/src/services/documentSaveState.ts -text
+/src/services/hostDocumentSession.test.ts -text
+/src/services/hostDocumentSession.ts -text
+/src/services/imageProcessing.ts -text
+/src/services/persistence.test.ts -text
+/src/services/persistence.ts -text
+/src/test/canvasClipboardFixture.ts -text
+/src/test/vitest.setup.ts text eol=crlf
+/src/ui/BubbleCanvasOverlay.tsx text eol=crlf
+/src/ui/CanvasBridgeConnection.test.ts -text
+/src/ui/CanvasBridgeConnection.tsx -text
+/src/ui/CanvasBusinessNotice.test.tsx -text
+/src/ui/CanvasBusinessNotice.tsx -text
+/src/ui/CanvasContextMenu.test.tsx -text
+/src/ui/CanvasContextMenu.tsx -text
+/src/ui/CanvasToolIcon.tsx text eol=crlf
+/src/ui/DescriptionCanvasOverlay.tsx -text
+/src/ui/DescriptionCanvasOverlayAdapter.tsx -text
+/src/ui/DescriptionWorkspace.tsx text eol=crlf
+/src/ui/ImageRotationFeedback.test.tsx -text
+/src/ui/ImageRotationFeedback.tsx -text
+/src/ui/QuickAnnotationOverlay.tsx -text
+/src/ui/SelectionCanvasOverlay.tsx -text
+/src/ui/canvasCardShadowVisibility.test.ts -text
+/src/ui/canvasCardShadowVisibility.ts -text
+/src/ui/canvasContextMenuPolicy.test.ts -text
+/src/ui/canvasContextMenuPolicy.ts -text
+/src/ui/canvasInteractionHostController.test.ts -text
+/src/ui/canvasInteractionHostController.ts -text
+/src/ui/canvasInteractionRuntime.test.ts -text
+/src/ui/canvasInteractionRuntime.ts text eol=crlf
+/src/ui/canvasKeyboardRouter.test.ts -text
+/src/ui/canvasKeyboardRouter.ts -text
+/src/ui/canvasMenuState.test.ts -text
+/src/ui/canvasMenuState.ts -text
+/src/ui/canvasObjectSelection.test.ts text eol=crlf
+/src/ui/canvasObjectSelection.ts text eol=crlf
+/src/ui/canvasPointerArbitration.test.ts -text
+/src/ui/canvasPointerArbitration.ts -text
+/src/ui/canvasSelection.test.ts -text
+/src/ui/canvasSelection.ts -text
+/src/ui/canvasSelectionIntegrationContract.test.ts text eol=crlf
+/src/ui/canvasSessionReset.test.ts -text
+/src/ui/canvasSessionReset.ts -text
+/src/ui/canvasShortcutPreferences.test.ts -text
+/src/ui/canvasShortcutPreferences.ts -text
+/src/ui/canvasStatusPresentation.test.ts -text
+/src/ui/canvasStatusPresentation.ts -text
+/src/ui/canvasThemeContract.test.ts -text
+/src/ui/canvasThemeContract.ts text eol=crlf
+/src/ui/canvasWorkspaceContract.test.ts -text
+/src/ui/canvasWorkspaceContract.ts text eol=crlf
+/src/ui/contextInformationSelection.test.ts text eol=crlf
+/src/ui/contextInformationSelection.ts text eol=crlf
+/src/ui/descriptionCanvasSelectionAdapter.test.ts -text
+/src/ui/descriptionCanvasSelectionAdapter.ts -text
+/src/ui/descriptionCreationPlacement.test.ts -text
+/src/ui/descriptionCreationPlacement.ts -text
+/src/ui/descriptionHostController.test.ts -text
+/src/ui/descriptionHostController.ts -text
+/src/ui/descriptionInteraction.test.ts -text
+/src/ui/descriptionInteraction.ts -text
+/src/ui/descriptionLayout.test.ts -text
+/src/ui/descriptionLayout.ts -text
+/src/ui/descriptionPresentation.test.ts -text
+/src/ui/descriptionPresentation.ts -text
+/src/ui/descriptionWorkspaceInteraction.test.ts -text
+/src/ui/descriptionWorkspaceInteraction.ts -text
+/src/ui/descriptionWorkspaceStyleContract.test.ts text eol=crlf
+/src/ui/folderMiddlePan.test.ts -text
+/src/ui/folderPreviewMotion.test.ts -text
+/src/ui/folderPreviewMotion.ts -text
+/src/ui/folderPreviewPresentation.test.ts -text
+/src/ui/folderWorkspace.test.tsx text eol=crlf
+/src/ui/folderWorkspace.tsx -text
+/src/ui/globalHistorySceneSync.test.ts text eol=crlf
+/src/ui/globalHistorySceneSync.ts text eol=crlf
+/src/ui/importViewContract.test.ts -text
+/src/ui/nativeToolShortcutGuard.test.ts -text
+/src/ui/nativeToolShortcutGuard.ts -text
+/src/ui/quickAnnotationConnector.test.ts -text
+/src/ui/quickAnnotationConnector.ts -text
+/src/ui/quickAnnotationPreview.test.ts -text
+/src/ui/quickAnnotationPreview.ts -text
+/src/ui/quickAnnotationPreviewInteraction.test.tsx -text
+/src/ui/quickAnnotationVisualInteraction.test.ts -text
+/src/ui/quickAnnotations.test.ts text eol=crlf
+/src/ui/quickAnnotations.ts text eol=crlf
+/src/ui/rotationFeedbackPresentation.test.ts -text
+/src/ui/rotationFeedbackPresentation.ts -text
+/src/ui/selectionBindingBadge.test.ts text eol=crlf
+/src/ui/selectionBindingBadge.ts text eol=crlf
+/src/ui/selectionGeometry.test.ts -text
+/src/ui/selectionGeometry.ts -text
+/src/ui/selectionOcclusion.test.ts text eol=crlf
+/src/ui/selectionOcclusion.ts text eol=crlf
+/src/ui/selectionOrdinalBadge.test.ts text eol=crlf
+/src/ui/selectionOrdinalBadge.ts text eol=crlf
+/src/ui/selectionOrdinalLayout.test.ts text eol=crlf
+/src/ui/selectionOrdinalLayout.ts text eol=crlf
+/src/ui/selectionOverlayContract.test.ts -text
+/src/ui/selectionPathDraft.test.ts text eol=crlf
+/src/ui/selectionPathDraft.ts text eol=crlf
+/src/ui/selectionToolFocus.test.ts text eol=crlf
+/src/ui/selectionToolFocus.ts text eol=crlf
+/src/ui/workbenchPreferences.test.ts -text
+/src/ui/workbenchPreferences.ts -text
+/tsconfig.json text eol=crlf
+/webview-host/AiCanvas.WebViewHost/AiCanvas.WebViewHost.csproj -text
+/webview-host/AiCanvas.WebViewHost/App.xaml -text
+/webview-host/AiCanvas.WebViewHost/App.xaml.cs -text
+/webview-host/AiCanvas.WebViewHost/AssemblyInfo.cs text eol=crlf
+/webview-host/AiCanvas.WebViewHost/Assets/AI-Canvas-Logo-Black-AC-V1.ico -text
+/webview-host/AiCanvas.WebViewHost/BridgeServiceController.cs -text
+/webview-host/AiCanvas.WebViewHost/DocumentCloseDialog.cs -text
+/webview-host/AiCanvas.WebViewHost/DocumentCloseStateBarrier.cs -text
+/webview-host/AiCanvas.WebViewHost/DocumentContextMenu.cs -text
+/webview-host/AiCanvas.WebViewHost/DocumentDispatchBroker.cs -text
+/webview-host/AiCanvas.WebViewHost/DocumentDispatchProtocol.cs -text
+/webview-host/AiCanvas.WebViewHost/DocumentDragGeometry.cs -text
+/webview-host/AiCanvas.WebViewHost/DocumentDragPreview.cs -text
+/webview-host/AiCanvas.WebViewHost/DocumentFileStore.cs -text
+/webview-host/AiCanvas.WebViewHost/DocumentOpenOperation.cs -text
+/webview-host/AiCanvas.WebViewHost/DocumentPathIdentity.cs -text
+/webview-host/AiCanvas.WebViewHost/DocumentRenamePolicy.cs -text
+/webview-host/AiCanvas.WebViewHost/DocumentRunScope.cs -text
+/webview-host/AiCanvas.WebViewHost/DocumentSaveQueue.cs -text
+/webview-host/AiCanvas.WebViewHost/DocumentSession.cs -text
+/webview-host/AiCanvas.WebViewHost/DocumentSessionState.cs -text
+/webview-host/AiCanvas.WebViewHost/DocumentTabController.cs -text
+/webview-host/AiCanvas.WebViewHost/DocumentThemeTokens.cs -text
+/webview-host/AiCanvas.WebViewHost/HostNavigationPolicy.cs -text
+/webview-host/AiCanvas.WebViewHost/HostPaths.cs -text
+/webview-host/AiCanvas.WebViewHost/InstalledPackagePolicy.cs -text
+/webview-host/AiCanvas.WebViewHost/MainWindow.xaml -text
+/webview-host/AiCanvas.WebViewHost/MainWindow.xaml.cs -text
+/webview-host/AiCanvas.WebViewHost/PackageWindowLifetime.cs -text
+/webview-host/AiCanvas.WebViewHost/StartupConnectionCoordinator.cs -text
+/webview-host/AiCanvas.WebViewHost/StartupLoadingSurface.cs -text
+/webview-host/AiCanvas.WebViewHost/StartupNavigationState.cs -text
+/webview-host/AiCanvas.WebViewHost/StartupOverlay.js -text
+/webview-host/tests/DocumentDevToolsTests/DocumentDevToolsTests.csproj -text
+/webview-host/tests/DocumentDevToolsTests/Program.cs -text
+/webview-host/tests/HostContract.Tests.ps1 -text
+/webview-host/tests/WindowCloseReentrancyTests/Program.cs -text
+/webview-host/tests/WindowCloseReentrancyTests/WindowCloseReentrancyTests.csproj -text
+/assets/installer-flow-preview.html -text

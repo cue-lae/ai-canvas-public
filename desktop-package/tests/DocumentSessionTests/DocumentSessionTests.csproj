@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable></PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../../webview-host/AiCanvas.WebViewHost/DocumentSessionState.cs" Link="DocumentSessionState.cs" />
+    <Compile Include="../../../webview-host/AiCanvas.WebViewHost/DocumentRenamePolicy.cs" Link="DocumentRenamePolicy.cs" />
+    <Compile Include="../../../webview-host/AiCanvas.WebViewHost/DocumentCloseStateBarrier.cs" Link="DocumentCloseStateBarrier.cs" />
+    <Compile Include="../../../webview-host/AiCanvas.WebViewHost/DocumentOpenOperation.cs" Link="DocumentOpenOperation.cs" />
+    <Compile Include="../../../webview-host/AiCanvas.WebViewHost/DocumentDragGeometry.cs" Link="DocumentDragGeometry.cs" />
+    <Compile Include="../../../webview-host/AiCanvas.WebViewHost/DocumentThemeTokens.cs" Link="DocumentThemeTokens.cs" />
+    <Compile Include="../../../webview-host/AiCanvas.WebViewHost/DocumentSaveQueue.cs" Link="DocumentSaveQueue.cs" />
+    <Compile Include="../../../webview-host/AiCanvas.WebViewHost/DocumentPathIdentity.cs" Link="DocumentPathIdentity.cs" />
+    <Compile Include="../../../webview-host/AiCanvas.WebViewHost/DocumentDispatchProtocol.cs" Link="DocumentDispatchProtocol.cs" />
+  </ItemGroup>
+</Project>

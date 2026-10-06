@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <title>AI Canvas</title>
+  <rect x="8" y="8" width="240" height="240" rx="56" fill="#111213"/>
+  <rect x="113" y="59" width="86" height="87" rx="4" fill="#fff"/>
+</svg>

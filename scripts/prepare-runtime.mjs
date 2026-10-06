@@ -1,0 +1,11 @@
+import { readFile, mkdir, copyFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import { spawnSync } from 'node:child_process';
+import { resolve, join } from 'node:path';
+const archive=resolve(process.env.CANVAS_NODE_ARCHIVE ?? '.build/downloads/node-v24.19.0-win-x64.zip');
+const expected='57f71ab3652e797d84acddc79c81cc9ff1c6ddb2a1974cdb83f00fee9bff4c73';
+if(createHash('sha256').update(await readFile(archive)).digest('hex')!==expected)throw new Error('Node archive hash mismatch');
+const dest=resolve('.build/node-input');await mkdir(dest,{recursive:true});
+const result=spawnSync('tar.exe',['-xf',archive,'-C',dest],{stdio:'inherit'});if(result.status!==0)throw new Error('Node extraction failed');
+await mkdir('runtime',{recursive:true});await copyFile(join(dest,'node-v24.19.0-win-x64/node.exe'),'runtime/node.exe');
+console.log('Verified development runtime is ready. No service was started.');

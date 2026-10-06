@@ -1,0 +1,24 @@
+AI Canvas
+Copyright (C) 2026 cue-lae
+SPDX-License-Identifier: GPL-3.0-only
+
+The project-owned code, build scripts, documentation and project-owned assets
+in this source distribution are licensed under the GNU General Public License,
+version 3 only. See LICENSE for the full terms. No later version is selected.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See LICENSE.
+
+The public project attribution cue-lae was specified and authorized by the
+project owner. Third-party copyright notices are retained and are not replaced
+by this attribution. See THIRD_PARTY_NOTICES.md and third-party-licenses/.
+
+Third-party code, fonts, runtime libraries and tools retain their own licenses.
+The project license does not change those third-party terms.
+
+This release adds license/attribution and public documentation only; application
+runtime source is unchanged from the tested 1.0.4 source snapshot. The installer
+included in the release bundle is byte-identical to the independently rebuilt
+and user-accepted artifact. The accompanying source contains its build inputs
+plus the declared licensing/documentation metadata changes.

@@ -1,0 +1,14 @@
+nameID 0:
+Copyright (c) 2024 by Excalidraw. All rights reserved.
+
+nameID 1:
+Excalifont
+
+nameID 2:
+Regular
+
+nameID 5:
+Version 1.000;Glyphs 3.2 (3227)
+
+nameID 6:
+Excalifont-Regular
