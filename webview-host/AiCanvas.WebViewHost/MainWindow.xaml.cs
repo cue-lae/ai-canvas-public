@@ -228,7 +228,7 @@ public partial class MainWindow : Window
         try
         {
             var logoResource = Application.GetResourceStream(new Uri(
-                "pack://application:,,,/AiCanvas.WebViewHost;component/Assets/AI-Canvas-Logo-Black-AC-V1.ico"));
+                "pack://application:,,,/AiCanvas.WebViewHost;component/Assets/AI-Canvas-Startup-Logo-Black-AC.ico"));
             using (var stream = logoResource!.Stream)
             {
                 var decoder = new IconBitmapDecoder(stream,

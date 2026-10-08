@@ -1,37 +1,32 @@
 # AI Canvas
 
-AI Canvas 是面向图片、说明与局部视觉任务的桌面画布。图片、选区、快速标注和说明可以一起组织到文件夹中，通过多个标签处理不同项目，并主动将当前工作交接给 Codex。
+AI Canvas 是面向图片、说明与局部视觉任务的桌面画布，支持多文档标签、图片与说明关联、快速标注和文件夹组织。
 
-**AI Canvas 1.0.4 · 公开署名 cue-lae · GPL-3.0-only。** 项目自有代码与自有资产许可见 LICENSE/NOTICE。 第三方材料仍按各自许可使用。当前安装包仅携带 Assistant 字体文件；Liberation 保留底座的上游加载路径。依赖存在不等于随包分发。未来离线携带或嵌入字体输出需按实际情况另行核对，不能宣称所有授权情形都已经完备。
+**AI Canvas 1.0.5 · cue-lae · GPL-3.0-only。**
 
-## 使用
+## 下载
 
-- 桌面目标为 Windows x64，依赖 Microsoft Edge WebView2 Evergreen Runtime。
-- 可将图片导入画布，使用选区和快速标注指出需要处理的位置，用说明卡补充要求，并用 Folder 整理内容。
-- 标签支持保存、另存为、重命名、关闭，以及拆分窗口和合并。
-- 复制图片时保留其选区和快速标注；复制完整 Folder 时保留内部内容。带关联的说明卡需要一并选择关联内容，以免遗漏关系。
-- Canvas 中的内容不会因普通编辑自动交给 Codex；通过 Codex Read 主动交接。MCP/插件是可选能力，普通画布使用不依赖它。
+[下载 AI Canvas 1.0.5（Windows x64）](https://github.com/cue-lae/ai-canvas-public/releases/download/v1.0.5/AI-Canvas-1.0.5-Windows-x64.zip) · [版本说明及源码](https://github.com/cue-lae/ai-canvas-public/releases/tag/v1.0.5)
 
-详细步骤见 [使用说明](docs/USAGE.md)，开发和安装包构建见 [构建说明](docs/BUILD.md)。
+Windows ZIP 包含安装器、许可与第三方声明、对应源码 ZIP。安装由用户操作；请先保存并关闭画布，按安装程序的安全检查继续。旧版本在 [Releases](https://github.com/cue-lae/ai-canvas-public/releases) 保留。
 
-## 技术与源码
+## 1.0.5 更新
 
-React 18.3.1、TypeScript 5.7.3、Vite 6.1.0；画布底座固定为 Excalidraw 0.18.1。桌面宿主使用 WPF 与 WebView2。安装器由 Inno Setup 引擎及 WPF 外壳组成。
+- 应用图标：炭黑背景、暖白 AC。
+- 项目文件图标：暖白纸面、炭黑 AC／边框／CANVAS 文字，保留纸张形状和排列。
+- 启动动画：透明背景、纯黑 AC，保留动画尺寸和时序。
+- 本轮没有新增画布功能或修改项目数据格式。
 
-目录包含前端、Windows 宿主、桥接/MCP、插件、安装器和必要测试；不包含个人画布、内部讨论和治理记录、内部 Git 历史、已安装环境、工具缓存或依赖目录。
+## 使用与开发
 
-当前已验收版本的运行功能源码保持原字节。本修订正式更新五个测试文件和相应校验记录，保持原 548 项用例；候选另调整公开构建入口、资源位置及说明；构建校验清单用于识别冻结版本，修改功能后需要重新验证并显式更新该清单。
+支持保存、另存为、重命名、多标签及窗口拆合；图片、选区、标注与说明可组织到 Folder。Codex Read 为主动交接，MCP／插件可选，普通画布不依赖它。详细步骤见 [使用说明](docs/USAGE.md)，源码构建见 [构建说明](docs/BUILD.md)，本轮边界见 [验证记录](docs/VERIFICATION.md)。
 
-## 验证与限制
-
-r2源码已在独立虚拟机目录中，使用重新下载的准确版本工具和依赖完成构建；349个包下载、复用0，类型检查与548项测试通过，完整安装包构建及977个载荷文件校验通过。本许可修订仅更改文档和元数据，运行源码保持。详情见 [验证记录](docs/VERIFICATION.md)。
-
-用户已反馈本次从源码重建的1.0.4“正常安装并保持原有体验”。这是已有Windows环境中的用户安装体验，不能扩大为全新系统、其他硬件或每项功能均已自动实测。
+前端为 React／TypeScript，Canvas 固定使用 Excalidraw 0.18.1；Windows 宿主为 WPF／WebView2，安装器为 Inno Setup 引擎及 WPF 外壳。桌面目标为 Windows x64，依赖 WebView2 Evergreen Runtime。
 
 ## 许可与反馈
 
-项目自有部分采用 [GPL第3版](LICENSE)（GPL-3.0-only），版权与公开署名见 [NOTICE](NOTICE)。第三方材料保留原许可，见 [第三方声明](THIRD_PARTY_NOTICES.md)。许可范围说明见 [许可说明](docs/LICENSE_DECISION.md)。
+项目自有代码与资产采用 [GPL-3.0-only](LICENSE)，公开署名与范围见 [NOTICE](NOTICE)、[许可说明](docs/LICENSE_DECISION.md) 和 [第三方声明](THIRD_PARTY_NOTICES.md)。第三方材料保留原许可。
 
-公开仓库：[cue-lae/ai-canvas-public](https://github.com/cue-lae/ai-canvas-public)。安装包与对应源码下载：[v1.0.4](https://github.com/cue-lae/ai-canvas-public/releases/tag/v1.0.4)。问题反馈：[Issues](https://github.com/cue-lae/ai-canvas-public/issues)。请提供版本、操作步骤、预期/实际结果和可公开截图，并移除个人内容与凭据。
+[提交问题](https://github.com/cue-lae/ai-canvas-public/issues)时请提供版本、操作步骤和可公开截图，移除个人内容与凭据。本仓库不包含内部 Git 历史、治理记录、个人画布或本机凭据。
 
-`SOURCE_MANIFEST.json` 中的文件摘要对应 Release 内的原始 r3 源码 ZIP；Git 按原属性规范部分文本换行，发布后的首页链接另行维护。运行输入及构建校验仍见 `desktop-package/accepted-source-inputs.json`，其 201 项已由 Git 暂存区导出逐字节复核。
+SOURCE_MANIFEST.json 记录对应源码 ZIP 的文件摘要（自身除外）；正式下载以 Release 附件及 SHA256SUMS.txt 为准。

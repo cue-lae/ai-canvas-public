@@ -1,0 +1,87 @@
+{
+  "schema": "ai-canvas-application-icon-charcoal-v1",
+  "approvedIcoSha256": "b1ad15c707281e3ac17a8cf7965e7d5cbc45ddf9f564786f4766833833dcac23",
+  "palette": {
+    "background": "#242629",
+    "glyph": "#F2EFE8"
+  },
+  "geometry": {
+    "viewBox": 256,
+    "background": [
+      4,
+      4,
+      248,
+      248
+    ],
+    "radius": 32,
+    "glyphScale": 0.88,
+    "pathUnchanged": true,
+    "aspectUnchanged": true
+  },
+  "frames": [
+    {
+      "size": 16,
+      "svg": "desktop-package/branding/application-icon-charcoal/16.svg",
+      "svgSha256": "2d89716eb3bc60ea0c73821a2296e2fd4c59d9b9c0843b3ad0fb7f1a24787cf5",
+      "png": "desktop-package/branding/application-icon-charcoal/16.png",
+      "pngSha256": "f3849a657136eed6b5a16c8a17d23dc6ff1fdb6a4f55cc32f248753616c138de"
+    },
+    {
+      "size": 20,
+      "svg": "desktop-package/branding/application-icon-charcoal/20.svg",
+      "svgSha256": "c5c13c060e2c4dd452eae56a76646623383e8a409f0f1eedb98ebfdc11d39cc7",
+      "png": "desktop-package/branding/application-icon-charcoal/20.png",
+      "pngSha256": "0ff3b0d6f0f975364ec6e8937ddb577426405f923059ed054e6f459356c78ecf"
+    },
+    {
+      "size": 24,
+      "svg": "desktop-package/branding/application-icon-charcoal/24.svg",
+      "svgSha256": "7e2824167e7f0ba6d7c5a9cb09643a2ab8d2946d5fecbb8ba3ca3f0b2e7af1bb",
+      "png": "desktop-package/branding/application-icon-charcoal/24.png",
+      "pngSha256": "cdbbeea109183f405ba0ed7267fb0caf55d911c07cee60cb0249d63703fddf5b"
+    },
+    {
+      "size": 32,
+      "svg": "desktop-package/branding/application-icon-charcoal/32.svg",
+      "svgSha256": "f344c513244ac001b8f98f265e8ee024f788bf95916b4639de07910a97897ea2",
+      "png": "desktop-package/branding/application-icon-charcoal/32.png",
+      "pngSha256": "412eb02d05cfd7796912aef4b59c47852447881d5a3d257bf0e1bc8887244356"
+    },
+    {
+      "size": 40,
+      "svg": "desktop-package/branding/application-icon-charcoal/40.svg",
+      "svgSha256": "977c113b91269e6c3f28e0bf70969fc307795109736493edca3ec1bf69d64a16",
+      "png": "desktop-package/branding/application-icon-charcoal/40.png",
+      "pngSha256": "57fe720815f2f18af1da784d97a3fa76598d1ebb7be5701dfed28577865a10b7"
+    },
+    {
+      "size": 48,
+      "svg": "desktop-package/branding/application-icon-charcoal/48.svg",
+      "svgSha256": "a332926322a07aaf43947c24699950a2a91ca22c17e40ec9899d2ae6a7cbf3c8",
+      "png": "desktop-package/branding/application-icon-charcoal/48.png",
+      "pngSha256": "5415ae71c1576a6ad9e7373c2b4977c53401a7ef4aa8d8f4ef3be920c73b83c6"
+    },
+    {
+      "size": 64,
+      "svg": "desktop-package/branding/application-icon-charcoal/64.svg",
+      "svgSha256": "bbef3485872927933a4b064769a420ae75e2825ddfca6055bce4b47440e6b953",
+      "png": "desktop-package/branding/application-icon-charcoal/64.png",
+      "pngSha256": "17340a83501dc5cca6755d17712c041d1a136b1dde77c128c9bdb89c1c27b028"
+    },
+    {
+      "size": 128,
+      "svg": "desktop-package/branding/application-icon-charcoal/128.svg",
+      "svgSha256": "290e06acc289ef0fabd720f424380bb985ea3ab428104220c694f627b2284e97",
+      "png": "desktop-package/branding/application-icon-charcoal/128.png",
+      "pngSha256": "53ee0ec9caf9bae54ba5e5098a8e8042b1b168a6afa99d34be8deb76c1260508"
+    },
+    {
+      "size": 256,
+      "svg": "desktop-package/branding/application-icon-charcoal/256.svg",
+      "svgSha256": "290e06acc289ef0fabd720f424380bb985ea3ab428104220c694f627b2284e97",
+      "png": "desktop-package/branding/application-icon-charcoal/256.png",
+      "pngSha256": "bf891e713020f87edcbcaaa2c726635480ec5347e3d6c1b027f5d1818a5627d7"
+    }
+  ],
+  "userConfirmation": "确定炭黑+暖白"
+}

@@ -1,0 +1,75 @@
+{
+  "schema": "ai-canvas-application-icon-sources-v1",
+  "approvedIcoSha256": "7ec23b63d601a9c37f5d97293e1a19d3cd56d82d5039e14642de34ca0b60e638",
+  "rendering": {
+    "density": 384,
+    "resizeKernel": "lanczos3",
+    "format": "PNG RGBA in ICO",
+    "sharpVersion": "0.35.5"
+  },
+  "frames": [
+    {
+      "size": 16,
+      "source": "desktop-package/branding/application-icon-small/16.svg",
+      "sourceSha256": "358a6feafbd03422d9c410ad8e5c574fc1a09c6c635ef1c32ef7c5228931d3a8",
+      "pngSha256": "633f28226ff2d987cd1cddc95aae381b28c529b4f05e73af135503b1fda1853c",
+      "preservedFromPreviousProduction": false
+    },
+    {
+      "size": 20,
+      "source": "desktop-package/branding/application-icon-small/20.svg",
+      "sourceSha256": "4ce9c584bf888621b1a4d8cf75f0593e6ada14d993a51edfd9e583c40b4a97f3",
+      "pngSha256": "b51ec2b05497b92064938fd759a0af595bb646639144ac497ec9ab9d0d61eee4",
+      "preservedFromPreviousProduction": false
+    },
+    {
+      "size": 24,
+      "source": "desktop-package/branding/application-icon-small/24.svg",
+      "sourceSha256": "59e258c492513308bc3e538e153a25311af1dfe2f7f8a0501c281cee04e0d402",
+      "pngSha256": "86388f3964dc0cdb75e548f45bea5a9147ac77cb2cb6446eb3fa513523f0b8d1",
+      "preservedFromPreviousProduction": false
+    },
+    {
+      "size": 32,
+      "source": "desktop-package/branding/application-icon-small/32.svg",
+      "sourceSha256": "a680c85a8e9b4104e11b63eb3dd0b34d22f2df90e50d63fc9b4549ef2a0790c6",
+      "pngSha256": "60dbac403cf2aec9c339e76dbe1495b247d24aef6c3671764f0325cacd078558",
+      "preservedFromPreviousProduction": false
+    },
+    {
+      "size": 40,
+      "source": "desktop-package/branding/application-icon-small/40.svg",
+      "sourceSha256": "d3ee2a0328c89408f4f15d1323424a2ee0b31483408de6ead3645fa26bca77f2",
+      "pngSha256": "def98c2267f5120dc9200ec4e9d4026d5ce874d9783b6c439f018cb87ce38528",
+      "preservedFromPreviousProduction": false
+    },
+    {
+      "size": 48,
+      "source": "desktop-package/branding/application-icon-small/48.svg",
+      "sourceSha256": "123f74929da899347101b6a10e486ca97b2abf4b94ac88df1f05cab8ec4950ff",
+      "pngSha256": "6cdcef00ff8e5c01e30426006df2f42c42b60dacbb165b57eca9db0545802639",
+      "preservedFromPreviousProduction": false
+    },
+    {
+      "size": 64,
+      "source": "desktop-package/branding/application-icon-small/64.svg",
+      "sourceSha256": "7cfb1cc0831e15aaff1ac8ab90e2aa6c6e32d6ef381f84522b9ed38a86367e71",
+      "pngSha256": "d85be6265af6cc3125fe9536c5069103c5ce596f7fc7509d5135cba1df23dac3",
+      "preservedFromPreviousProduction": false
+    },
+    {
+      "size": 128,
+      "source": "desktop-package/branding/application-icon.svg",
+      "sourceSha256": "214999ea9b2fa6ea5994380c2bb4e8665d590d9fde2554aef8209944f1dc1798",
+      "pngSha256": "94a9c56f5f1760033ba64351a9ee953521a5ccb1f29f9ca66a1325a8308ec799",
+      "preservedFromPreviousProduction": true
+    },
+    {
+      "size": 256,
+      "source": "desktop-package/branding/application-icon.svg",
+      "sourceSha256": "214999ea9b2fa6ea5994380c2bb4e8665d590d9fde2554aef8209944f1dc1798",
+      "pngSha256": "f90af2549920f20e0b22e5cee394e6f1b20e77326801e3420ee19627578d0cba",
+      "preservedFromPreviousProduction": true
+    }
+  ]
+}

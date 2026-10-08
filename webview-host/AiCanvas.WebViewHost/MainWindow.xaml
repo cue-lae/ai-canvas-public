@@ -148,16 +148,16 @@
               Background="#FFFFFF"
               Panel.ZIndex="200">
             <Image x:Name="LoadingLogo"
-                   Width="64"
-                   Height="64"
+                   Width="88"
+                   Height="88"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    Opacity="0.78"
                    RenderOptions.BitmapScalingMode="HighQuality">
                 <Image.RenderTransform>
                     <ScaleTransform x:Name="LoadingLogoScale"
-                                    CenterX="32"
-                                    CenterY="32"
+                                    CenterX="44"
+                                    CenterY="44"
                                     ScaleX="0.94"
                                     ScaleY="0.94" />
                 </Image.RenderTransform>

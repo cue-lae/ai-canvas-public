@@ -23,8 +23,8 @@ const sourceApproval = JSON.parse(await readFile(join(root, 'desktop-package/acc
 if (sourceApproval.releaseVersion !== release.version) throw new Error('Approved source version mismatch');
 const acceptedSources = await verifyAcceptedSources(root, sourceApproval);
 const documentOpenAssets = {
-  'webview-host/AiCanvas.WebViewHost/Assets/AI-Canvas-Document-A.ico': '82ea5aef1c605588e62891deb440fa3848a5957047e87f70fc178e23aff5ad88',
-  'webview-host/AiCanvas.WebViewHost/Assets/AI-Canvas-Document-A.svg': '4fdf103c27bd1726f0634de1278247b50c7bf8ef2df67a1b8ea572d69aef6cbb',
+  'webview-host/AiCanvas.WebViewHost/Assets/AI-Canvas-Document-A.ico': '74b43c1b8e9bb14e04489296c28a75eb7a2f268ecce64d103199cf663097b31e',
+  'webview-host/AiCanvas.WebViewHost/Assets/AI-Canvas-Document-A.svg': '6932d2433e3a0919319dd765ae076d5c787e5cbc933cf711be86ad6defbe990e',
 };
 const documentOpenSources = {
   'webview-host/AiCanvas.WebViewHost/DocumentOpenRequest.cs': acceptedSources['webview-host/AiCanvas.WebViewHost/DocumentOpenRequest.cs'],

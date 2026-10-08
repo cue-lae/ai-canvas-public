@@ -56,7 +56,9 @@ if ($xaml -match 'x:Name="LoadingOverlay"[\s\S]*Grid.RowSpan="2"') { throw 'Load
 if ($xaml -notmatch 'x:Name="LoadingLogo"') { throw 'Loading logo is missing.' }
 if ($xaml -notmatch 'Background="#FFFFFF"') { throw 'Loading overlay must be pure white.' }
 if ($xaml -notmatch '<Grid x:Name="ChromeRoot" Background="\{Binding Background, ElementName=TitleBar\}">') { throw 'Native resize gutter must follow the titlebar theme.' }
-if ($code -notmatch 'AI-Canvas-Logo-Black-AC-V1\.ico') { throw 'Loading logo asset is missing.' }
+if ($code -notmatch 'component/Assets/AI-Canvas-Startup-Logo-Black-AC\.ico') { throw 'Independent transparent startup logo URI is missing.' }
+if ($projectFile -notmatch '<Resource Include="Assets\\AI-Canvas-Startup-Logo-Black-AC\.ico" />') { throw 'Independent startup logo resource is missing.' }
+if (-not (Test-Path (Join-Path $project 'Assets\AI-Canvas-Startup-Logo-Black-AC.ico'))) { throw 'Transparent startup icon asset is missing.' }
 if ($code -notmatch 'OrderByDescending\(image => image.PixelWidth\)') { throw 'Loading logo must use its highest resolution frame.' }
 if ($xaml -notmatch 'RepeatBehavior="Forever"') { throw 'Loading breathing animation loop is missing.' }
 if ($xaml -notmatch 'AutoReverse="True"') { throw 'Loading breathing animation reverse is missing.' }

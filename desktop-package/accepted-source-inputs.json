@@ -1,6 +1,6 @@
 {
   "schema": "ai-canvas-accepted-sources-v1",
-  "releaseVersion": "1.0.4",
+  "releaseVersion": "1.0.5",
   "sources": [
     {
       "path": "desktop-package/tests/DocumentSessionTests/DocumentSessionTests.csproj",
@@ -660,7 +660,7 @@
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/AiCanvas.WebViewHost.csproj",
-      "sha256": "75ee91ac95c39b21fb2f225675e878ecf5a28deaacfc257703b8b348a749f13e"
+      "sha256": "42c635e4a6f8f1e16a2bf03a4c6d2cdc67836079aedb3f7cb079b370e01cabfb"
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/App.xaml",
@@ -676,15 +676,15 @@
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/Assets/AI-Canvas-Document-A.ico",
-      "sha256": "82ea5aef1c605588e62891deb440fa3848a5957047e87f70fc178e23aff5ad88"
+      "sha256": "74b43c1b8e9bb14e04489296c28a75eb7a2f268ecce64d103199cf663097b31e"
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/Assets/AI-Canvas-Document-A.svg",
-      "sha256": "4fdf103c27bd1726f0634de1278247b50c7bf8ef2df67a1b8ea572d69aef6cbb"
+      "sha256": "6932d2433e3a0919319dd765ae076d5c787e5cbc933cf711be86ad6defbe990e"
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/Assets/AI-Canvas-Logo-Black-AC-V1.ico",
-      "sha256": "5371ade1a03d48cbc2fe9ef437444346b8f0c5a4d1fcf1be0c39649584e85169"
+      "sha256": "b1ad15c707281e3ac17a8cf7965e7d5cbc45ddf9f564786f4766833833dcac23"
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/BridgeServiceController.cs",
@@ -776,11 +776,11 @@
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/MainWindow.xaml",
-      "sha256": "da359340aeee914297b9e671f3f0aaa48c967feaa5dd10119acdd172b0fca9fe"
+      "sha256": "4af68958facf848e79ed2ba34a189100d09e46ddf8501a94f74a873593df5b5b"
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/MainWindow.xaml.cs",
-      "sha256": "47f5e548b4916e7e5ee7eb9d926cf3b6566ee934f76a1ee24c12974ea77da1f4"
+      "sha256": "60d98b8c6792ed65c679c43833354378262b0e197f1391b03b9acd9e4539a0a9"
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/PackageWindowLifetime.cs",
@@ -804,8 +804,12 @@
     },
     {
       "path": "webview-host/tests/HostContract.Tests.ps1",
-      "sha256": "82412c04233a938144e9cce864928044f51da2ed3d1e9a21d396799b963ca1a7"
+      "sha256": "d797e8476db602224daf91904500d36506fdb40edf3eda0074039372df69aac3"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/Assets/AI-Canvas-Startup-Logo-Black-AC.ico",
+      "sha256": "7ec23b63d601a9c37f5d97293e1a19d3cd56d82d5039e14642de34ca0b60e638"
     }
   ],
-  "basis": "content-addressed public source snapshot; no private Git history required"
+  "basis": "Validated 1.0.5 logo update; runtime behavior retained; independent public history and exact source hashes"
 }

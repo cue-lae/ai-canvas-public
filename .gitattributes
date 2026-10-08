@@ -259,3 +259,10 @@
 /webview-host/tests/WindowCloseReentrancyTests/Program.cs -text
 /webview-host/tests/WindowCloseReentrancyTests/WindowCloseReentrancyTests.csproj -text
 /assets/installer-flow-preview.html -text
+
+# Preserve approved logo source bytes.
+/desktop-package/branding/ac-master.svg -text
+/desktop-package/branding/application-icon.svg -text
+/desktop-package/branding/application-icon-small/* -text
+/desktop-package/branding/application-icon-charcoal/* -text
+/webview-host/AiCanvas.WebViewHost/Assets/AI-Canvas-Startup-Logo-Black-AC.ico -text

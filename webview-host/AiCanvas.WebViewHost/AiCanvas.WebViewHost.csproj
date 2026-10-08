@@ -21,6 +21,7 @@
     <Compile Include="../../desktop-package/diagnostics/TimingTrace.cs" Link="TimingTrace.cs" />
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3912.50" />
     <Resource Include="Assets\AI-Canvas-Logo-Black-AC-V1.ico" />
+    <Resource Include="Assets\AI-Canvas-Startup-Logo-Black-AC.ico" />
     <Content Include="Assets\AI-Canvas-Document-A.ico" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <PropertyGroup Condition="'$(CanvasTimingDiagnostics)' == 'true'">
