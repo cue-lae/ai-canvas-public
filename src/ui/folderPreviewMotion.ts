@@ -6,12 +6,12 @@ export const FOLDER_PREVIEW_MOTION = {
 
 /** Owns only disposable animations on the existing preview DOM, never scene state. */
 export function createFolderPreviewAnimator() {
-  const running = new Map<HTMLElement, Animation | null>();
+  const running = new Map<HTMLElement | SVGElement, Animation | null>();
   let generation = 0;
   return {
     play(root: HTMLElement, closing: boolean, onClosed: () => void, reduced = false) {
       const current = ++generation;
-      const nodes = Array.from(root.querySelectorAll<HTMLElement>("[data-folder-motion]"));
+      const nodes = Array.from(root.querySelectorAll<HTMLElement | SVGElement>("[data-folder-motion]"));
       for (const [node, animation] of running) {
         if (!nodes.includes(node)) {
           animation?.cancel();
@@ -21,6 +21,7 @@ export function createFolderPreviewAnimator() {
         }
       }
       const finished: Promise<unknown>[] = [];
+      const startTime = document.timeline?.currentTime;
       for (const node of nodes) {
         const existing = running.has(node);
         const style = getComputedStyle(node);
@@ -42,6 +43,7 @@ export function createFolderPreviewAnimator() {
           easing: closing ? FOLDER_PREVIEW_MOTION.closeEasing : FOLDER_PREVIEW_MOTION.openEasing,
           fill: "backwards",
         });
+        if (typeof startTime === "number") animation.startTime = startTime;
         running.set(node, animation);
         finished.push(animation.finished.catch(() => undefined));
       }

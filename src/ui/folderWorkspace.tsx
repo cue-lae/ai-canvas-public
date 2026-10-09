@@ -747,7 +747,7 @@ export const FolderWorkspace = ({
       animatorRef.current?.dispose();
       return;
     }
-    animatorRef.current?.play(root, previewClosing, () => onPreviewClosedRef.current?.(),
+    animatorRef.current?.play(root.closest<HTMLElement>(".canvas-panel") ?? root, previewClosing, () => onPreviewClosedRef.current?.(),
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false);
   }, [navigation.layer, navigation.selectedFolderId, previewClosing, previewGeometryKey]);
 

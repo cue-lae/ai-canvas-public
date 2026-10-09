@@ -27,6 +27,20 @@ beforeEach(() => {
 });
 afterEach(() => { act(() => root.unmount()); host.remove(); vi.unstubAllGlobals(); });
 describe("Folder preview presentation", () => {
+  it("drives sibling selection overlays when reduced motion completes a preview", () => {
+    const panel = document.createElement("div"); panel.className = "canvas-panel";
+    document.body.append(panel); panel.append(host);
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    const attachment = document.createElementNS(svg.namespaceURI, "g") as SVGGElement;
+    attachment.dataset.folderMotion = "member";
+    attachment.style.setProperty("--folder-motion-closed-transform", "translate(-140px, 100px) scale(.42)");
+    svg.append(attachment); panel.append(svg);
+    render(); expect(attachment.style.opacity).toBe("1");
+    render({ previewClosing: true });
+    expect(attachment.style.opacity).toBe("0");
+    expect(attachment.style.transform).toBe("translate(-140px, 100px) scale(.42)");
+    document.body.append(host); panel.remove();
+  });
   it("keeps the cover layout origin fixed when handing off from preview to overview", () => {
     render({ previewCoverBounds: { x: 65, y: 190, width: 108, height: 135 } });
     const cover = host.querySelector<HTMLElement>(".folder-workspace-item")!;

@@ -219,6 +219,7 @@ import {
   BubbleCanvasOverlay,
   type BubbleCanvasViewport,
 } from "./ui/BubbleCanvasOverlay";
+import { resolveSelectionToolImageId } from "./ui/selectionToolTarget";
 import { SelectionCanvasOverlay } from "./ui/SelectionCanvasOverlay";
 import { QuickAnnotationOverlay } from "./ui/QuickAnnotationOverlay";
 import {
@@ -2321,9 +2322,16 @@ const App = () => {
     return ()=>{document.removeEventListener("copy",copy,true);document.removeEventListener("cut",cut,true);document.removeEventListener("paste",paste,true);};
   },[clipboardTarget,copyCanvasContent,pasteCanvasContent,showBusinessNotice]);
 
+  const selectionToolImageId = resolveSelectionToolImageId(
+    folderNavigation, selectedImageId, business.imageAssets,
+  );
   const beginAnnotationSelection = useCallback((selectionKind: SelectionKind, imageIdOverride?: string) => {
-    const imageId = imageIdOverride ?? selectedImageId;
-    if (!api || !imageId) {
+    const imageId = imageIdOverride ?? resolveSelectionToolImageId(
+      folderNavigationRef.current, selectedImageId, businessRef.current.imageAssets,
+    );
+    if (!api || !imageId || busy || folderNavigationRef.current.layer === "preview" ||
+      !api.getSceneElements().some((element) => !element.isDeleted && element.type === "image" &&
+        element.customData?.imageId === imageId)) {
       setStatus("请先选中一张图片，再创建标注选区。");
       return;
     }
@@ -2349,7 +2357,16 @@ const App = () => {
         ? "路径选区：逐点点击落锚点，点击首锚点闭合；按 Esc 取消。"
         : `${selectionKind === "rectangle" ? "矩形" : "椭圆"}选区：请在图片内拖出范围；按 Esc 取消。`,
     );
-  }, [api, applyCanvasMenuAction, selectedImageId, updateCanvasSelection]);
+  }, [api, applyCanvasMenuAction, busy, selectedImageId, updateCanvasSelection]);
+
+  useEffect(() => {
+    pendingRegionRef.current = null;
+    setActiveSelectionTool(null);
+    setActiveSelectionImageId(null);
+    setIsSelectionToolMenuOpen(false);
+    setSelectedQuickAnnotationId(null);
+  }, [folderNavigation.layer, folderNavigation.selectedFolderId,
+    folderNavigation.layer === "image" ? folderNavigation.imageId : null]);
 
   const chooseAnnotationSelection = useCallback(
     (selectionKind: SelectionKind) => {
@@ -3849,7 +3866,9 @@ const App = () => {
       scenePoints: readonly Readonly<{ x: number; y: number }>[],
     ) => {
       const pending = pendingRegionRef.current;
-      if (!api || !pending || pending.selectionKind !== kind) {
+      if (!api || !pending || pending.selectionKind !== kind ||
+        folderNavigationRef.current.layer === "preview" ||
+        (folderNavigationRef.current.layer === "image" && folderNavigationRef.current.imageId !== pending.imageId)) {
         return;
       }
       const points =
@@ -3946,6 +3965,7 @@ const App = () => {
         return;
       }
       setSelectedBubbleAnnotation(null);
+      setSelectedQuickAnnotationId(null);
       updateCanvasSelection(
         createCanvasSelection({ regionIds: [selection.regionId] }),
       );
@@ -4124,6 +4144,7 @@ const App = () => {
       edge: "top" | "right" | "bottom" | "left",
       point: Readonly<{ x: number; y: number }>,
       commit: boolean,
+      constrainToCircle: boolean,
     ) => {
       if (folderNavigationRef.current.layer === "preview") {
         return;
@@ -4146,6 +4167,9 @@ const App = () => {
         element as unknown as SelectionElementLike,
         edge,
         point,
+        constrainToCircle,
+        api.getSceneElements().find((candidate) => candidate.type === "image" &&
+          candidate.customData?.imageId === element.customData?.imageId),
       );
       const nextElement = newElementWith(element, frame);
       globalHistoryScenePreviewRef.current = !commit;
@@ -5300,7 +5324,7 @@ const App = () => {
     const motionFolder = folderWorkspaceItems.find(
       ({ folder }) => folder.id === folderPreviewMotionState.folderId,
     );
-    const sourceBounds = folderPreviewCoverBounds ?? motionFolder?.bounds;
+    const sourceBounds = motionFolder?.bounds;
     const panel = canvasPanelRef.current;
     if (!sourceBounds || !panel) return null;
     return {
@@ -7248,7 +7272,7 @@ const App = () => {
         activateCanvasTool("laser", "激光笔");
         return;
       case "selection-tool":
-        if (!selectedImageId) {
+        if (!selectionToolImageId) {
           setStatus("请先选择图片，再使用统一选区工具。");
           return;
         }
@@ -8124,7 +8148,7 @@ const App = () => {
     <div
       className={`selection-tool-picker ${isSelectionToolMenuOpen ? "is-open" : ""}`}
       onPointerEnter={() => {
-        if (selectedImageId && !busy) setIsSelectionToolMenuOpen(true);
+        if (selectionToolImageId && !busy) setIsSelectionToolMenuOpen(true);
       }}
       onPointerLeave={() => setIsSelectionToolMenuOpen(false)}
       onBlur={(event) => {
@@ -8163,7 +8187,7 @@ const App = () => {
         aria-haspopup="menu"
         aria-expanded={isSelectionToolMenuOpen}
         title={`选区（最近使用：${selectionToolLabel}）`}
-        disabled={!selectedImageId || busy}
+        disabled={!selectionToolImageId || busy}
         onClick={() => setIsSelectionToolMenuOpen(true)}
       >
         <CanvasToolIcon name={selectionToolIcon} />
@@ -8994,6 +9018,8 @@ const App = () => {
             onAnchorChange={handleBubbleAnchorChange}
           />
           <SelectionCanvasOverlay
+            readOnly={folderNavigation.layer === "preview"}
+            interactionDisabled={isQuickAnnotationToolActive}
             elements={visibleOverlayElements}
             selectedRegionIds={new Set(canvasSelection.regionIds)}
             highlightedRegionIds={boundRegionIds}
@@ -9036,7 +9062,7 @@ const App = () => {
               isQuickAnnotationToolActive &&
               folderNavigation.layer !== "preview"
             }
-            disabled={!api || busy}
+            disabled={!api || busy || Boolean(activeSelectionTool)}
             selectedId={selectedQuickAnnotationId}
             viewport={canvasViewport}
             onCreate={handleQuickAnnotationCreate}

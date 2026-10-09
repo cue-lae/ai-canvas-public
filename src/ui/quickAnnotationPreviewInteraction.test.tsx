@@ -76,7 +76,7 @@ describe("quick annotation read-only preview", () => {
     expect(host.querySelector(".quick-annotation-overlay__connector")).not.toBeNull();
     expect(props.annotations[0].labelAnchor).toEqual({ x: -0.3, y: 1.1 });
   });
-  it("uses the owning image origin and stagger for every annotation part", () => {
+  it("registers every annotation part with the owning image animation", () => {
     render({ readOnly: true, previewMotion: { sourceRect: { left: 20, top: 50 }, imageIds: new Set(["other", "image-a"]), targets: new Map([["image-a", { left: 100, top: 100, width: 200, height: 100 }]]) } });
     const parts = host.querySelectorAll<HTMLElement>(".quick-annotation-preview-motion");
     expect(parts.length).toBe(3);
@@ -85,8 +85,10 @@ describe("quick annotation read-only preview", () => {
     expect(host.querySelector(".quick-annotation-overlay__preview-marker-motion")?.className)
       .toContain("quick-annotation-preview-motion");
     parts.forEach((part) => {
-      expect(part.style.getPropertyValue("--folder-motion-start-dx")).toBe("-80px");
-      expect(part.style.animationDelay).toBe("35ms");
+      expect(part.style.getPropertyValue("--folder-motion-closed-transform")).toBe("translate(-80px, -50px) scale(.42)");
+      expect(part.dataset.folderMotion).toBe("member");
+      expect(part.dataset.folderMotionIndex).toBe("1");
+      expect(part.style.animationDelay).toBe("");
     });
   });
 });

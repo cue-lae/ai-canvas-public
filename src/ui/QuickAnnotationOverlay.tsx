@@ -19,6 +19,7 @@ import type {
   QuickAnnotationRecord,
 } from "../domain/types";
 import type { SelectionCanvasViewport } from "./SelectionCanvasOverlay";
+import { folderPreviewAttachmentAttributes, folderPreviewAttachmentStyle } from "./folderPreviewAttachment";
 import { resizeQuickAnnotationBounds, withQuickAnnotationBounds } from "./quickAnnotations";
 import { quickAnnotationPreviewLabelFits } from "./quickAnnotationPreview";
 import { resolveQuickAnnotationConnector, type ConnectorSide } from "./quickAnnotationConnector";
@@ -857,12 +858,7 @@ export const QuickAnnotationOverlay = ({
   const previewMotionStyleFor = (imageId: string, image: ImageElement) => {
     if (!previewMotion?.imageIds.has(imageId)) return undefined;
     const point = sceneToPanel({ x: image.x, y: image.y }, viewport, panelBounds);
-    return {
-      transformOrigin: `${point.x}px ${point.y}px`,
-      animationDelay: `${[...previewMotion.imageIds].indexOf(imageId) * 35}ms`,
-      "--folder-motion-start-dx": `${previewMotion.sourceRect.left - point.x}px`,
-      "--folder-motion-start-dy": `${previewMotion.sourceRect.top - point.y}px`,
-    } as CSSProperties;
+    return folderPreviewAttachmentStyle(previewMotion, imageId, { left: point.x, top: point.y });
   };
 
   const previewLabelIsInsideImage = (annotation: QuickAnnotationRecord, image: ImageElement) => {
@@ -934,11 +930,136 @@ export const QuickAnnotationOverlay = ({
       )
     : null;
 
+  // Stable keyed wrappers retain capture and editing nodes while only z-index changes.
+  const renderAnnotationRange = (entry: (typeof renderedAnnotations)[number]) => {
+    const rangeAnnotations = [entry];
+    return (<>
+        {rangeAnnotations.map(([annotation, image]) => {
+          if (readOnly) return null;
+          const anchor = sceneToPanel(
+            normalizedToScene(annotation.anchor, image),
+            viewport,
+            panelBounds,
+          );
+          const offset = defaultLabelOffset(annotation.mode, annotation.anchor, annotation.rectangle, anchor.x);
+          const labelPoint = annotation.labelAnchor
+            ? sceneToPanel(normalizedToScene(annotation.labelAnchor, image), viewport, panelBounds)
+            : { x: anchor.x + offset.x, y: anchor.y + offset.y };
+          return (
+            <path
+              key={`connector-${annotation.id}`}
+              className={`quick-annotation-overlay__connector${previewMotion?.imageIds.has(annotation.imageId) ? " quick-annotation-preview-motion" : ""}`}
+              style={previewMotionStyleFor(annotation.imageId, image)}
+              {...folderPreviewAttachmentAttributes(previewMotion, annotation.imageId)}
+              d={connectorLayouts.get(annotation.id)?.path ?? connectorPath(anchor, labelPoint)}
+            />
+          );
+        })}
+        {rangeAnnotations.map(([annotation, image]) => {
+          const anchor = sceneToPanel(normalizedToScene(annotation.anchor, image), viewport, panelBounds);
+          return (
+            <g key={`anchor-${annotation.id}`}
+              className={previewMotion?.imageIds.has(annotation.imageId) ? "quick-annotation-preview-motion" : undefined}
+              style={previewMotionStyleFor(annotation.imageId, image)}
+              {...folderPreviewAttachmentAttributes(previewMotion, annotation.imageId)}>
+              {!readOnly && annotation.mode === "point" ? (
+                <g className="quick-annotation-overlay__anchor-target" aria-hidden="true">
+                  <circle cx={anchor.x} cy={anchor.y} r="5" />
+                </g>
+              ) : null}
+              {!readOnly ? (
+                <circle className="quick-annotation-overlay__anchor" cx={anchor.x} cy={anchor.y} r={annotation.mode === "point" ? 2 : 3} />
+              ) : null}
+              {annotation.mode === "point" && !readOnly ? (
+                <circle className="quick-annotation-overlay__point-hit" cx={anchor.x} cy={anchor.y} r="9"
+                  aria-label={`移动快速标注 Q${annotation.ordinal} 定位点`}
+                  onPointerDown={(event) => startMove(event, annotation)}
+                  onPointerMove={updateMove} onPointerUp={finishMove} onPointerCancel={cancelMove} />
+              ) : null}
+            </g>
+          );
+        })}
+        {rangeAnnotations.map(([annotation, image]) => {
+          if (annotation.mode !== "rectangle" || !annotation.rectangle) return null;
+          const rectangle = annotation.rectangle;
+          const corners = [
+            { x: rectangle.x, y: rectangle.y },
+            { x: rectangle.x + rectangle.width, y: rectangle.y },
+            { x: rectangle.x + rectangle.width, y: rectangle.y + rectangle.height },
+            { x: rectangle.x, y: rectangle.y + rectangle.height },
+          ].map((point) =>
+            sceneToPanel(normalizedToScene(point, image), viewport, panelBounds),
+          );
+          const outline = `${corners.map((point, index) => `${index ? "L" : "M"} ${point.x} ${point.y}`).join(" ")} Z`;
+          return (
+            <g key={`rect-${annotation.id}`}
+              className={previewMotion?.imageIds.has(annotation.imageId) ? "quick-annotation-preview-motion" : undefined}
+              style={previewMotionStyleFor(annotation.imageId, image)}
+              {...folderPreviewAttachmentAttributes(previewMotion, annotation.imageId)}>
+            <path
+              className={`quick-annotation-overlay__rectangle${!readOnly && selectedId === annotation.id ? " is-selected" : ""}`}
+              d={outline}
+            />
+            {!readOnly && <>
+            <path className="quick-annotation-overlay__range-hit" d={outline}
+              aria-label={`移动快速标注 Q${annotation.ordinal} 矩形范围`}
+              onPointerDown={(event) => startMove(event, annotation)}
+              onPointerMove={updateMove} onPointerUp={finishMove} onPointerCancel={cancelMove} />
+              <path className="quick-annotation-overlay__interior-hit" d={outline}
+                aria-label={`移动快速标注 Q${annotation.ordinal} 内部范围`}
+                onPointerDown={(event) => {
+                  if (readOnly || disabled) return;
+                  if (selectedId === annotation.id) {
+                    startMove(event, annotation);
+                  } else {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    setCursorPreview(null);
+                    onSelect(annotation.id);
+                  }
+                }}
+                onPointerMove={updateMove} onPointerUp={finishMove} onPointerCancel={cancelMove} />
+            {corners.map((corner, index) => {
+              const shortArm = (other: Point) => {
+                const length = Math.hypot(other.x - corner.x, other.y - corner.y);
+                const scale = length > 0 ? Math.min(16, 12 * viewport.zoom) / length : 0;
+                return { x: corner.x + (other.x - corner.x) * scale, y: corner.y + (other.y - corner.y) * scale };
+              };
+              const before = shortArm(corners[(index + 3) % 4]);
+              const after = shortArm(corners[(index + 1) % 4]);
+              return (
+              <g key={index} className="quick-annotation-overlay__corner">
+              {selectedId === annotation.id ? <path className="quick-annotation-overlay__corner-hint"
+                d={`M ${before.x} ${before.y} L ${corner.x} ${corner.y} L ${after.x} ${after.y}`} /> : null}
+              <circle className="quick-annotation-overlay__resize-hit"
+                cx={corner.x} cy={corner.y} r="9" tabIndex={-1}
+                style={{ cursor: index % 2 === 0 ? "nwse-resize" : "nesw-resize" }}
+                aria-label={`缩放快速标注 Q${annotation.ordinal} 角${index + 1}`}
+                onPointerDown={(event) => startResize(event, annotation, index)}
+                onPointerMove={updateResize} onPointerUp={finishResize} onPointerCancel={cancelResize}
+                onKeyDown={(event) => {
+                  if (event.key !== "Escape" || !resizeRef.current) return;
+                  event.preventDefault(); event.stopPropagation();
+                  const pointerId = resizeRef.current.pointerId;
+                  resizeRef.current = null; setResizePreview(null);
+                  if (event.currentTarget.hasPointerCapture(pointerId)) event.currentTarget.releasePointerCapture(pointerId);
+                }} />
+              </g>
+              );
+            })}
+            </>}
+            </g>
+          );
+        })}
+    </>);
+  };
+
   return (
     <div
       ref={rootRef}
       className={`quick-annotation-overlay${active && !readOnly ? " is-creating" : ""}${readOnly ? " is-readonly" : ""}`}
       style={{ "--quick-annotation-corner-scale": viewport.zoom } as CSSProperties}
+      data-interaction-disabled={disabled}
       aria-label="快速标注覆盖层"
     >
       <svg
@@ -995,127 +1116,25 @@ export const QuickAnnotationOverlay = ({
             />
           );
         })()}
-        {renderedAnnotations.map(([annotation, image]) => {
-          if (readOnly) return null;
-          const anchor = sceneToPanel(
-            normalizedToScene(annotation.anchor, image),
-            viewport,
-            panelBounds,
-          );
-          const offset = defaultLabelOffset(annotation.mode, annotation.anchor, annotation.rectangle, anchor.x);
-          const labelPoint = annotation.labelAnchor
-            ? sceneToPanel(normalizedToScene(annotation.labelAnchor, image), viewport, panelBounds)
-            : { x: anchor.x + offset.x, y: anchor.y + offset.y };
-          return (
-            <path
-              key={`connector-${annotation.id}`}
-              className={`quick-annotation-overlay__connector${previewMotion?.imageIds.has(annotation.imageId) ? " quick-annotation-preview-motion" : ""}`}
-              style={previewMotionStyleFor(annotation.imageId, image)}
-              d={connectorLayouts.get(annotation.id)?.path ?? connectorPath(anchor, labelPoint)}
-            />
-          );
-        })}
-        {renderedAnnotations.map(([annotation, image]) => {
-          const anchor = sceneToPanel(normalizedToScene(annotation.anchor, image), viewport, panelBounds);
-          return (
-            <g key={`anchor-${annotation.id}`}
-              className={previewMotion?.imageIds.has(annotation.imageId) ? "quick-annotation-preview-motion" : undefined}
-              style={previewMotionStyleFor(annotation.imageId, image)}>
-              {!readOnly && annotation.mode === "point" ? (
-                <g className="quick-annotation-overlay__anchor-target" aria-hidden="true">
-                  <circle cx={anchor.x} cy={anchor.y} r="5" />
-                </g>
-              ) : null}
-              {!readOnly ? (
-                <circle className="quick-annotation-overlay__anchor" cx={anchor.x} cy={anchor.y} r={annotation.mode === "point" ? 2 : 3} />
-              ) : null}
-              {annotation.mode === "point" && !readOnly ? (
-                <circle className="quick-annotation-overlay__point-hit" cx={anchor.x} cy={anchor.y} r="9"
-                  aria-label={`移动快速标注 Q${annotation.ordinal} 定位点`}
-                  onPointerDown={(event) => startMove(event, annotation)}
-                  onPointerMove={updateMove} onPointerUp={finishMove} onPointerCancel={cancelMove} />
-              ) : null}
-            </g>
-          );
-        })}
         {pendingRectangleCorners ? (
           <path
             className="quick-annotation-overlay__draft"
             d={`${pendingRectangleCorners.map((point, index) => `${index ? "L" : "M"} ${point.x} ${point.y}`).join(" ")} Z`}
           />
         ) : null}
-        {renderedAnnotations.map(([annotation, image]) => {
-          if (annotation.mode !== "rectangle" || !annotation.rectangle) return null;
-          const rectangle = annotation.rectangle;
-          const corners = [
-            { x: rectangle.x, y: rectangle.y },
-            { x: rectangle.x + rectangle.width, y: rectangle.y },
-            { x: rectangle.x + rectangle.width, y: rectangle.y + rectangle.height },
-            { x: rectangle.x, y: rectangle.y + rectangle.height },
-          ].map((point) =>
-            sceneToPanel(normalizedToScene(point, image), viewport, panelBounds),
-          );
-          const outline = `${corners.map((point, index) => `${index ? "L" : "M"} ${point.x} ${point.y}`).join(" ")} Z`;
-          return (
-            <g key={`rect-${annotation.id}`}
-              className={previewMotion?.imageIds.has(annotation.imageId) ? "quick-annotation-preview-motion" : undefined}
-              style={previewMotionStyleFor(annotation.imageId, image)}>
-            <path
-              className={`quick-annotation-overlay__rectangle${!readOnly && selectedId === annotation.id ? " is-selected" : ""}`}
-              d={outline}
-            />
-            {!readOnly && <>
-            <path className="quick-annotation-overlay__range-hit" d={outline}
-              aria-label={`移动快速标注 Q${annotation.ordinal} 矩形范围`}
-              onPointerDown={(event) => startMove(event, annotation)}
-              onPointerMove={updateMove} onPointerUp={finishMove} onPointerCancel={cancelMove} />
-              <path className="quick-annotation-overlay__interior-hit" d={outline}
-                aria-label={`移动快速标注 Q${annotation.ordinal} 内部范围`}
-                onPointerDown={(event) => {
-                  if (readOnly || disabled) return;
-                  if (selectedId === annotation.id) {
-                    startMove(event, annotation);
-                  } else {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    setCursorPreview(null);
-                    onSelect(annotation.id);
-                  }
-                }}
-                onPointerMove={updateMove} onPointerUp={finishMove} onPointerCancel={cancelMove} />
-            {corners.map((corner, index) => {
-              const shortArm = (other: Point) => {
-                const length = Math.hypot(other.x - corner.x, other.y - corner.y);
-                const scale = length > 0 ? Math.min(16, 12 * viewport.zoom) / length : 0;
-                return { x: corner.x + (other.x - corner.x) * scale, y: corner.y + (other.y - corner.y) * scale };
-              };
-              const before = shortArm(corners[(index + 3) % 4]);
-              const after = shortArm(corners[(index + 1) % 4]);
-              return (
-              <g key={index} className="quick-annotation-overlay__corner">
-              {selectedId === annotation.id ? <path className="quick-annotation-overlay__corner-hint"
-                d={`M ${before.x} ${before.y} L ${corner.x} ${corner.y} L ${after.x} ${after.y}`} /> : null}
-              <circle className="quick-annotation-overlay__resize-hit"
-                cx={corner.x} cy={corner.y} r="9" tabIndex={-1}
-                style={{ cursor: index % 2 === 0 ? "nwse-resize" : "nesw-resize" }}
-                aria-label={`缩放快速标注 Q${annotation.ordinal} 角${index + 1}`}
-                onPointerDown={(event) => startResize(event, annotation, index)}
-                onPointerMove={updateResize} onPointerUp={finishResize} onPointerCancel={cancelResize}
-                onKeyDown={(event) => {
-                  if (event.key !== "Escape" || !resizeRef.current) return;
-                  event.preventDefault(); event.stopPropagation();
-                  const pointerId = resizeRef.current.pointerId;
-                  resizeRef.current = null; setResizePreview(null);
-                  if (event.currentTarget.hasPointerCapture(pointerId)) event.currentTarget.releasePointerCapture(pointerId);
-                }} />
-              </g>
-              );
-            })}
-            </>}
-            </g>
-          );
-        })}
+
       </svg>
+
+      {renderedAnnotations.map((entry) => (
+        <svg key={entry[0].id}
+          className={`quick-annotation-overlay__svg quick-annotation-overlay__range-layer${
+            !readOnly && !active && !disabled && selectedId === entry[0].id ? " is-active" : ""
+          }`}
+          data-quick-range-layer={entry[0].id}
+          role="presentation">
+          {renderAnnotationRange(entry)}
+        </svg>
+      ))}
 
       {active && !readOnly && !pendingInput && !editingId && (draftBadgePoint || cursorPreview) ? (
         <div
@@ -1167,10 +1186,9 @@ export const QuickAnnotationOverlay = ({
                   top: target.top,
                   width: target.width,
                   height: target.height,
-                  "--folder-motion-start-dx": `${previewMotion.sourceRect.left - target.left}px`,
-                  "--folder-motion-start-dy": `${previewMotion.sourceRect.top - target.top}px`,
-                  animationDelay: `${[...previewMotion.imageIds].indexOf(annotation.imageId) * 35}ms`,
+                  ...folderPreviewAttachmentStyle(previewMotion, annotation.imageId, target, true),
                 } as CSSProperties}
+                {...folderPreviewAttachmentAttributes(previewMotion, annotation.imageId)}
                 aria-hidden="true"
               >
                 <span
@@ -1197,7 +1215,8 @@ export const QuickAnnotationOverlay = ({
         return (
           <div key={annotation.id}
             className={`quick-annotation-overlay__label-layer${previewMotion?.imageIds.has(annotation.imageId) ? " quick-annotation-preview-motion" : ""}`}
-            style={previewMotionStyleFor(annotation.imageId, image)}>
+            style={previewMotionStyleFor(annotation.imageId, image)}
+              {...folderPreviewAttachmentAttributes(previewMotion, annotation.imageId)}>
           <div
             ref={(element) => {
               if (element) labelElementsRef.current.set(annotation.id, element);

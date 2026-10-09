@@ -266,3 +266,11 @@
 /desktop-package/branding/application-icon-small/* -text
 /desktop-package/branding/application-icon-charcoal/* -text
 /webview-host/AiCanvas.WebViewHost/Assets/AI-Canvas-Startup-Logo-Black-AC.ico -text
+
+# Preserve accepted canvas interaction repair source bytes.
+/src/ui/circleSelection.test.ts -text
+/src/ui/circleSelectionInteraction.test.tsx -text
+/src/ui/folderPreviewAttachment.ts -text
+/src/ui/selectionOverlapInteraction.test.tsx -text
+/src/ui/selectionToolTarget.test.ts -text
+/src/ui/selectionToolTarget.ts -text

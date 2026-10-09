@@ -344,15 +344,50 @@ export const replaceSelectionLocalPoint = (
   return next;
 };
 
+/** A scene-aligned square, limited by all four corners in the image's rotated frame. */
+export const circleCreationEndPoint = (start: Point, end: Point, image: RectTransform): Point => {
+  const sx = end.x < start.x ? -1 : 1;
+  const sy = end.y < start.y ? -1 : 1;
+  const origin = scenePointToLocal(start, image);
+  let side = Math.max(Math.abs(end.x - start.x), Math.abs(end.y - start.y));
+  for (const [dx, dy] of [[sx, 0], [0, sy], [sx, sy]]) {
+    const local = scenePointToLocal({ x: start.x + dx, y: start.y + dy }, image);
+    for (const [position, delta, extent] of [
+      [origin.x, local.x - origin.x, image.width],
+      [origin.y, local.y - origin.y, image.height],
+    ]) {
+      if (delta > 1e-9) side = Math.min(side, (extent - position) / delta);
+      if (delta < -1e-9) side = Math.min(side, -position / delta);
+    }
+  }
+  side = Math.max(0, side);
+  return { x: start.x + sx * side, y: start.y + sy * side };
+};
+
 export const ellipseFrameForHandle = (
   element: SelectionElementLike,
   edge: "top" | "right" | "bottom" | "left",
   scenePoint: Point,
+  constrainToCircle = false,
+  image?: RectTransform,
 ): Pick<SelectionElementLike, "x" | "y" | "width" | "height"> => {
   const local = scenePointToSelectionLocal(scenePoint, element);
   const centerX = element.width / 2;
   const centerY = element.height / 2;
   const minRadius = 4;
+  if (constrainToCircle) {
+    const requested = Math.abs(edge === "top" || edge === "bottom"
+      ? local.y - centerY : local.x - centerX);
+    const center = { x: element.x + centerX, y: element.y + centerY };
+    const imageCenter = image ? scenePointToLocal(center, image) : null;
+    const maxRadius = image && imageCenter
+      ? Math.max(0, Math.min(imageCenter.x, image.width - imageCenter.x,
+          imageCenter.y, image.height - imageCenter.y))
+      : Number.POSITIVE_INFINITY;
+    if (maxRadius === 0) return { x: element.x, y: element.y, width: element.width, height: element.height };
+    const radius = Math.min(Math.max(minRadius, requested), maxRadius);
+    return { x: center.x - radius, y: center.y - radius, width: radius * 2, height: radius * 2 };
+  }
   if (edge === "top" || edge === "bottom") {
     const height = Math.max(minRadius * 2, Math.abs(local.y - centerY) * 2);
     return {

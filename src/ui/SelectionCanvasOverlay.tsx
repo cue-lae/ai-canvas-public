@@ -20,6 +20,7 @@ import {
   selectHighestScreenPoint,
 } from "./selectionBindingBadge";
 import { selectionOrdinalBadgeLayout } from "./selectionOrdinalBadge";
+import { folderPreviewAttachmentAttributes, folderPreviewAttachmentStyle, type FolderPreviewAttachmentMotion } from "./folderPreviewAttachment";
 import { releaseSelectionToolFocus } from "./selectionToolFocus";
 import { removeLastSelectionPathAnchor } from "./selectionPathDraft";
 import {
@@ -29,6 +30,7 @@ import {
 } from "./selectionOcclusion";
 import {
   clampScenePointToElementBounds,
+  circleCreationEndPoint,
   ellipseHandleScenePoints,
   getSelectionElements,
   isScenePointInsideElementBounds,
@@ -57,13 +59,12 @@ interface SelectionCanvasOverlayProps {
   >;
   regionNumbers?: ReadonlyMap<string, number>;
   activeDescriptionId?: string | null;
+  readOnly?: boolean;
+  interactionDisabled?: boolean;
   creationTool: SelectionKind | null;
   creationImageId: string | null;
   viewport: SelectionCanvasViewport;
-  previewMotion?: Readonly<{
-    sourceRect: Readonly<{ left: number; top: number }>;
-    imageIds: ReadonlySet<string>;
-  }> | null;
+  previewMotion?: FolderPreviewAttachmentMotion | null;
   maxHandleDiameterPx?: number;
   onCreateSelection: (
     kind: SelectionKind,
@@ -91,6 +92,7 @@ interface SelectionCanvasOverlayProps {
     edge: "top" | "right" | "bottom" | "left",
     point: Readonly<{ x: number; y: number }>,
     commit: boolean,
+    constrainToCircle: boolean,
   ) => void;
   onActivateDescription?: (descriptionId: string) => void;
 }
@@ -113,6 +115,7 @@ interface CreationDrag {
   kind: "rectangle" | "ellipse";
   start: ScenePoint;
   current: ScenePoint;
+  rawCurrent?: ScenePoint;
 }
 
 const coordinateState = (viewport: SelectionCanvasViewport) => ({
@@ -194,6 +197,8 @@ export const SelectionCanvasOverlay = ({
   regionBindings = new Map(),
   regionNumbers = new Map(),
   activeDescriptionId = null,
+  readOnly = false,
+  interactionDisabled = false,
   creationTool,
   creationImageId,
   viewport,
@@ -240,6 +245,31 @@ export const SelectionCanvasOverlay = ({
   const creationImage = creationImageId
     ? imageById.get(creationImageId) ?? null
     : null;
+
+  useEffect(() => {
+    const updateShift = (event: KeyboardEvent) => {
+      if (event.key !== "Shift" || event.repeat) return;
+      const constrained = event.type === "keydown";
+      const drag = draggingRef.current;
+      if (drag?.mode === "ellipse" && drag.edge) {
+        onEllipseChange(drag.regionId, drag.edge, drag.lastScenePoint, false, constrained);
+      }
+      const creation = creationDragRef.current;
+      if (creation?.kind === "ellipse" && creationImage) {
+        const point = creation.rawCurrent ?? creation.current;
+        const next = { ...creation, current: constrained
+          ? circleCreationEndPoint(creation.start, point, creationImage) : point };
+        creationDragRef.current = next;
+        setBoxDraft(next);
+      }
+    };
+    window.addEventListener("keydown", updateShift);
+    window.addEventListener("keyup", updateShift);
+    return () => {
+      window.removeEventListener("keydown", updateShift);
+      window.removeEventListener("keyup", updateShift);
+    };
+  }, [creationImage, onEllipseChange]);
 
   useLayoutEffect(() => {
     const root = rootRef.current;
@@ -355,7 +385,8 @@ export const SelectionCanvasOverlay = ({
         drag.constrainToRectangle === true,
       );
     } else if (drag.mode === "ellipse" && drag.edge) {
-      onEllipseChange(drag.regionId, drag.edge, point, commit);
+      drag.lastScenePoint = point;
+      onEllipseChange(drag.regionId, drag.edge, point, commit, event.shiftKey);
     }
     if (commit) {
       draggingRef.current = null;
@@ -433,6 +464,7 @@ export const SelectionCanvasOverlay = ({
   };
 
   const handleOverlayPointerDown = (event: ReactPointerEvent<SVGSVGElement>) => {
+    if (readOnly || interactionDisabled) return;
     if (creationTool) {
       handleCreationPointerDown(event);
       return;
@@ -495,7 +527,8 @@ export const SelectionCanvasOverlay = ({
     if (!drag || drag.pointerId !== event.pointerId) {
       return;
     }
-    const next = { ...drag, current: point };
+    const next = { ...drag, rawCurrent: point, current: drag.kind === "ellipse" && event.shiftKey
+      ? circleCreationEndPoint(drag.start, point, creationImage) : point };
     creationDragRef.current = next;
     setBoxDraft(next);
   };
@@ -505,9 +538,11 @@ export const SelectionCanvasOverlay = ({
     if (!drag || drag.pointerId !== event.pointerId) {
       return;
     }
-    const current = creationImage
+    const rawCurrent = creationImage
       ? clampScenePointToElementBounds(pointerToScene(event), creationImage)
       : drag.current;
+    const current = drag.kind === "ellipse" && event.shiftKey && creationImage
+      ? circleCreationEndPoint(drag.start, rawCurrent, creationImage) : rawCurrent;
     creationDragRef.current = null;
     setBoxDraft(null);
     if (event.currentTarget.hasPointerCapture(event.pointerId)) {
@@ -655,9 +690,11 @@ export const SelectionCanvasOverlay = ({
       data-dragging-selection={isDraggingSelection ? "true" : "false"}
       ref={rootRef}
       data-creation-tool={creationTool ?? "none"}
+      data-read-only={readOnly}
+      data-interaction-disabled={interactionDisabled}
     >
       <svg
-        className="selection-canvas-overlay__svg"
+        className="selection-canvas-overlay__svg selection-canvas-overlay__draft-layer"
         width="100%"
         height="100%"
         role="presentation"
@@ -678,27 +715,59 @@ export const SelectionCanvasOverlay = ({
             : cancelCreationDrag(event)
         }
       >
-        {selectionOcclusionMasks.size > 0 ? (
-          <defs>
-            {[...selectionOcclusionMasks.values()].map((mask) => (
-              <mask
-                key={mask.id}
-                id={mask.id}
-                maskUnits="userSpaceOnUse"
-                x="0"
-                y="0"
-                width="100%"
-                height="100%"
-              >
-                <rect width="100%" height="100%" fill="black" />
-                <path d={mask.selectionPath} fill="white" />
-                {mask.coverPaths.map((path, index) => (
-                  <path key={`${mask.id}-cover-${index}`} d={path} fill="black" />
-                ))}
-              </mask>
+
+
+        {creationTool === "path" && panelPathDraft.length > 0 && (
+          <g className="selection-canvas-overlay__draft">
+            <path
+              className="selection-canvas-overlay__draft-shape"
+              d={pathData(
+                panelDraftCursor
+                  ? [...panelPathDraft, panelDraftCursor]
+                  : panelPathDraft,
+                false,
+              )}
+            />
+            {pathDraft.length >= 3 && panelPathDraft[0] ? (
+              <circle
+                className="selection-canvas-overlay__draft-anchor-hit"
+                cx={panelPathDraft[0].x}
+                cy={panelPathDraft[0].y}
+                r={draftStartHitRadius}
+                onPointerDown={closePathDraft}
+              />
+            ) : null}
+            {panelPathDraft.map((point, index) => (
+              <circle
+                key={`draft-${index}`}
+                className={`selection-canvas-overlay__draft-anchor ${
+                  index === 0 && pathDraft.length >= 3 ? "is-closable" : ""
+                }`}
+                cx={point.x}
+                cy={point.y}
+                r={index === 0 ? draftStartAnchorRadius : draftAnchorRadius}
+                onPointerDown={index === 0 ? closePathDraft : undefined}
+              />
             ))}
-          </defs>
-        ) : null}
+          </g>
+        )}
+
+        {boxDraft?.kind === "rectangle" && (
+          <path
+            className="selection-canvas-overlay__draft-shape"
+            d={pathData(draftBoxPoints, true)}
+          />
+        )}
+        {boxDraft?.kind === "ellipse" && draftBoxPoints.length === 4 && (
+          <ellipse
+            className="selection-canvas-overlay__draft-shape"
+            cx={(draftBoxPoints[0].x + draftBoxPoints[2].x) / 2}
+            cy={(draftBoxPoints[0].y + draftBoxPoints[2].y) / 2}
+            rx={Math.abs(draftBoxPoints[2].x - draftBoxPoints[0].x) / 2}
+            ry={Math.abs(draftBoxPoints[2].y - draftBoxPoints[0].y) / 2}
+          />
+        )}
+      </svg>
         {selections.map((selection) => {
           const element = selection.element;
           const kind = selectionKindOf(element) as SelectionKind;
@@ -712,25 +781,9 @@ export const SelectionCanvasOverlay = ({
             sceneToPanel(point, viewport, panelBounds),
           );
           const previewMotionActive = previewMotion?.imageIds.has(selection.imageId) ?? false;
-          const previewTargetLeft = points.reduce(
-            (left, point) => Math.min(left, point.x),
-            Number.POSITIVE_INFINITY,
+          const previewMotionStyle = folderPreviewAttachmentStyle(
+            previewMotion, selection.imageId, { left: 0, top: 0 },
           );
-          const previewTargetTop = points.reduce(
-            (top, point) => Math.min(top, point.y),
-            Number.POSITIVE_INFINITY,
-          );
-          const previewMotionStyle =
-            previewMotionActive && previewMotion
-              ? ({
-                  "--folder-motion-start-dx": `${
-                    previewMotion.sourceRect.left - previewTargetLeft
-                  }px`,
-                  "--folder-motion-start-dy": `${
-                    previewMotion.sourceRect.top - previewTargetTop
-                  }px`,
-                } as CSSProperties)
-              : undefined;
           const center = sceneToPanel(
             ellipseCenter(element),
             viewport,
@@ -742,6 +795,29 @@ export const SelectionCanvasOverlay = ({
           );
 
           return (
+            <svg
+              key={selection.regionId}
+              className={`selection-canvas-overlay__svg selection-canvas-overlay__region-layer${
+                selected && !creationTool && !readOnly && !interactionDisabled ? " is-active" : ""
+              }`}
+              data-region-layer={selection.regionId}
+              width="100%" height="100%" role="presentation"
+              onPointerDown={handleOverlayPointerDown}
+              onPointerMove={(event) => updateSelectionDrag(event, false)}
+              onPointerUp={(event) => updateSelectionDrag(event, true)}
+              onPointerCancel={(event) => updateSelectionDrag(event, true)}
+            >
+              {occlusionMask ? (
+                <defs>
+                  <mask id={occlusionMask.id} maskUnits="userSpaceOnUse" x="0" y="0" width="100%" height="100%">
+                    <rect width="100%" height="100%" fill="black" />
+                    <path d={occlusionMask.selectionPath} fill="white" />
+                    {occlusionMask.coverPaths.map((path, index) => (
+                      <path key={`${occlusionMask.id}-cover-${index}`} d={path} fill="black" />
+                    ))}
+                  </mask>
+                </defs>
+              ) : null}
             <g
               key={selection.regionId}
               className={`selection-canvas-overlay__selection ${
@@ -750,6 +826,7 @@ export const SelectionCanvasOverlay = ({
                 dragging ? "is-dragging" : ""
               } ${previewMotionActive ? "is-preview-motion" : ""}`}
               style={previewMotionStyle}
+              {...folderPreviewAttachmentAttributes(previewMotion, selection.imageId)}
               data-selection-kind={kind}
               data-canvas-object="region"
               data-region-id={selection.regionId}
@@ -826,60 +903,9 @@ export const SelectionCanvasOverlay = ({
                       />
                     )))}
             </g>
+            </svg>
           );
         })}
-
-        {creationTool === "path" && panelPathDraft.length > 0 && (
-          <g className="selection-canvas-overlay__draft">
-            <path
-              className="selection-canvas-overlay__draft-shape"
-              d={pathData(
-                panelDraftCursor
-                  ? [...panelPathDraft, panelDraftCursor]
-                  : panelPathDraft,
-                false,
-              )}
-            />
-            {pathDraft.length >= 3 && panelPathDraft[0] ? (
-              <circle
-                className="selection-canvas-overlay__draft-anchor-hit"
-                cx={panelPathDraft[0].x}
-                cy={panelPathDraft[0].y}
-                r={draftStartHitRadius}
-                onPointerDown={closePathDraft}
-              />
-            ) : null}
-            {panelPathDraft.map((point, index) => (
-              <circle
-                key={`draft-${index}`}
-                className={`selection-canvas-overlay__draft-anchor ${
-                  index === 0 && pathDraft.length >= 3 ? "is-closable" : ""
-                }`}
-                cx={point.x}
-                cy={point.y}
-                r={index === 0 ? draftStartAnchorRadius : draftAnchorRadius}
-                onPointerDown={index === 0 ? closePathDraft : undefined}
-              />
-            ))}
-          </g>
-        )}
-
-        {boxDraft?.kind === "rectangle" && (
-          <path
-            className="selection-canvas-overlay__draft-shape"
-            d={pathData(draftBoxPoints, true)}
-          />
-        )}
-        {boxDraft?.kind === "ellipse" && draftBoxPoints.length === 4 && (
-          <ellipse
-            className="selection-canvas-overlay__draft-shape"
-            cx={(draftBoxPoints[0].x + draftBoxPoints[2].x) / 2}
-            cy={(draftBoxPoints[0].y + draftBoxPoints[2].y) / 2}
-            rx={Math.abs(draftBoxPoints[2].x - draftBoxPoints[0].x) / 2}
-            ry={Math.abs(draftBoxPoints[2].y - draftBoxPoints[0].y) / 2}
-          />
-        )}
-      </svg>
       <svg
         className="selection-canvas-overlay__binding-layer"
         width="100%"
@@ -917,17 +943,9 @@ export const SelectionCanvasOverlay = ({
             });
             const previewMotionActive =
               previewMotion?.imageIds.has(row.imageId) ?? false;
-            const previewMotionValue = previewMotion;
-            const previewMotionStyle = previewMotionActive && previewMotionValue
-              ? ({
-                  "--folder-motion-start-dx": `${
-                    previewMotionValue.sourceRect.left - layout.left
-                  }px`,
-                  "--folder-motion-start-dy": `${
-                    previewMotionValue.sourceRect.top - layout.top
-                  }px`,
-                } as CSSProperties)
-              : undefined;
+            const previewMotionStyle = folderPreviewAttachmentStyle(
+              previewMotion, row.imageId, { left: 0, top: 0 },
+            );
             const badgeOcclusionMask = selectionOcclusionMasks.get(row.regionId);
             return (
               <g
@@ -936,6 +954,7 @@ export const SelectionCanvasOverlay = ({
                   previewMotionActive ? " is-preview-motion" : ""
                 }`}
                 style={previewMotionStyle}
+                {...folderPreviewAttachmentAttributes(previewMotion, row.imageId)}
                 data-region-id={row.regionId}
                 aria-label={layout.segments.map((segment) => segment.text).join("｜")}
                 mask={
@@ -972,6 +991,7 @@ export const SelectionCanvasOverlay = ({
                   const isCurrent =
                     !isRegion && segment.id === activeDescriptionId;
                   const activate = () => {
+                    if (readOnly || interactionDisabled || creationTool) return;
                     if (isRegion) {
                       selectRegionFromBadge(row.regionId);
                     } else {
@@ -994,7 +1014,7 @@ export const SelectionCanvasOverlay = ({
                       data-selection-segment={isRegion ? "region" : "description"}
                       key={`${row.regionId}-${segment.kind}-${segment.id}`}
                       role="button"
-                      tabIndex={0}
+                      tabIndex={readOnly || interactionDisabled || creationTool ? -1 : 0}
                       aria-label={
                         isRegion
                           ? `选择${segment.text}`

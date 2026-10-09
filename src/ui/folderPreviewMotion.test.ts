@@ -32,6 +32,25 @@ const add = (index = 0, cover = false) => {
 const flush = async () => { await Promise.resolve(); await Promise.resolve(); await Promise.resolve(); };
 
 describe("Folder preview animation lifecycle", () => {
+  it("includes sibling SVG attachments in the same timing, reversal and close barrier", async () => {
+    const folder = document.createElement("div"); root.append(folder);
+    const image = add(2); folder.append(image);
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    const region = document.createElementNS(svg.namespaceURI, "g") as SVGGElement;
+    region.dataset.folderMotion = "member"; region.dataset.folderMotionIndex = "2";
+    region.style.setProperty("--folder-motion-closed-transform", image.style.getPropertyValue("--folder-motion-closed-transform"));
+    region.animate = HTMLElement.prototype.animate;
+    svg.append(region); root.append(svg);
+    const closed = vi.fn(); const animator = createFolderPreviewAnimator();
+    animator.play(root, false, closed);
+    expect(records).toHaveLength(2);
+    expect(records[0].frames).toEqual(records[1].frames);
+    expect(records[0].options).toEqual(records[1].options);
+    animator.play(root, true, closed);
+    records[2].finish(); await flush(); expect(closed).not.toHaveBeenCalled();
+    records[3].finish(); await flush(); expect(closed).toHaveBeenCalledTimes(1);
+    animator.dispose(); expect(region.style.transform).toBe("");
+  });
   it("uses accepted duration and bounded stagger", () => {
     add(0, true); add(0); add(2); add(100);
     createFolderPreviewAnimator().play(root, false, vi.fn());

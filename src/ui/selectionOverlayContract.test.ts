@@ -257,7 +257,7 @@ describe("Selection overlay presentation contract", () => {
     );
     expect(stylesSource).toContain("fill: transparent;");
     expect(stylesSource).toMatch(
-      /\.selection-canvas-overlay__binding-layer\s*\{[^}]*z-index:\s*33;[^}]*pointer-events:\s*none;/s,
+      /\.selection-canvas-overlay__binding-layer\s*\{[^}]*z-index:\s*34;[^}]*pointer-events:\s*none;/s,
     );
     expect(stylesSource).toMatch(
       /\.selection-canvas-overlay__svg\s*\{[^}]*z-index:\s*3;/s,

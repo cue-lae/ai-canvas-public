@@ -12,7 +12,7 @@
     },
     {
       "path": "src/App.tsx",
-      "sha256": "4ec4a1fe7140d59c04c689c54d7dc06c03973a369b3793db8a2ba03aba29afdf"
+      "sha256": "821d426335111e6d1d0649b1b683f003d717921b0f095fc1a3c3d8de9bd5271e"
     },
     {
       "path": "src/domain/annotationSelection.test.ts",
@@ -252,7 +252,7 @@
     },
     {
       "path": "src/styles.css",
-      "sha256": "b22557da7740b5ef9eecb83709e8d2d571f68cac17fe97f8961989f4399f6782"
+      "sha256": "3f7fceae275276bb32966880da11149fb30a510ce64439e4897118fcbb9b6d33"
     },
     {
       "path": "src/test/canvasClipboardFixture.ts",
@@ -283,52 +283,20 @@
       "sha256": "cba59c2ee776d4e6ed312b3da5f0fb5f3c1b911a60a06fbb2872e259e0c68419"
     },
     {
-      "path": "src/ui/CanvasContextMenu.test.tsx",
-      "sha256": "229755ab806e3d84539ee587269e76fd2fe4b992814b122d419a5438cf455a90"
-    },
-    {
-      "path": "src/ui/CanvasContextMenu.tsx",
-      "sha256": "02d204a8682ba5447422b51cfc330ebd9ab0daa174d62c096826a5090ebad848"
-    },
-    {
-      "path": "src/ui/CanvasToolIcon.tsx",
-      "sha256": "5bba695c9846273f83bd717ef762c019becbfc01f71f1feb3b6e8dbe96f768a1"
-    },
-    {
-      "path": "src/ui/DescriptionCanvasOverlay.tsx",
-      "sha256": "7c54d1095c3a46b2f1599e87c5bcef3a7479b39894c5d699892be57b3533088e"
-    },
-    {
-      "path": "src/ui/DescriptionCanvasOverlayAdapter.tsx",
-      "sha256": "1d66c9b1c1bf9061f78124e734ef877b636ed1a69b135eef51ee8d0edac00abd"
-    },
-    {
-      "path": "src/ui/DescriptionWorkspace.tsx",
-      "sha256": "c6334d9ae667a6128bafe4c19894fe6401a65c78ad17605f41f40f8ab396b4cd"
-    },
-    {
-      "path": "src/ui/ImageRotationFeedback.test.tsx",
-      "sha256": "0109aac7eb1001754610ec1396779c685730320d27f0c36525e9e02235ca4f43"
-    },
-    {
-      "path": "src/ui/ImageRotationFeedback.tsx",
-      "sha256": "0e1ac128271636e4db22a7bdb37073a98cc38a633411e4cc4ea98c179a2838a9"
-    },
-    {
-      "path": "src/ui/QuickAnnotationOverlay.tsx",
-      "sha256": "db78a1a7f47674568521ae6b9b7eb70ee89dba178034d99b1262d4b5e2ae2484"
-    },
-    {
-      "path": "src/ui/SelectionCanvasOverlay.tsx",
-      "sha256": "170901e9de1c8e0ae7d244413cb4ee3a1171b8f6a1676c820ec2120b4c66496f"
-    },
-    {
       "path": "src/ui/canvasCardShadowVisibility.test.ts",
       "sha256": "5fe30e86139d1e279eba9d6b4c502e2d3e64c633e12434037b89066f6b0ef4f3"
     },
     {
       "path": "src/ui/canvasCardShadowVisibility.ts",
       "sha256": "b71593c4ce4e532a159011e1d3a9e2698850a895eeb660b038689009c58c6705"
+    },
+    {
+      "path": "src/ui/CanvasContextMenu.test.tsx",
+      "sha256": "229755ab806e3d84539ee587269e76fd2fe4b992814b122d419a5438cf455a90"
+    },
+    {
+      "path": "src/ui/CanvasContextMenu.tsx",
+      "sha256": "02d204a8682ba5447422b51cfc330ebd9ab0daa174d62c096826a5090ebad848"
     },
     {
       "path": "src/ui/canvasContextMenuPolicy.test.ts",
@@ -431,6 +399,10 @@
       "sha256": "d08311487e5e44b29e871862198b1d13bdb6c439e937beb7b30a8ebafedb7077"
     },
     {
+      "path": "src/ui/CanvasToolIcon.tsx",
+      "sha256": "5bba695c9846273f83bd717ef762c019becbfc01f71f1feb3b6e8dbe96f768a1"
+    },
+    {
       "path": "src/ui/canvasWorkspaceContract.test.ts",
       "sha256": "5c2fca0fe7ae3307612fbfe83ecc0e4cc6f742e0147a6b975d73a31f06725abc"
     },
@@ -439,12 +411,28 @@
       "sha256": "2e0fded26f7c65a27a96fc8c33d5532710e7305c8813b45e40b5bd6a5358ccd7"
     },
     {
+      "path": "src/ui/circleSelection.test.ts",
+      "sha256": "ef6c2744ec9e1dcce5af5793d5a3884305dbaec2037746065407a66e2dd64326"
+    },
+    {
+      "path": "src/ui/circleSelectionInteraction.test.tsx",
+      "sha256": "57f2077e318c5839d771eca35cf0048b2b4bde1b57c2e8266dec421ba25a0d24"
+    },
+    {
       "path": "src/ui/contextInformationSelection.test.ts",
       "sha256": "1cea361eb869aa8515a0fc2bea6b0b1df0220b22b9a1fb8cb3feba9145b3631d"
     },
     {
       "path": "src/ui/contextInformationSelection.ts",
       "sha256": "2490b5366869811359dc8e73b34313b93c0a4054359b868e7e17442c7ba52bf4"
+    },
+    {
+      "path": "src/ui/DescriptionCanvasOverlay.tsx",
+      "sha256": "7c54d1095c3a46b2f1599e87c5bcef3a7479b39894c5d699892be57b3533088e"
+    },
+    {
+      "path": "src/ui/DescriptionCanvasOverlayAdapter.tsx",
+      "sha256": "1d66c9b1c1bf9061f78124e734ef877b636ed1a69b135eef51ee8d0edac00abd"
     },
     {
       "path": "src/ui/descriptionCanvasSelectionAdapter.test.ts",
@@ -495,6 +483,10 @@
       "sha256": "64c44fd8d1597686a7c1b22cf5db6904c81fe0b5b3a4f8b6feb69a375b325626"
     },
     {
+      "path": "src/ui/DescriptionWorkspace.tsx",
+      "sha256": "c6334d9ae667a6128bafe4c19894fe6401a65c78ad17605f41f40f8ab396b4cd"
+    },
+    {
       "path": "src/ui/descriptionWorkspaceInteraction.test.ts",
       "sha256": "4fd7dd8524515af7126272a921388ac1044252a594c79a6ba3b53c472fd4a57f"
     },
@@ -511,16 +503,20 @@
       "sha256": "16b87de770b3dea4e632a4c73880c2238e3c9f6f99d6c09ee6c40cbb8d05fe35"
     },
     {
+      "path": "src/ui/folderPreviewAttachment.ts",
+      "sha256": "59a074ede107c54bdff9aaf078ab5e643ef2f5510ed88f14ea39a87c844dc1bf"
+    },
+    {
       "path": "src/ui/folderPreviewMotion.test.ts",
-      "sha256": "fb92985cc239386c9fe8ad05720ea865203f8782018caf2e8ae916bacc7723a3"
+      "sha256": "16a1ac4c6d139a27f05bcfc73b7f60b73278a00542a7ccd1fb4fba5653041769"
     },
     {
       "path": "src/ui/folderPreviewMotion.ts",
-      "sha256": "513e98bba9402d40a5c42a340e10ad7647b0795b7968d83a64bad3d3883d9bcd"
+      "sha256": "57adbd66f8f1df5ada1c72b34a3a510915f4edccff8397b74009787809deef01"
     },
     {
       "path": "src/ui/folderPreviewPresentation.test.ts",
-      "sha256": "05350de3bef9139157668e9104cf5eae37396eb56d3a33ce32f81a85218b55e9"
+      "sha256": "14f84605f8a5144c913492032cee439a18b58b8ba5dd70dffe8f88d9bccf92f5"
     },
     {
       "path": "src/ui/folderWorkspace.test.tsx",
@@ -528,7 +524,7 @@
     },
     {
       "path": "src/ui/folderWorkspace.tsx",
-      "sha256": "49456cbff38bc7dd195744f0469d3372b0010de15968f274af79fd5074714f74"
+      "sha256": "162044c16a95f81607782392d934f26829dcd901fb7d603998e60a3f3bfc840c"
     },
     {
       "path": "src/ui/globalHistorySceneSync.test.ts",
@@ -537,6 +533,14 @@
     {
       "path": "src/ui/globalHistorySceneSync.ts",
       "sha256": "78b9390436b66fef95677cf1dde7dba2a3181ba3eac9b75f22cc2ed63c4adb64"
+    },
+    {
+      "path": "src/ui/ImageRotationFeedback.test.tsx",
+      "sha256": "0109aac7eb1001754610ec1396779c685730320d27f0c36525e9e02235ca4f43"
+    },
+    {
+      "path": "src/ui/ImageRotationFeedback.tsx",
+      "sha256": "0e1ac128271636e4db22a7bdb37073a98cc38a633411e4cc4ea98c179a2838a9"
     },
     {
       "path": "src/ui/importViewContract.test.ts",
@@ -559,6 +563,10 @@
       "sha256": "8fa8bc07b04957290c934b9e3c4427dbb7e7f2bc2b1882b36d03040998e13423"
     },
     {
+      "path": "src/ui/QuickAnnotationOverlay.tsx",
+      "sha256": "77d04e7efe2db65e3ac1a6e26449585109e4f3b9a674c83b17615fa28f92729d"
+    },
+    {
       "path": "src/ui/quickAnnotationPreview.test.ts",
       "sha256": "2a80bbab1b487bd1a56927637fc042814c5e9235d07c56e832a8f5e8e8586f99"
     },
@@ -568,11 +576,7 @@
     },
     {
       "path": "src/ui/quickAnnotationPreviewInteraction.test.tsx",
-      "sha256": "14315a4d061c2f34d5b999b7c987e00fc5898b4548dc25479e96b961f68777b1"
-    },
-    {
-      "path": "src/ui/quickAnnotationVisualInteraction.test.ts",
-      "sha256": "eb030911c5b1a2bd95489c23c3c90872845ed8c1ff4d721f8774073d6c9f27f5"
+      "sha256": "24409a556974b900d8a4684320760fba420a1d6687f317f39ad1aa12d7518d56"
     },
     {
       "path": "src/ui/quickAnnotations.test.ts",
@@ -581,6 +585,10 @@
     {
       "path": "src/ui/quickAnnotations.ts",
       "sha256": "2b2c22dc78c9bec8339f123c85f58f802f275d7656128835827c83f5715997be"
+    },
+    {
+      "path": "src/ui/quickAnnotationVisualInteraction.test.ts",
+      "sha256": "eb030911c5b1a2bd95489c23c3c90872845ed8c1ff4d721f8774073d6c9f27f5"
     },
     {
       "path": "src/ui/rotationFeedbackPresentation.test.ts",
@@ -599,12 +607,16 @@
       "sha256": "6895fdd7d8d8bda24aca67b2a6d3e5246ebedbfbebc69dd1dd19fca5966fe32f"
     },
     {
+      "path": "src/ui/SelectionCanvasOverlay.tsx",
+      "sha256": "5d88462c322c98cb1bc1198c107d3e42cd2246d66fc69d2304f8ec858fc842cd"
+    },
+    {
       "path": "src/ui/selectionGeometry.test.ts",
       "sha256": "30d14b1271ea0675c2edcd8f205f34c4952a68fb93481f2fbe3ca91bcf8c630c"
     },
     {
       "path": "src/ui/selectionGeometry.ts",
-      "sha256": "7901270014479eb75680ee337c282bc6b477e93b85b6b9a57a54bf9baa931f47"
+      "sha256": "5b22f58011aa8bc4247e1d668e3117cb9e8374c026958f2ea89fbc6bcb164784"
     },
     {
       "path": "src/ui/selectionOcclusion.test.ts",
@@ -632,7 +644,7 @@
     },
     {
       "path": "src/ui/selectionOverlayContract.test.ts",
-      "sha256": "85b3c010803b7f0527a6ee36787186037cf9041220c974c6f66c54cab4fb3040"
+      "sha256": "194ae436c4d90b294532f66ff9eba3bb9ed2b810aafe07e0dab1bd1f8ee97e32"
     },
     {
       "path": "src/ui/selectionPathDraft.test.ts",
@@ -649,6 +661,14 @@
     {
       "path": "src/ui/selectionToolFocus.ts",
       "sha256": "a8fcfc631afd6bb4a4ae476b052e9a79906e49e44119f606eb8ebd26d614e107"
+    },
+    {
+      "path": "src/ui/selectionToolTarget.test.ts",
+      "sha256": "b9b8ef005ef8217cb509b23193e6b4d0fafb50674493d220a84c0bd95369bf17"
+    },
+    {
+      "path": "src/ui/selectionToolTarget.ts",
+      "sha256": "81d1a24666b1286e0d25bcf30628a146b9253adc1080ff89123a343d4c70e833"
     },
     {
       "path": "src/ui/workbenchPreferences.test.ts",
@@ -685,6 +705,10 @@
     {
       "path": "webview-host/AiCanvas.WebViewHost/Assets/AI-Canvas-Logo-Black-AC-V1.ico",
       "sha256": "b1ad15c707281e3ac17a8cf7965e7d5cbc45ddf9f564786f4766833833dcac23"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/Assets/AI-Canvas-Startup-Logo-Black-AC.ico",
+      "sha256": "7ec23b63d601a9c37f5d97293e1a19d3cd56d82d5039e14642de34ca0b60e638"
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/BridgeServiceController.cs",
@@ -807,9 +831,9 @@
       "sha256": "d797e8476db602224daf91904500d36506fdb40edf3eda0074039372df69aac3"
     },
     {
-      "path": "webview-host/AiCanvas.WebViewHost/Assets/AI-Canvas-Startup-Logo-Black-AC.ico",
-      "sha256": "7ec23b63d601a9c37f5d97293e1a19d3cd56d82d5039e14642de34ca0b60e638"
+      "path": "src/ui/selectionOverlapInteraction.test.tsx",
+      "sha256": "ed0e2532b7cb7f8f0a5edd1b8d4ace45d3f854da47700c967821e91fb7bb538e"
     }
   ],
-  "basis": "Validated 1.0.5 logo update; runtime behavior retained; independent public history and exact source hashes"
+  "basis": "Validated circle selection constraints, synchronized folder preview attachments, focused-image tool availability, and transient overlap priority; user acceptance completed; independent public history retained."
 }
