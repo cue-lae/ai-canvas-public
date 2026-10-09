@@ -274,3 +274,4 @@
 /src/ui/selectionOverlapInteraction.test.tsx -text
 /src/ui/selectionToolTarget.test.ts -text
 /src/ui/selectionToolTarget.ts -text
+/src/ui/productionDiagnosticsIsolation.test.ts -text

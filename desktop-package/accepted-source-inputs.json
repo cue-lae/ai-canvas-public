@@ -1,6 +1,6 @@
 {
   "schema": "ai-canvas-accepted-sources-v1",
-  "releaseVersion": "1.0.5",
+  "releaseVersion": "1.0.6",
   "sources": [
     {
       "path": "desktop-package/tests/DocumentSessionTests/DocumentSessionTests.csproj",
@@ -12,7 +12,7 @@
     },
     {
       "path": "src/App.tsx",
-      "sha256": "821d426335111e6d1d0649b1b683f003d717921b0f095fc1a3c3d8de9bd5271e"
+      "sha256": "3f208db3b0566fbe0f0238ff67aabf5c6b78fb4bc3fed7881d1aad51c269ccdd"
     },
     {
       "path": "src/domain/annotationSelection.test.ts",
@@ -833,7 +833,11 @@
     {
       "path": "src/ui/selectionOverlapInteraction.test.tsx",
       "sha256": "ed0e2532b7cb7f8f0a5edd1b8d4ace45d3f854da47700c967821e91fb7bb538e"
+    },
+    {
+      "path": "src/ui/productionDiagnosticsIsolation.test.ts",
+      "sha256": "5f474b4f00a1c2a3812a0d5a0f85a747c9606d1ffd4051f930d8f57d51ef96a4"
     }
   ],
-  "basis": "Validated circle selection constraints, synchronized folder preview attachments, focused-image tool availability, and transient overlap priority; user acceptance completed; independent public history retained."
+  "basis": "User-accepted canvas interaction repairs and authorized production diagnostic entry isolation; 209 exact runtime sources; independent public history retained."
 }

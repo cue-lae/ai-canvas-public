@@ -2,13 +2,22 @@
 
 AI Canvas 是面向图片、说明与局部视觉任务的桌面画布，支持多文档标签、图片与说明关联、快速标注和文件夹组织。
 
-**AI Canvas 1.0.5 · cue-lae · GPL-3.0-only。**
+**AI Canvas 1.0.6 · cue-lae · GPL-3.0-only。**
 
 ## 下载
 
-[下载 AI Canvas 1.0.5（Windows x64）](https://github.com/cue-lae/ai-canvas-public/releases/download/v1.0.5/AI-Canvas-1.0.5-Windows-x64.zip) · [版本说明及源码](https://github.com/cue-lae/ai-canvas-public/releases/tag/v1.0.5)
+[下载 AI Canvas 1.0.6（Windows x64）](https://github.com/cue-lae/ai-canvas-public/releases/download/v1.0.6/AI-Canvas-1.0.6-Windows-x64.zip) · [版本说明及源码](https://github.com/cue-lae/ai-canvas-public/releases/tag/v1.0.6)
 
 Windows ZIP 包含安装器、许可与第三方声明、对应源码 ZIP。安装由用户操作；请先保存并关闭画布，按安装程序的安全检查继续。旧版本在 [Releases](https://github.com/cue-lae/ai-canvas-public/releases) 保留。
+
+## 1.0.6 更新
+
+- 椭圆选区支持 Shift 正圆约束，包含新建和锚点调整。
+- 文件夹预览中的选区、编号和快速标注跟随图片展开、收起。
+- 图片专注模式下可直接使用选区工具。
+- 编号保持可点击，重叠选区选中时临时置顶，取消后恢复原顺序。
+- 正式构建不再注册开发测试接口或渲染旧隐藏测试面板。
+- 保持已有图标、项目格式及日常工作流程；发布验证见本版 Release 与下载包内的 RELEASE-VERIFICATION.json。
 
 ## 1.0.5 更新
 

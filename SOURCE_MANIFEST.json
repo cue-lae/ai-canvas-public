@@ -1,16 +1,16 @@
 {
-  "releaseVersion": "1.0.5",
+  "releaseVersion": "1.0.6",
   "revision": "r1",
-  "date": "2026-10-08",
+  "date": "2026-10-09",
   "license": "GPL-3.0-only",
   "publicAttribution": "cue-lae",
-  "basis": "Logo update accepted by user; 202 validated runtime inputs",
+  "basis": "User-accepted interaction repairs plus development-only diagnostic entries; 209 exact runtime inputs",
   "manifestSelfExcluded": true,
   "files": [
     {
       "path": ".gitattributes",
-      "size": 13345,
-      "sha256": "49eaa0889b819e190c0550c404673efc4881835e3ad9e5bb1df5051afc867381"
+      "size": 13718,
+      "sha256": "b47496760ac03a72b81b3d29622a6a903436785e47f9eaf5ad56c2fe0f52a5b0"
     },
     {
       "path": ".gitignore",
@@ -29,8 +29,8 @@
     },
     {
       "path": "README.md",
-      "size": 2247,
-      "sha256": "2c8ed3a2c1f01eaea6372dfe84d0f62d0caeb066d510e5ba672d2fb3e294752e"
+      "size": 2781,
+      "sha256": "e29e68dd35a7745725b57621c244435cce355a08d64443ba332b0efce2e1a0ff"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",
@@ -54,8 +54,8 @@
     },
     {
       "path": "desktop-package/accepted-source-inputs.json",
-      "size": 30935,
-      "sha256": "a904072c21db1c0521c8c76df27bdbe4d148c4b7d3d09fd251219a363a2c6168"
+      "size": 32041,
+      "sha256": "d5de1e9e1d4829034d45142844a3058b5d3ddf20c8810f3a15f601f29f482e01"
     },
     {
       "path": "desktop-package/accepted-source-policy.mjs",
@@ -345,7 +345,7 @@
     {
       "path": "desktop-package/release.json",
       "size": 56,
-      "sha256": "aa07ea143a98c431b1fb160fd5cf5d1c8b20603164123b33fcac1d043bdf7162"
+      "sha256": "396421429dd786125ae0b9d712dd7bc0da6ba474172cf1d716583a3588ff4dde"
     },
     {
       "path": "desktop-package/tests/DocumentSessionTests/DocumentSessionTests.csproj",
@@ -519,8 +519,8 @@
     },
     {
       "path": "src/App.tsx",
-      "size": 381689,
-      "sha256": "4ec4a1fe7140d59c04c689c54d7dc06c03973a369b3793db8a2ba03aba29afdf"
+      "size": 383260,
+      "sha256": "3f208db3b0566fbe0f0238ff67aabf5c6b78fb4bc3fed7881d1aad51c269ccdd"
     },
     {
       "path": "src/domain/annotationSelection.test.ts",
@@ -819,8 +819,8 @@
     },
     {
       "path": "src/styles.css",
-      "size": 173157,
-      "sha256": "b22557da7740b5ef9eecb83709e8d2d571f68cac17fe97f8961989f4399f6782"
+      "size": 174780,
+      "sha256": "3f7fceae275276bb32966880da11149fb30a510ce64439e4897118fcbb9b6d33"
     },
     {
       "path": "src/test/canvasClipboardFixture.ts",
@@ -899,13 +899,13 @@
     },
     {
       "path": "src/ui/QuickAnnotationOverlay.tsx",
-      "size": 53806,
-      "sha256": "db78a1a7f47674568521ae6b9b7eb70ee89dba178034d99b1262d4b5e2ae2484"
+      "size": 54657,
+      "sha256": "77d04e7efe2db65e3ac1a6e26449585109e4f3b9a674c83b17615fa28f92729d"
     },
     {
       "path": "src/ui/SelectionCanvasOverlay.tsx",
-      "size": 36275,
-      "sha256": "170901e9de1c8e0ae7d244413cb4ee3a1171b8f6a1676c820ec2120b4c66496f"
+      "size": 37967,
+      "sha256": "5d88462c322c98cb1bc1198c107d3e42cd2246d66fc69d2304f8ec858fc842cd"
     },
     {
       "path": "src/ui/canvasCardShadowVisibility.test.ts",
@@ -1053,6 +1053,16 @@
       "sha256": "2e0fded26f7c65a27a96fc8c33d5532710e7305c8813b45e40b5bd6a5358ccd7"
     },
     {
+      "path": "src/ui/circleSelection.test.ts",
+      "size": 2782,
+      "sha256": "ef6c2744ec9e1dcce5af5793d5a3884305dbaec2037746065407a66e2dd64326"
+    },
+    {
+      "path": "src/ui/circleSelectionInteraction.test.tsx",
+      "size": 3940,
+      "sha256": "57f2077e318c5839d771eca35cf0048b2b4bde1b57c2e8266dec421ba25a0d24"
+    },
+    {
       "path": "src/ui/contextInformationSelection.test.ts",
       "size": 1876,
       "sha256": "1cea361eb869aa8515a0fc2bea6b0b1df0220b22b9a1fb8cb3feba9145b3631d"
@@ -1143,19 +1153,24 @@
       "sha256": "16b87de770b3dea4e632a4c73880c2238e3c9f6f99d6c09ee6c40cbb8d05fe35"
     },
     {
+      "path": "src/ui/folderPreviewAttachment.ts",
+      "size": 1320,
+      "sha256": "59a074ede107c54bdff9aaf078ab5e643ef2f5510ed88f14ea39a87c844dc1bf"
+    },
+    {
       "path": "src/ui/folderPreviewMotion.test.ts",
-      "size": 4003,
-      "sha256": "fb92985cc239386c9fe8ad05720ea865203f8782018caf2e8ae916bacc7723a3"
+      "size": 5237,
+      "sha256": "16a1ac4c6d139a27f05bcfc73b7f60b73278a00542a7ccd1fb4fba5653041769"
     },
     {
       "path": "src/ui/folderPreviewMotion.ts",
-      "size": 2741,
-      "sha256": "513e98bba9402d40a5c42a340e10ad7647b0795b7968d83a64bad3d3883d9bcd"
+      "size": 2899,
+      "sha256": "57adbd66f8f1df5ada1c72b34a3a510915f4edccff8397b74009787809deef01"
     },
     {
       "path": "src/ui/folderPreviewPresentation.test.ts",
-      "size": 5131,
-      "sha256": "05350de3bef9139157668e9104cf5eae37396eb56d3a33ce32f81a85218b55e9"
+      "size": 6009,
+      "sha256": "14f84605f8a5144c913492032cee439a18b58b8ba5dd70dffe8f88d9bccf92f5"
     },
     {
       "path": "src/ui/folderWorkspace.test.tsx",
@@ -1164,8 +1179,8 @@
     },
     {
       "path": "src/ui/folderWorkspace.tsx",
-      "size": 53223,
-      "sha256": "49456cbff38bc7dd195744f0469d3372b0010de15968f274af79fd5074714f74"
+      "size": 53269,
+      "sha256": "162044c16a95f81607782392d934f26829dcd901fb7d603998e60a3f3bfc840c"
     },
     {
       "path": "src/ui/globalHistorySceneSync.test.ts",
@@ -1193,6 +1208,11 @@
       "sha256": "5c7b108e7de73676df8359039e75c0346e5e544b36123d1b825536661ab8bdfe"
     },
     {
+      "path": "src/ui/productionDiagnosticsIsolation.test.ts",
+      "size": 1157,
+      "sha256": "5f474b4f00a1c2a3812a0d5a0f85a747c9606d1ffd4051f930d8f57d51ef96a4"
+    },
+    {
       "path": "src/ui/quickAnnotationConnector.test.ts",
       "size": 2053,
       "sha256": "909d49dca02d78f895f3b4c9a472246426201ffd471d1c5cfe10ad71eeea6736"
@@ -1214,8 +1234,8 @@
     },
     {
       "path": "src/ui/quickAnnotationPreviewInteraction.test.tsx",
-      "size": 5825,
-      "sha256": "14315a4d061c2f34d5b999b7c987e00fc5898b4548dc25479e96b961f68777b1"
+      "size": 5967,
+      "sha256": "24409a556974b900d8a4684320760fba420a1d6687f317f39ad1aa12d7518d56"
     },
     {
       "path": "src/ui/quickAnnotationVisualInteraction.test.ts",
@@ -1259,8 +1279,8 @@
     },
     {
       "path": "src/ui/selectionGeometry.ts",
-      "size": 10747,
-      "sha256": "7901270014479eb75680ee337c282bc6b477e93b85b6b9a57a54bf9baa931f47"
+      "size": 12513,
+      "sha256": "5b22f58011aa8bc4247e1d668e3117cb9e8374c026958f2ea89fbc6bcb164784"
     },
     {
       "path": "src/ui/selectionOcclusion.test.ts",
@@ -1293,9 +1313,14 @@
       "sha256": "c8e1b1aed9b883607dec41a39d27e77ad64af0d952f59f43c2b3e6a8f8961baf"
     },
     {
+      "path": "src/ui/selectionOverlapInteraction.test.tsx",
+      "size": 7149,
+      "sha256": "ed0e2532b7cb7f8f0a5edd1b8d4ace45d3f854da47700c967821e91fb7bb538e"
+    },
+    {
       "path": "src/ui/selectionOverlayContract.test.ts",
-      "size": 16525,
-      "sha256": "85b3c010803b7f0527a6ee36787186037cf9041220c974c6f66c54cab4fb3040"
+      "size": 16524,
+      "sha256": "194ae436c4d90b294532f66ff9eba3bb9ed2b810aafe07e0dab1bd1f8ee97e32"
     },
     {
       "path": "src/ui/selectionPathDraft.test.ts",
@@ -1316,6 +1341,16 @@
       "path": "src/ui/selectionToolFocus.ts",
       "size": 328,
       "sha256": "a8fcfc631afd6bb4a4ae476b052e9a79906e49e44119f606eb8ebd26d614e107"
+    },
+    {
+      "path": "src/ui/selectionToolTarget.test.ts",
+      "size": 934,
+      "sha256": "b9b8ef005ef8217cb509b23193e6b4d0fafb50674493d220a84c0bd95369bf17"
+    },
+    {
+      "path": "src/ui/selectionToolTarget.ts",
+      "size": 499,
+      "sha256": "81d1a24666b1286e0d25bcf30628a146b9253adc1080ff89123a343d4c70e833"
     },
     {
       "path": "src/ui/workbenchPreferences.test.ts",

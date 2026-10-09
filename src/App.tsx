@@ -1,3 +1,4 @@
+/// <reference types="vite/client" />
 import {
   CaptureUpdateAction,
   DefaultSidebar,
@@ -7966,7 +7967,7 @@ const App = () => {
   }, [api, commitBusiness]);
 
   useEffect(() => {
-    if (!api) {
+    if (!import.meta.env.DEV || !api) {
       return;
     }
     window.__AI_CANVAS_P0__ = {
@@ -9474,6 +9475,7 @@ const App = () => {
             </div>
         </aside>
 
+        {import.meta.env.DEV && (
         <aside className="legacy-panel" hidden aria-hidden="true">
           <section className="panel-section">
             <h2>裁剪验证</h2>
@@ -9676,6 +9678,7 @@ const App = () => {
             </section>
           )}
         </aside>
+        )}
       </section>
       {pendingProjectOpen ? (
         <div className="canvas-dialog-backdrop" role="presentation">
