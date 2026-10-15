@@ -12,11 +12,11 @@ AI Canvas 是面向图片、说明与局部视觉任务的桌面画布，支持�
 - 修复设置中六个主题色块挤压换行，保留主题选择与框线。
 - 包含已接受的Ctrl+S保存与右键整理画布入口修复。
 
-当前源码已更新到1.0.11；下方下载链接仍指向现有公开Release，本次源码同步不新增安装包下载附件。
+1.0.11 安装包与对应源码已发布；旧版本在公开 Releases 中保留。
 
 ## 下载
 
-[下载 AI Canvas 1.0.6（Windows x64）](https://github.com/cue-lae/ai-canvas-public/releases/download/v1.0.6/AI-Canvas-1.0.6-Windows-x64.zip) · [版本说明及源码](https://github.com/cue-lae/ai-canvas-public/releases/tag/v1.0.6)
+[下载 AI Canvas 1.0.11（Windows x64）](https://github.com/cue-lae/ai-canvas-public/releases/download/v1.0.11/AI-Canvas-1.0.11-Windows-x64.zip) · [版本说明及源码](https://github.com/cue-lae/ai-canvas-public/releases/tag/v1.0.11)
 
 Windows ZIP 包含安装器、许可与第三方声明、对应源码 ZIP。安装由用户操作；请先保存并关闭画布，按安装程序的安全检查继续。旧版本在 [Releases](https://github.com/cue-lae/ai-canvas-public/releases) 保留。
 

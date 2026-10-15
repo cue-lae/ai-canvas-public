@@ -4,7 +4,7 @@
   "date": "2026-10-15",
   "license": "GPL-3.0-only",
   "publicAttribution": "cue-lae",
-  "basis": "User-accepted 1.0.11 display integration, startup logo114/142.5 and theme-row repair; source-only synchronization",
+  "basis": "Published user-accepted 1.0.11 installer and corresponding source; runtime bytes retained; download documentation refreshed",
   "manifestSelfExcluded": true,
   "files": [
     {
@@ -29,8 +29,8 @@
     },
     {
       "path": "README.md",
-      "size": 3339,
-      "sha256": "8cb21cd2fea2d79acaa4c0b9f99f6b71ad97ef2a3f77d36493d312cec30be08f"
+      "size": 3293,
+      "sha256": "082484ab0e6e03cf3ddb292a7988b1289a12406b1df1b025d42494c1e2129506"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",
@@ -454,8 +454,8 @@
     },
     {
       "path": "docs/VERIFICATION.md",
-      "size": 2291,
-      "sha256": "70cbb31174c37728451c1508046578161068e84bb8feaee4d6e1c2ebdbc2d951"
+      "size": 3589,
+      "sha256": "c416e86e1b8f7a984816ebaa32ce1a88bb571f0433a27a3d6c0f380c76a90e6b"
     },
     {
       "path": "index.html",
