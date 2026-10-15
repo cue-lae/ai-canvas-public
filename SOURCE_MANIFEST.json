@@ -4,7 +4,7 @@
   "date": "2026-10-15",
   "license": "GPL-3.0-only",
   "publicAttribution": "cue-lae",
-  "basis": "Source-only synchronization of user-accepted native installer folder selection; approved app runtime bytes retained; public installer/download remains1.0.11",
+  "basis": "Published original local1.0.12 installer and corresponding source; user-accepted native folder selection trial; runtime bytes retained; download entry refreshed; full installation acceptance separate",
   "manifestSelfExcluded": true,
   "files": [
     {
@@ -29,8 +29,8 @@
     },
     {
       "path": "README.md",
-      "size": 3687,
-      "sha256": "272760ceb1ccf9adc30f5a0e117a4d57fbe2c22c4a98bf605440a0ae1aa4675e"
+      "size": 3695,
+      "sha256": "bd20d561903f71d9ec876b0884f110f54bb5928540399b1fe444a0fdc48daeb2"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",
@@ -454,8 +454,8 @@
     },
     {
       "path": "docs/VERIFICATION.md",
-      "size": 4816,
-      "sha256": "47b4cebf351076a6fed089e664527674b5aa20a0411b413888573309ba6e7f9f"
+      "size": 6102,
+      "sha256": "16d28dd40c927d295541a4671f1780d550ed3f712f0a12286ef51815f8270ef4"
     },
     {
       "path": "index.html",

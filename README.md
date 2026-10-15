@@ -10,7 +10,7 @@ AI Canvas 是面向图片、说明与局部视觉任务的桌面画布，支持�
 - 选择文件夹后立即采用，取消保留原路径；更新仍沿用原安装目录，安全检查保留。
 - Logo114/142.5、主题间距和其他已认可画布界面保持。
 
-本次只同步源码；1.0.12安装包尚未发布，下方公开下载仍为1.0.11。
+1.0.12 安装包与对应源码已发布；1.0.11及更早版本在公开 Releases 中保留。
 
 ## 1.0.11 源码更新
 
@@ -24,7 +24,7 @@ AI Canvas 是面向图片、说明与局部视觉任务的桌面画布，支持�
 
 ## 下载
 
-[下载 AI Canvas 1.0.11（Windows x64）](https://github.com/cue-lae/ai-canvas-public/releases/download/v1.0.11/AI-Canvas-1.0.11-Windows-x64.zip) · [版本说明及源码](https://github.com/cue-lae/ai-canvas-public/releases/tag/v1.0.11)
+[下载 AI Canvas 1.0.12（Windows x64）](https://github.com/cue-lae/ai-canvas-public/releases/download/v1.0.12/AI-Canvas-1.0.12-Windows-x64.zip) · [版本说明及源码](https://github.com/cue-lae/ai-canvas-public/releases/tag/v1.0.12)
 
 Windows ZIP 包含安装器、许可与第三方声明、对应源码 ZIP。安装由用户操作；请先保存并关闭画布，按安装程序的安全检查继续。旧版本在 [Releases](https://github.com/cue-lae/ai-canvas-public/releases) 保留。
 
