@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -42,6 +43,7 @@ internal sealed class InstallerWindow : Window
     private readonly WebView2 _browser = new();
     private bool _surfaceShown;
     private bool _closed;
+    private bool _folderDialogOpen;
     private readonly string _version;
     private readonly string _assets;
     private readonly string _run;
@@ -193,6 +195,10 @@ internal sealed class InstallerWindow : Window
                     break;
                 case "close": if (_phase == "progress") { _closeAfterCancel = true; RequestCancel(); } else Close(); break;
                 case "cancel": RequestCancel(); break;
+                case "browse-folder":
+                    if (_phase != "ready" || _update || _folderDialogOpen) break;
+                    BrowseFolder(root.TryGetProperty("path", out var draftPath) && draftPath.ValueKind == JsonValueKind.String ? draftPath.GetString() : null);
+                    break;
                 case "install":
                     if (_phase != "ready") break;
                     var chosen = root.GetProperty("path").GetString() ?? "";
@@ -202,6 +208,63 @@ internal sealed class InstallerWindow : Window
             }
         }
         catch { _error = "操作未完成，请检查安装位置后重试。"; SendState(); }
+    }
+
+
+    private void BrowseFolder(string? draft)
+    {
+        _folderDialogOpen = true;
+        try
+        {
+            var dialog = new OpenFolderDialog
+            {
+                Title = "选择安装文件夹",
+                Multiselect = false,
+                InitialDirectory = ExistingLocalDirectory(draft) ?? ExistingLocalDirectory(_path) ?? Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+            };
+            var selected = dialog.ShowDialog(this) == true;
+            _error = "";
+            if (selected)
+            {
+                if (IsLocalInstallFolder(dialog.FolderName)) _path = dialog.FolderName;
+                else { selected = false; _error = "请选择本地磁盘上的完整安装文件夹，不要选择磁盘根目录。"; }
+            }
+            if (!_closed)
+            {
+                _browser.CoreWebView2?.PostWebMessageAsJson(JsonSerializer.Serialize(new { kind = "folder-choice", selected, path = selected ? _path : null, error = _error }));
+                SendState();
+            }
+        }
+        catch
+        {
+            _error = "无法打开文件夹选择窗口，请重试。";
+            if (!_closed)
+            {
+                _browser.CoreWebView2?.PostWebMessageAsJson(JsonSerializer.Serialize(new { kind = "folder-choice", selected = false, error = _error }));
+                SendState();
+            }
+        }
+        finally { _folderDialogOpen = false; }
+    }
+
+    private static bool IsLocalInstallFolder(string value) =>
+        Regex.IsMatch(value, @"^[a-z]:\\.+", RegexOptions.IgnoreCase) && !Regex.IsMatch(value, @"[<>""|?*]");
+
+    private static string? ExistingLocalDirectory(string? value)
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(value) || value.Length < 3 || !char.IsLetter(value[0]) || value[1] != ':' || value[2] != '\\') return null;
+            var current = Path.GetFullPath(value);
+            while (!Directory.Exists(current))
+            {
+                var parent = Directory.GetParent(current)?.FullName;
+                if (parent == null || parent == current) return null;
+                current = parent;
+            }
+            return current;
+        }
+        catch { return null; }
     }
 
     private static Dictionary<string, string> ReadState(string path)
@@ -224,7 +287,7 @@ internal sealed class InstallerWindow : Window
 
     private async Task Install(string chosen, bool shortcut)
     {
-        if (string.IsNullOrWhiteSpace(chosen) || !Path.IsPathFullyQualified(chosen)) { _error = "请输入完整的本地文件夹路径。"; SendState(); return; }
+        if (string.IsNullOrWhiteSpace(chosen) || !Path.IsPathFullyQualified(chosen)) { _error = "请选择完整的本地文件夹路径。"; SendState(); return; }
         if (!_update) _path = Path.GetFullPath(chosen);
         _shortcut = shortcut; _phase = "progress"; _percent = 0; _error = ""; _cancelling = false; SendState();
         TimingTrace.Mark(TimingStage.InstallBegin);

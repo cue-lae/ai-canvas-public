@@ -1,6 +1,6 @@
 {
   "schema": "ai-canvas-accepted-sources-v1",
-  "releaseVersion": "1.0.11",
+  "releaseVersion": "1.0.12",
   "sources": [
     {
       "path": "desktop-package/tests/DocumentSessionTests/DocumentSessionTests.csproj",
@@ -847,5 +847,5 @@
       "sha256": "cc88b9efb4e937d0b00229967e628394893bc116d1bfc42547262db506e8780f"
     }
   ],
-  "basis": "User-accepted desktop display sizing, DPI handling, save/menu integration, logo114/142.5 and theme-row gap4/5 repair; 211 exact runtime inputs; independent public history retained."
+  "basis": "User-accepted native installation-folder picker trial: read-only location, immediate adoption on selection, unchanged path on cancel; update directory and safety checks preserved; all211 approved runtime sources and logo114/142.5 unchanged. Source-only synchronization; installer not published."
 }

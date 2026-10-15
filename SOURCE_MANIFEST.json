@@ -1,10 +1,10 @@
 {
-  "releaseVersion": "1.0.11",
+  "releaseVersion": "1.0.12",
   "revision": "r1",
   "date": "2026-10-15",
   "license": "GPL-3.0-only",
   "publicAttribution": "cue-lae",
-  "basis": "Published user-accepted 1.0.11 installer and corresponding source; runtime bytes retained; download documentation refreshed",
+  "basis": "Source-only synchronization of user-accepted native installer folder selection; approved app runtime bytes retained; public installer/download remains1.0.11",
   "manifestSelfExcluded": true,
   "files": [
     {
@@ -29,8 +29,8 @@
     },
     {
       "path": "README.md",
-      "size": 3293,
-      "sha256": "082484ab0e6e03cf3ddb292a7988b1289a12406b1df1b025d42494c1e2129506"
+      "size": 3687,
+      "sha256": "272760ceb1ccf9adc30f5a0e117a4d57fbe2c22c4a98bf605440a0ae1aa4675e"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",
@@ -39,8 +39,8 @@
     },
     {
       "path": "assets/installer-flow-preview.html",
-      "size": 17349,
-      "sha256": "694830d352f5e34952402dfb75fe1c2e61be3e67bb16aa66bbc63c78c59e8c1d"
+      "size": 16704,
+      "sha256": "faa049bfbd04d751523dbd7ca3d4e04c1137fce2e426a41a680cb0f48472480e"
     },
     {
       "path": "desktop-package/CONNECTION-GUIDE-ZH.md",
@@ -54,8 +54,8 @@
     },
     {
       "path": "desktop-package/accepted-source-inputs.json",
-      "size": 33213,
-      "sha256": "323e17ca0f377d54cbc0f9dfd64161573060392e4e3a05040c4513b3bb02dedf"
+      "size": 33327,
+      "sha256": "2dcc97b5cb3027ce56614fbb2d53283504c829db8c35e00d911b10a2ae96ed1d"
     },
     {
       "path": "desktop-package/accepted-source-policy.mjs",
@@ -254,13 +254,13 @@
     },
     {
       "path": "desktop-package/installer-shell/Program.cs",
-      "size": 17201,
-      "sha256": "7dfb27c9eb31b1ce8c80197fabb65556081b855f2d1c7a16e16639d895467b12"
+      "size": 19903,
+      "sha256": "11d885c45fcd6297d2eab1bc4a17a58ddae01a97b215ae831835a5cb8764dc43"
     },
     {
       "path": "desktop-package/installer-shell/controller.js",
-      "size": 5845,
-      "sha256": "a299b9bc618f57bee2f5079d58224e774c5648175a9e1afafb177ff01b374589"
+      "size": 5705,
+      "sha256": "a8e61412306f2e6ecfe9ceb5f0f033361e8724472e5bbb5b6e03411fd8c9e463"
     },
     {
       "path": "desktop-package/installer-ui.iss",
@@ -345,7 +345,7 @@
     {
       "path": "desktop-package/release.json",
       "size": 60,
-      "sha256": "4f08d23ac841c3574fb65199cfc6a2dd78a21863835d5c0b48dea313106c11d2"
+      "sha256": "3a61a49bc340bed8cb4d30c15bcc10e622bd4b65272c18cb3cddf3fb90de5241"
     },
     {
       "path": "desktop-package/tests/DocumentSessionTests/DocumentSessionTests.csproj",
@@ -454,8 +454,8 @@
     },
     {
       "path": "docs/VERIFICATION.md",
-      "size": 3589,
-      "sha256": "c416e86e1b8f7a984816ebaa32ce1a88bb571f0433a27a3d6c0f380c76a90e6b"
+      "size": 4816,
+      "sha256": "47b4cebf351076a6fed089e664527674b5aa20a0411b413888573309ba6e7f9f"
     },
     {
       "path": "index.html",

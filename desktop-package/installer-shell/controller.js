@@ -5,7 +5,8 @@
   q('.ip-footer-note').textContent='初版';
   const send=(action,fields={})=>window.chrome.webview.postMessage({action,...fields});
   let initialLayoutScheduled=false;
-  const state={phase:'ready',path:'',isUpdate:false,shortcut:true,editing:false,percent:0,version:'',previousVersion:'',error:'',cancelling:false};
+  let browsing=false;
+  const state={phase:'ready',path:'',isUpdate:false,shortcut:true,percent:0,version:'',previousVersion:'',error:'',cancelling:false};
   const paths={folder:'M20 20H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5l2 2h9a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2Z',check:'m20 6-11 11-5-5',x:'M18 6 6 18M6 6l12 12','arrow-right':'M5 12h14m-7-7 7 7-7 7'};
   root.querySelectorAll('[data-lucide]').forEach(item=>{
     const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
@@ -22,9 +23,9 @@
     q('.ip-update-summary').hidden=!update;
     q('.ip-update-summary>span').textContent='已安装 '+state.previousVersion;
     q('.ip-update-summary strong').textContent=state.version;
-    q('.ip-change').hidden=update||state.editing;
-    q('.ip-path-display').hidden=state.editing;
-    q('.ip-location-edit').hidden=!state.editing;
+    q('.ip-change').hidden=update;
+    q('.ip-change').disabled=browsing;
+    q('.ip-change').setAttribute('aria-busy',String(browsing));
     q('.ip-path').textContent=state.path;
     q('.ip-location-note').textContent=update?'更新沿用当前安装位置。':'默认仅为当前用户安装。';
     q('.ip-shortcut').hidden=update;q('.ip-shortcut input').checked=state.shortcut;
@@ -37,24 +38,32 @@
     q('.ip-cancel-note').textContent=update?'此次更新已取消，可稍后重新开始。':'可以稍后重新开始。';
     q('.ip-step').textContent=state.phase==='progress'?'2 / 3':state.phase==='done'?'3 / 3':'1 / 3';
     const primary=q('.ip-primary'),secondary=q('.ip-secondary');
-    primary.hidden=state.phase==='progress';primary.disabled=state.editing;
+    primary.hidden=state.phase==='progress';primary.disabled=browsing;
     primary.textContent=state.phase==='done'?'打开画布':state.phase==='cancelled'?'重新开始':update?'开始更新':'开始安装';
     secondary.textContent=state.phase==='done'?'完成':state.phase==='cancelled'?'关闭':'取消';secondary.disabled=state.cancelling;
     error.hidden=!state.error;error.textContent=state.error;
     requestAnimationFrame(()=>send('resize',{height:Math.ceil(q('.ip-window').getBoundingClientRect().height)}));
   }
-  q('.ip-change').addEventListener('click',()=>{state.editing=true;q('#ip-path-input').value=state.path;q('#ip-path-error').hidden=true;render();q('#ip-path-input').focus();q('#ip-path-input').select();});
-  q('[data-location=cancel]').addEventListener('click',()=>{state.editing=false;render();});
-  q('[data-location=save]').addEventListener('click',()=>{const value=q('#ip-path-input').value.trim();if(!/^[a-z]:\\.+/i.test(value)||/[<>"|?*]/.test(value)){q('#ip-path-error').hidden=false;render();return;}state.path=value;state.editing=false;q('#ip-path-error').hidden=true;render();});
+  q('.ip-change').addEventListener('click',()=>{if(browsing||state.phase!=='ready'||state.isUpdate)return;browsing=true;state.error='';render();send('browse-folder',{path:state.path});});
   q('.ip-shortcut input').addEventListener('change',e=>{state.shortcut=e.target.checked;});
-  q('.ip-primary').addEventListener('click',()=>{if(state.phase==='done'){send('open');return;}if(state.phase==='cancelled'){send('ready');return;}if(state.phase==='ready'&&!state.editing)send('install',{path:state.path,shortcut:state.shortcut});});
+  q('.ip-primary').addEventListener('click',()=>{if(state.phase==='done'){send('open');return;}if(state.phase==='cancelled'){send('ready');return;}if(state.phase==='ready'&&!browsing)send('install',{path:state.path,shortcut:state.shortcut});});
   q('.ip-secondary').addEventListener('click',()=>send(state.phase==='progress'?'cancel':'close'));
   q('.ip-close').addEventListener('click',()=>send('close'));
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();if(state.editing){state.editing=false;render();}else send('close');}});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!browsing){e.preventDefault();send('close');}});
   window.chrome.webview.addEventListener('message',e=>{
-    const incoming=e.data;if(!incoming||incoming.kind!=='state')return;
-    const wasEditing=state.editing;Object.assign(state,incoming);
-    if(state.phase!=='ready')state.editing=false;else if(wasEditing&&!incoming.error)state.editing=true;
+    const incoming=e.data;if(!incoming)return;
+    if(incoming.kind==='folder-choice'){
+      if(!browsing)return;
+      browsing=false;
+      if(state.phase==='ready'&&!state.isUpdate){
+        if(incoming.selected===true&&typeof incoming.path==='string')state.path=incoming.path;
+        state.error=typeof incoming.error==='string'?incoming.error:'';
+      }
+      render();q('.ip-change').focus();return;
+    }
+    if(incoming.kind!=='state')return;
+    Object.assign(state,incoming);
+    if(state.phase!=='ready'||state.isUpdate)browsing=false;
     render();
     if(!initialLayoutScheduled){
       initialLayoutScheduled=true;
