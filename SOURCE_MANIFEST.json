@@ -1,16 +1,16 @@
 {
-  "releaseVersion": "1.0.6",
+  "releaseVersion": "1.0.11",
   "revision": "r1",
-  "date": "2026-10-09",
+  "date": "2026-10-15",
   "license": "GPL-3.0-only",
   "publicAttribution": "cue-lae",
-  "basis": "User-accepted interaction repairs plus development-only diagnostic entries; 209 exact runtime inputs",
+  "basis": "User-accepted 1.0.11 display integration, startup logo114/142.5 and theme-row repair; source-only synchronization",
   "manifestSelfExcluded": true,
   "files": [
     {
       "path": ".gitattributes",
-      "size": 13718,
-      "sha256": "b47496760ac03a72b81b3d29622a6a903436785e47f9eaf5ad56c2fe0f52a5b0"
+      "size": 13858,
+      "sha256": "dc1bec360268c4fc72adbca3abfb13aa02e83ffa0116ad6719a340e965f56e96"
     },
     {
       "path": ".gitignore",
@@ -29,8 +29,8 @@
     },
     {
       "path": "README.md",
-      "size": 2781,
-      "sha256": "e29e68dd35a7745725b57621c244435cce355a08d64443ba332b0efce2e1a0ff"
+      "size": 3339,
+      "sha256": "8cb21cd2fea2d79acaa4c0b9f99f6b71ad97ef2a3f77d36493d312cec30be08f"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",
@@ -54,8 +54,8 @@
     },
     {
       "path": "desktop-package/accepted-source-inputs.json",
-      "size": 32041,
-      "sha256": "d5de1e9e1d4829034d45142844a3058b5d3ddf20c8810f3a15f601f29f482e01"
+      "size": 33213,
+      "sha256": "323e17ca0f377d54cbc0f9dfd64161573060392e4e3a05040c4513b3bb02dedf"
     },
     {
       "path": "desktop-package/accepted-source-policy.mjs",
@@ -344,8 +344,8 @@
     },
     {
       "path": "desktop-package/release.json",
-      "size": 56,
-      "sha256": "396421429dd786125ae0b9d712dd7bc0da6ba474172cf1d716583a3588ff4dde"
+      "size": 60,
+      "sha256": "4f08d23ac841c3574fb65199cfc6a2dd78a21863835d5c0b48dea313106c11d2"
     },
     {
       "path": "desktop-package/tests/DocumentSessionTests/DocumentSessionTests.csproj",
@@ -454,8 +454,8 @@
     },
     {
       "path": "docs/VERIFICATION.md",
-      "size": 1376,
-      "sha256": "dc987dc0a116a8d320b461ce853340896624d9f79f6000e0b6e28d07a545ef32"
+      "size": 2291,
+      "sha256": "70cbb31174c37728451c1508046578161068e84bb8feaee4d6e1c2ebdbc2d951"
     },
     {
       "path": "index.html",
@@ -519,8 +519,8 @@
     },
     {
       "path": "src/App.tsx",
-      "size": 383260,
-      "sha256": "3f208db3b0566fbe0f0238ff67aabf5c6b78fb4bc3fed7881d1aad51c269ccdd"
+      "size": 383982,
+      "sha256": "54d4b245eca044c8d39b8f441639af309afb2acf33bc1d9801410017c81ca550"
     },
     {
       "path": "src/domain/annotationSelection.test.ts",
@@ -704,8 +704,8 @@
     },
     {
       "path": "src/main.tsx",
-      "size": 369,
-      "sha256": "665b7547a22efe89e88b7a05ba05fba6edd7969a78d37f60edf61c4fd4366f8a"
+      "size": 402,
+      "sha256": "9e6cb047a9da8f598f8e169b68b4db3a8e0347b955e30b35594f4056ece80d18"
     },
     {
       "path": "src/performance/benchmark.ts",
@@ -819,8 +819,8 @@
     },
     {
       "path": "src/styles.css",
-      "size": 174780,
-      "sha256": "3f7fceae275276bb32966880da11149fb30a510ce64439e4897118fcbb9b6d33"
+      "size": 194953,
+      "sha256": "e8c8452e11c8520c0234d4a78ebd5f35ca8fa6cad7d1a1200d261ec7b200bbef"
     },
     {
       "path": "src/test/canvasClipboardFixture.ts",
@@ -919,13 +919,13 @@
     },
     {
       "path": "src/ui/canvasContextMenuPolicy.test.ts",
-      "size": 2932,
-      "sha256": "b01c11eedc0d8992cb47a1e1981fd05d44adda47798534f4f30bc9ecc277c939"
+      "size": 2943,
+      "sha256": "d294d202afe6e58a32583018c06f9a3ac7908e233151c8ffdbed5ebf689a282e"
     },
     {
       "path": "src/ui/canvasContextMenuPolicy.ts",
-      "size": 4994,
-      "sha256": "43318a84387a7b43ec01eb13f93ca875084884daed50164019cbb091b625ecc5"
+      "size": 5111,
+      "sha256": "14a5081c3fdc6af174d6dc063bd8498c846dc612912d51a91e2241871c27bfa6"
     },
     {
       "path": "src/ui/canvasInteractionHostController.test.ts",
@@ -1179,8 +1179,8 @@
     },
     {
       "path": "src/ui/folderWorkspace.tsx",
-      "size": 53269,
-      "sha256": "162044c16a95f81607782392d934f26829dcd901fb7d603998e60a3f3bfc840c"
+      "size": 53330,
+      "sha256": "5ac308763e8ef4762c8672b5a5d1e56d2a3f4752a6e31a435e3af85bd9d2ffe3"
     },
     {
       "path": "src/ui/globalHistorySceneSync.test.ts",
@@ -1196,6 +1196,11 @@
       "path": "src/ui/importViewContract.test.ts",
       "size": 2294,
       "sha256": "3c9b01ac32b24a3efaabc53a616cc7a02309684dd8bd707e3c04c08c09a2902b"
+    },
+    {
+      "path": "src/ui/nativeDisplay.css",
+      "size": 20001,
+      "sha256": "a526b999b495a38687459bde650cbf33bba60c7ab2fc00df9a066b2593148bc0"
     },
     {
       "path": "src/ui/nativeToolShortcutGuard.test.ts",
@@ -3104,8 +3109,8 @@
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/AiCanvas.WebViewHost.csproj",
-      "size": 1412,
-      "sha256": "42c635e4a6f8f1e16a2bf03a4c6d2cdc67836079aedb3f7cb079b370e01cabfb"
+      "size": 1472,
+      "sha256": "cf7a334fc49ca1128b26a5001d1c03cda6a4d2eaa12f7eb2e3d6009921dda534"
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/App.xaml",
@@ -3149,8 +3154,8 @@
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/DocumentCloseDialog.cs",
-      "size": 9206,
-      "sha256": "c56d897057ae129aabdb23a2528f3ed68d164ffd31ae6b738c472a9092f16094"
+      "size": 9832,
+      "sha256": "f9623fbbc83273fef81f5c3e4e13a94f961db10759dfffe4511d0c334504d7cf"
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/DocumentCloseStateBarrier.cs",
@@ -3159,8 +3164,8 @@
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/DocumentContextMenu.cs",
-      "size": 4612,
-      "sha256": "5f9ad26d9d213e8dafe462ebd9601393ec985339368301479c98325d96736957"
+      "size": 4775,
+      "sha256": "66ee8f339132695f0b1743a60578108e3d3ad88eb2963b7e396fe1829c2a23da"
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/DocumentDispatchBroker.cs",
@@ -3179,8 +3184,8 @@
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/DocumentDragPreview.cs",
-      "size": 16065,
-      "sha256": "37a851d6a365d45f4c346ffd92c8dbc186e4a422634a7d28416bdffe2f3fd58d"
+      "size": 16219,
+      "sha256": "d5886ede306d55228f380d69409f532dd95491ddd19249ea7b5fc24c28174c80"
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/DocumentFileStore.cs",
@@ -3229,8 +3234,8 @@
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/DocumentTabController.cs",
-      "size": 43360,
-      "sha256": "980f06f958428b06301c9f08f5e0561a8f078a6d7f642e34d42c8597d4430f43"
+      "size": 43783,
+      "sha256": "c22d14d47ea2c83ec1d8e9a55eac540a1b11da20db5cc2e47d4b03433a4c61e5"
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/DocumentThemeTokens.cs",
@@ -3254,13 +3259,13 @@
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/MainWindow.xaml",
-      "size": 10651,
-      "sha256": "4af68958facf848e79ed2ba34a189100d09e46ddf8501a94f74a873593df5b5b"
+      "size": 10653,
+      "sha256": "a9aa447a294c596a5a08dfdeb12711824729cdd4cfbdadaded89d69cdce80d4e"
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/MainWindow.xaml.cs",
-      "size": 40853,
-      "sha256": "60d98b8c6792ed65c679c43833354378262b0e197f1391b03b9acd9e4539a0a9"
+      "size": 48366,
+      "sha256": "afd50179bf5c30c6078ffc005d1eded9e6dbcf6a4aeb4a34b1a0d8d2cada712d"
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/PackageWindowLifetime.cs",
@@ -3274,8 +3279,8 @@
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/StartupLoadingSurface.cs",
-      "size": 4369,
-      "sha256": "1c270212e8b76470e9e161d638fb7f41053361ecceab8b369f8e495edc26a17f"
+      "size": 5344,
+      "sha256": "d8c6eb761bea718b4f2afbf6ef2724ca28f4781436f89af29baaee233f93e75a"
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/StartupNavigationState.cs",
@@ -3286,6 +3291,11 @@
       "path": "webview-host/AiCanvas.WebViewHost/StartupOverlay.js",
       "size": 3578,
       "sha256": "872966c65002cbfc8de764d5dd76c9246fce1c942ddb70e7da85e10b6f8447e0"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/app.manifest",
+      "size": 691,
+      "sha256": "cc88b9efb4e937d0b00229967e628394893bc116d1bfc42547262db506e8780f"
     },
     {
       "path": "webview-host/tests/BridgeConnectionTests/BridgeConnectionTests.csproj",

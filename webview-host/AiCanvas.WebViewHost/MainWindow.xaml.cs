@@ -9,6 +9,7 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using Microsoft.Web.WebView2.Core;
 
 using AiCanvas.Diagnostics;
@@ -22,6 +23,10 @@ public partial class MainWindow : Window
     private const int LoadingFadeMilliseconds = 200;
     private const int LoadingTimeoutMilliseconds = 5000;
     private const int WmGetMinMaxInfo = 0x0024;
+    private const int WmDisplayChange = 0x007E;
+    private const int WmSettingChange = 0x001A;
+    private const int WmEnterSizeMove = 0x0231;
+    private const int WmExitSizeMove = 0x0232;
     private const uint MonitorDefaultToNearest = 2;
     private const int DwmWindowCornerPreference = 33;
     private const int DwmCornerRound = 2;
@@ -38,6 +43,13 @@ public partial class MainWindow : Window
 
     [DllImport("user32.dll")]
     private static extern uint GetDpiForWindow(IntPtr hwnd);
+
+    [DllImport("user32.dll")]
+    private static extern bool GetWindowRect(IntPtr hwnd, out Rect bounds);
+
+    [DllImport("user32.dll")]
+    private static extern bool SetWindowPos(IntPtr hwnd, IntPtr after, int x, int y,
+        int width, int height, uint flags);
 
     [DllImport("user32.dll", CharSet = CharSet.Auto)]
     private static extern bool GetMonitorInfo(IntPtr monitor, ref MonitorInfo monitorInfo);
@@ -79,6 +91,7 @@ public partial class MainWindow : Window
 
     private CoreWebView2Environment? _environment;
     private bool _isFullscreen;
+    private bool _saveShortcutHeld;
     private WindowStyle _restoredWindowStyle;
     private ResizeMode _restoredResizeMode;
     private WindowState _restoredWindowState;
@@ -115,6 +128,11 @@ public partial class MainWindow : Window
     internal DocumentSize DefaultDocumentWindowSize { get; }
     private string? _mergeHighlightColor;
     private TaskCompletionSource<bool>? _closeDecision;
+    private readonly double _preferredMinWidth;
+    private readonly double _preferredMinHeight;
+    private DispatcherOperation? _displayWorkAreaUpdate;
+    private bool _isInSizeMove;
+    private bool _displaySettingsChanged;
 
     internal MainWindow(PackageWindowLifetime? lifetime = null, DocumentOpenRequest? documentOpen = null, bool liveTransferWindow = false)
     {
@@ -122,6 +140,8 @@ public partial class MainWindow : Window
         _documentOpen = documentOpen;
         _liveTransferWindow = liveTransferWindow;
         InitializeComponent();
+        _preferredMinWidth = MinWidth;
+        _preferredMinHeight = MinHeight;
         DefaultDocumentWindowSize = new DocumentSize(Width, Height);
         _tabs = new DocumentTabController(this, DocumentViews, DocumentTabs);
         _tabs.CreateDocument = CreateDocumentAsync;
@@ -144,7 +164,8 @@ public partial class MainWindow : Window
         else { DocumentViews.Children.Remove(Browser); Browser.Dispose(); }
         Loaded += OnLoaded;
         Closing += OnClosing;
-        StateChanged += (_, _) => UpdateBrowserResizeMargin();
+        StateChanged += (_, _) => { UpdateBrowserResizeMargin(); QueueDisplayWorkAreaUpdate(); };
+        LocationChanged += (_, _) => QueueDisplayWorkAreaUpdate();
     }
 
     private void UpdateBrowserResizeMargin()
@@ -159,12 +180,87 @@ public partial class MainWindow : Window
         base.OnSourceInitialized(e);
         var hwnd = new WindowInteropHelper(this).Handle;
         HwndSource.FromHwnd(hwnd)?.AddHook(WindowMessageHook);
+        UpdateDisplayWorkArea(hwnd, centerWhenConstrained: true);
         var cornerPreference = DwmCornerRound;
         _ = DwmSetWindowAttribute(
             hwnd,
             DwmWindowCornerPreference,
             ref cornerPreference,
             Marshal.SizeOf<int>());
+    }
+
+    protected override void OnDpiChanged(DpiScale oldDpi, DpiScale newDpi)
+    {
+        // WPF owns the suggested native rectangle and propagates the new DPI
+        // to its visual tree/HwndHost controls. Do not consume WM_DPICHANGED
+        // or apply a second page/Canvas scale on top of that path.
+        base.OnDpiChanged(oldDpi, newDpi);
+        QueueDisplayWorkAreaUpdate();
+    }
+
+    private void QueueDisplayWorkAreaUpdate(bool displaySettingsChanged = false)
+    {
+        if (_isClosing || _browserDisposed || Dispatcher.HasShutdownStarted) return;
+        _displaySettingsChanged |= displaySettingsChanged;
+        if (_displayWorkAreaUpdate?.Status == DispatcherOperationStatus.Pending) return;
+        // Re-read the current window/monitor after WPF has applied its DPI
+        // transition. Coalesce move notifications; retain no cached DPI/bounds.
+        _displayWorkAreaUpdate = Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+        {
+            _displayWorkAreaUpdate = null;
+            if (_isClosing || _browserDisposed) return;
+            var hwnd = new WindowInteropHelper(this).Handle;
+            var settingsChanged = _displaySettingsChanged;
+            if (!_isInSizeMove) _displaySettingsChanged = false;
+            if (hwnd != IntPtr.Zero) UpdateDisplayWorkArea(hwnd, centerWhenConstrained: false,
+                displaySettingsChanged: settingsChanged);
+        }));
+    }
+
+    private void UpdateDisplayWorkArea(IntPtr hwnd, bool centerWhenConstrained,
+        bool displaySettingsChanged = false)
+    {
+        var monitor = MonitorFromWindow(hwnd, MonitorDefaultToNearest);
+        var info = new MonitorInfo { Size = Marshal.SizeOf<MonitorInfo>() };
+        if (monitor == IntPtr.Zero || !GetMonitorInfo(monitor, ref info)) return;
+        var dpi = GetDpiForWindow(hwnd);
+        var scaleX = dpi == 0 ? VisualTreeHelper.GetDpi(this).DpiScaleX : dpi / 96d;
+        var scaleY = dpi == 0 ? VisualTreeHelper.GetDpi(this).DpiScaleY : dpi / 96d;
+        var availableWidth = Math.Floor((info.WorkArea.Right - info.WorkArea.Left) / scaleX);
+        var availableHeight = Math.Floor((info.WorkArea.Bottom - info.WorkArea.Top) / scaleY);
+        if (availableWidth <= 0 || availableHeight <= 0) return;
+        var constrained = Width > availableWidth || Height > availableHeight;
+        // Restore the preferred minimum when returning to a roomier display;
+        // the temporary small-work-area limit must not become a permanent one.
+        MinWidth = Math.Min(_preferredMinWidth, availableWidth);
+        MinHeight = Math.Min(_preferredMinHeight, availableHeight);
+        // A window may straddle displays during a native drag/resize. Applying
+        // a position clamp mid-drag would prevent crossing the monitor edge.
+        if (WindowState != WindowState.Normal || _isFullscreen || _isInSizeMove) return;
+        // Preserve ordinary user placement (including a window spanning two
+        // monitors) and WPF's suggested DPI rectangle whenever its size fits.
+        if (!constrained && !displaySettingsChanged) return;
+
+        Width = Math.Min(Width, availableWidth);
+        Height = Math.Min(Height, availableHeight);
+        if (!GetWindowRect(hwnd, out var bounds)) return;
+        var workWidth = info.WorkArea.Right - info.WorkArea.Left;
+        var workHeight = info.WorkArea.Bottom - info.WorkArea.Top;
+        var width = Math.Min(bounds.Right - bounds.Left, workWidth);
+        var height = Math.Min(bounds.Bottom - bounds.Top, workHeight);
+        var x = Math.Clamp(bounds.Left, info.WorkArea.Left, info.WorkArea.Right - width);
+        var y = Math.Clamp(bounds.Top, info.WorkArea.Top, info.WorkArea.Bottom - height);
+        if (centerWhenConstrained && constrained)
+        {
+            WindowStartupLocation = WindowStartupLocation.Manual;
+            x = info.WorkArea.Left + (workWidth - width) / 2;
+            y = info.WorkArea.Top + (workHeight - height) / 2;
+        }
+        // Physical coordinates avoid treating a mixed-DPI desktop as one
+        // uniform DIP grid. No focus/z-order change, and no move when it fits.
+        if (x != bounds.Left || y != bounds.Top ||
+            width != bounds.Right - bounds.Left || height != bounds.Bottom - bounds.Top)
+            _ = SetWindowPos(hwnd, IntPtr.Zero, x, y, width, height, 0x0014);
     }
 
     private IntPtr WindowMessageHook(
@@ -174,6 +270,20 @@ public partial class MainWindow : Window
         IntPtr lParam,
         ref bool handled)
     {
+        if (message is WmEnterSizeMove or WmExitSizeMove)
+        {
+            _isInSizeMove = message == WmEnterSizeMove;
+            if (!_isInSizeMove) QueueDisplayWorkAreaUpdate();
+            return IntPtr.Zero;
+        }
+        if (message is WmDisplayChange or WmSettingChange)
+        {
+            // SPI_SETWORKAREA is the setting that invalidates screen bounds;
+            // unrelated theme/input changes must not move a user's window.
+            QueueDisplayWorkAreaUpdate(displaySettingsChanged:
+                message == WmDisplayChange || wParam.ToInt64() == 0x002F);
+            return IntPtr.Zero;
+        }
         if (message != WmGetMinMaxInfo)
         {
             return IntPtr.Zero;
@@ -204,6 +314,8 @@ public partial class MainWindow : Window
         var scaleY = dpi == 0 ? VisualTreeHelper.GetDpi(this).DpiScaleY : dpi / 96d;
         minMaxInfo.MinTrackSize.X = Math.Max(minMaxInfo.MinTrackSize.X, (int)Math.Ceiling(MinWidth * scaleX));
         minMaxInfo.MinTrackSize.Y = Math.Max(minMaxInfo.MinTrackSize.Y, (int)Math.Ceiling(MinHeight * scaleY));
+        minMaxInfo.MinTrackSize.X = Math.Min(minMaxInfo.MinTrackSize.X, monitorInfo.WorkArea.Right - monitorInfo.WorkArea.Left);
+        minMaxInfo.MinTrackSize.Y = Math.Min(minMaxInfo.MinTrackSize.Y, monitorInfo.WorkArea.Bottom - monitorInfo.WorkArea.Top);
         Marshal.StructureToPtr(minMaxInfo, lParam, false);
         handled = true;
         return IntPtr.Zero;
@@ -227,6 +339,12 @@ public partial class MainWindow : Window
         TimingTrace.Mark(TimingStage.WindowLoaded);
         try
         {
+            // Loaded can run reentrantly while the owner's native ShowWindow
+            // is still applying its initial maximized client rectangle.
+            // Resume after that call returns before presenting the same logo.
+            await System.Windows.Threading.Dispatcher.Yield(DispatcherPriority.Loaded);
+            if (_isClosing || _loadingCancellation.IsCancellationRequested) return;
+
             var logoResource = Application.GetResourceStream(new Uri(
                 "pack://application:,,,/AiCanvas.WebViewHost;component/Assets/AI-Canvas-Startup-Logo-Black-AC.ico"));
             using (var stream = logoResource!.Stream)
@@ -631,6 +749,18 @@ public partial class MainWindow : Window
 
     private void OnPreviewKeyDown(object sender, KeyEventArgs e)
     {
+        if ((e.Key is Key.LeftCtrl or Key.RightCtrl) && !e.IsRepeat)
+            _saveShortcutHeld = false;
+        if (e.Key == Key.S && Keyboard.Modifiers == ModifierKeys.Control)
+        {
+            e.Handled = true;
+            if (!_saveShortcutHeld && !e.IsRepeat && _tabs.Active is { } document)
+            {
+                _saveShortcutHeld = true;
+                Dispatcher.BeginInvoke(new Action(() => _tabs.SaveFromShortcut(document)));
+            }
+            return;
+        }
         if (e.Key == Key.F11)
         {
             ToggleFullscreen();
@@ -641,6 +771,19 @@ public partial class MainWindow : Window
             ToggleFullscreen();
             e.Handled = true;
         }
+    }
+
+    protected override void OnPreviewKeyUp(KeyEventArgs e)
+    {
+        if (e.Key is Key.S or Key.LeftCtrl or Key.RightCtrl)
+            _saveShortcutHeld = false;
+        base.OnPreviewKeyUp(e);
+    }
+
+    protected override void OnActivated(EventArgs e)
+    {
+        if (!Keyboard.IsKeyDown(Key.S)) _saveShortcutHeld = false;
+        base.OnActivated(e);
     }
 
     private void ToggleFullscreen()

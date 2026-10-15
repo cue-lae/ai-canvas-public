@@ -8,7 +8,7 @@ describe("Canvas context commands", () => {
     expect(contextRegionLabel(7,1,"蓝色图")).toBe("选区 7 · 蓝色图");
   });
   it("uses the approved object-specific command lists", () => {
-    expect(canvasContextItems("canvas").map(item => item.id)).toEqual(["undo", "redo", "paste", "select-all", "import-image", "new-description", "new-folder", "overview"]);
+    expect(canvasContextItems("canvas").map(item => item.id)).toEqual(["undo", "redo", "paste", "select-all", "import-image", "new-description", "new-folder", "overview", "arrange"]);
     expect(canvasContextItems("image").map(item => item.id)).toEqual(["focus-image", "quick-annotation", "create-region", "move-to-folder", "copy", "delete"]);
     expect(canvasContextItems("description").map(item => item.id)).toEqual(["edit-description", "copy", "copy-description-text", "locate-related", "delete"]);
     expect(canvasContextItems("folder").map(item => item.id)).toEqual(["preview-folder", "open-folder", "rename-folder", "copy", "ungroup-folder", "delete"]);

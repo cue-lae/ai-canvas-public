@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "@excalidraw/excalidraw/index.css";
 import "./styles.css";
+import "./ui/nativeDisplay.css";
 import App from "./App";
 
 const root = document.getElementById("root");

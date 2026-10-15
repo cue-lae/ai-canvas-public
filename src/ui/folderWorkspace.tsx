@@ -953,7 +953,7 @@ export const FolderWorkspace = ({
               {selected && navigation.layer === "preview" ? (
                 <div data-folder-preview-actions className={`folder-workspace-preview-actions${
                   viewport.zoom < 0.7 ? " is-low-zoom" : ""
-                }`} style={{ visibility: previewClosing ? "hidden" : undefined }}>
+                }`} style={{ "--folder-preview-ui-scale": previewScale, visibility: previewClosing ? "hidden" : undefined } as CSSProperties}>
                   <button
                     type="button"
                     className="folder-workspace-enter"

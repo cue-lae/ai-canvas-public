@@ -266,12 +266,12 @@ internal sealed class DocumentTabController
             tab.PreviewMouseLeftButtonUp += (_, _) => tab.Background = TabSurface(tab.IsMouseOver);
             var grid = new Grid(); grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(28) });
             grid.ColumnDefinitions.Add(new ColumnDefinition()); grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto }); grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(28) });
-            var label = new TextBlock { Text = document.State.Name, FontSize = 12.5,
+            var label = new TextBlock { Text = document.State.Name, FontSize = 14, LineHeight = 20, LineStackingStrategy = LineStackingStrategy.BlockLineHeight,
                 FontWeight = document == Active ? FontWeights.SemiBold : FontWeights.Normal,
                 VerticalAlignment = VerticalAlignment.Center, TextTrimming = TextTrimming.CharacterEllipsis,
                 Foreground = Color(Active, document == Active ? "text" : "mutedText", "#303238") };
             Grid.SetColumn(label, 1); grid.Children.Add(label);
-            var dirtyMark = new TextBlock { Text = document.State.Dirty ? "*" : "", FontSize = 12.5, Width = document.State.Dirty ? 10 : 0,
+            var dirtyMark = new TextBlock { Text = document.State.Dirty ? "*" : "", FontSize = 14, LineHeight = 20, LineStackingStrategy = LineStackingStrategy.BlockLineHeight, Width = document.State.Dirty ? 10 : 0,
                 VerticalAlignment = VerticalAlignment.Center, Foreground = Color(Active, "accent", "#6B56A5") };
             Grid.SetColumn(dirtyMark, 2); grid.Children.Add(dirtyMark);
             var symbol = new Image { Width = 16, Height = 16, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center,
@@ -347,10 +347,10 @@ internal sealed class DocumentTabController
             KeepDisabledStripSurface(overflow);
             overflow.Click += (_, _) =>
             {
-                var menu = new ContextMenu();
+                var menu = new ContextMenu { FontSize = 14 };
                 foreach (var document in _documents)
                 {
-                    var item = new MenuItem { Header = document.State.Name + (document.State.Dirty ? " *" : ""), IsCheckable = true, IsChecked = document == Active };
+                    var item = new MenuItem { Header = document.State.Name + (document.State.Dirty ? " *" : ""), FontSize = 14, MinHeight = 32, IsCheckable = true, IsChecked = document == Active };
                     item.Click += (_, _) => Activate(document); menu.Items.Add(item);
                 }
                 overflow.ContextMenu = menu; menu.IsOpen = true;
@@ -405,6 +405,12 @@ internal sealed class DocumentTabController
         var frame = decoder.Frames.OrderBy(image => Math.Abs(image.PixelWidth - pixels)).First(); frame.Freeze();
         _tabIconScale = scale; return _tabIcon = frame;
     }
+    internal void SaveFromShortcut(DocumentSession document)
+    {
+        if (_busy || Active != document || !_documents.Contains(document) || !document.Ready) return;
+        _ = SaveFromMenuAsync(document, false);
+    }
+
     private async Task SaveFromMenuAsync(DocumentSession document, bool saveAs)
     {
         if (_busy || !_documents.Contains(document) || !document.Ready) { QueueBusyNotice(); return; }

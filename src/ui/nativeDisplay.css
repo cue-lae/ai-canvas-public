@@ -1,0 +1,490 @@
+/* Trial rules: application CSS units remain independent of window size.
+   Windows owns DPI scaling; existing styling and Canvas content stay intact. */
+.app-shell.app-shell--overview-reference[data-native-document="true"] {
+  --ui-font-caption: 12px;
+  --ui-line-caption: 16px;
+  --ui-font-body: 14px;
+  --ui-line-body: 20px;
+  --ui-font-title: 16px;
+  --ui-line-title: 22px;
+  --ui-font-dialog: 20px;
+  --ui-line-dialog: 26px;
+  --ui-control-size: 32px;
+  --ui-menu-row-min-height: 32px;
+  --ui-menu-padding-block: 6px;
+  --ui-menu-padding-inline: 12px;
+  --ui-menu-container-padding: 4px;
+  --ui-menu-icon-size: 20px;
+  --ui-close-icon-size: 16px;
+  --ui-button-padding-block: 5px;
+  --ui-button-padding-inline: 12px;
+  --ui-button-min-width: 96px;
+  --ui-button-width: auto;
+  --ui-field-padding-inline: 12px;
+  --ui-field-padding-block: 5px;
+  --ui-inline-action-display: inline-flex;
+  --ui-editor-padding: 12px;
+  --ui-editor-min-height: 160px;
+  --ui-panel-padding: 16px;
+  --ui-panel-gap: 16px;
+  --ui-header-gap: 12px;
+  --ui-action-gap: 8px;
+  --ui-compact-gap: 4px;
+  --ui-flex-wrap: wrap;
+  --ui-help-header-height: auto;
+  --ui-panel-overflow: auto;
+  --ui-text-wrap: normal;
+  --ui-text-overflow: clip;
+  --ui-text-overflow-wrap: anywhere;
+  --ui-selection-menu-width: 112px;
+  --ui-selection-menu-height: 40px;
+  --ui-selection-menu-padding: 3px;
+  /* Reserve the draft's 1px box budget without adding a visible outline. */
+  --ui-selection-menu-border: 1px solid transparent;
+  --ui-folder-menu-item-width: 100%;
+  --ui-folder-actions-width: max-content;
+  --ui-folder-action-width: max-content;
+  --ui-control-flex-shrink: 0;
+  --ui-icon-control-min-width: 32px;
+  --ui-width-settings: 280px;
+  --ui-width-context-menu: 260px;
+  --ui-width-folder-menu: 160px;
+  --ui-width-help: 720px;
+  --ui-width-shortcuts: 640px;
+  --ui-width-read: 800px;
+  --ui-width-dialog: 440px;
+  --ui-panel-max-width: calc(100vw - 32px);
+  --ui-panel-max-height: calc(100dvh - 32px);
+  --native-header-top: 16px;
+  --ui-settings-max-height: calc(100dvh - var(--native-header-top) - var(--ui-control-size) - 12px - 16px);
+  --ui-read-grid-template: repeat(auto-fit, minmax(min(100%, 208px), 1fr));
+  --ui-read-header-padding: 0 0 12px;
+  --ui-read-content-padding: 0px;
+  --ui-read-section-padding: 0px;
+  --native-tool-size: 40px;
+  --native-tool-icon-size: 20px;
+  --native-rail-left: 16px;
+  --native-right-column-width: 360px;
+  --native-status-height-budget: min(120px, calc(100dvh / 4));
+  --native-status-main-budget: min(64px, calc(100dvh / 8));
+  --native-status-gap: 4px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .canvas-workspace-menu__themes {
+  column-gap: var(--ui-compact-gap);
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .app-header {
+  top: var(--native-header-top);
+  left: 16px;
+  height: var(--ui-control-size);
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .app-brand-cluster {
+  gap: 8px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .app-brand-badge {
+  height: var(--ui-control-size);
+  padding-inline: 0;
+  font-size: var(--ui-font-title);
+  line-height: var(--ui-line-title);
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] :is(.app-settings-trigger, .app-help-trigger) {
+  width: var(--ui-control-size);
+  height: var(--ui-control-size);
+  min-height: var(--ui-control-size);
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .app-settings-glyph {
+  font-size: 20px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .app-help-trigger .canvas-tool-icon {
+  width: 20px;
+  height: 20px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .left-tool-rail {
+  top: 64px;
+  left: var(--native-rail-left);
+  width: var(--native-tool-size);
+  gap: 8px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .tool-rail-group {
+  --tool-rail-control-width: var(--native-tool-size);
+  gap: 4px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .tool-rail-group--utility {
+  margin-top: 8px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .tool-button {
+  width: var(--native-tool-size);
+  min-height: var(--native-tool-size);
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .left-tool-rail .canvas-tool-icon {
+  width: var(--native-tool-icon-size);
+  height: var(--native-tool-icon-size);
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .canvas-view-controls {
+  left: 16px;
+  bottom: 16px;
+  gap: 4px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .canvas-view-controls button {
+  width: var(--ui-control-size);
+  height: var(--ui-control-size);
+  min-height: var(--ui-control-size);
+  font-size: 20px;
+  line-height: var(--ui-line-body);
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .canvas-view-controls .canvas-tool-icon {
+  width: 20px;
+  height: 20px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .canvas-view-controls__readout {
+  width: 48px !important;
+  font-size: var(--ui-font-body) !important;
+  line-height: var(--ui-line-body);
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .canvas-view-controls__rotation {
+  font-size: var(--ui-font-body);
+  line-height: var(--ui-line-body);
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .canvas-status-region {
+  top: 16px;
+  right: 16px;
+  gap: var(--native-status-gap);
+  /* Budget header controls, both gutters, and a 24px separating gap. */
+  max-width: min(440px, max(0px, calc(100vw - 240px)));
+  max-height: var(--native-status-height-budget);
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .canvas-status-region .header-status {
+  font-size: var(--ui-font-body);
+  line-height: var(--ui-line-body);
+  gap: 8px;
+  max-height: var(--native-status-main-budget);
+  overflow-y: auto;
+  pointer-events: auto;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .canvas-status-region .canvas-selection-chip {
+  font-size: var(--ui-font-caption);
+  line-height: var(--ui-line-caption);
+  max-height: calc(var(--native-status-height-budget) - var(--native-status-main-budget) - var(--native-status-gap));
+  overflow-y: auto;
+  pointer-events: auto;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .canvas-status-region .status-dot {
+  width: 6px;
+  height: 6px;
+  flex-basis: 6px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .context-information {
+  right: 16px;
+  bottom: 72px;
+  width: max-content;
+  max-width: min(240px, calc(100vw - 32px));
+  padding: 0;
+  max-height: max(0px, calc(100dvh - var(--native-status-height-budget) - 112px));
+  overflow-y: auto;
+  margin-bottom: 0;
+  gap: 8px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .context-information[data-idle-root="true"] {
+  width: 128px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .context-information dl {
+  gap: 4px;
+  margin-top: 4px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .context-information img {
+  width: 76px;
+  height: 58px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .context-information > span,
+.app-shell.app-shell--overview-reference[data-native-document="true"] .context-information dt {
+  font-size: var(--ui-font-caption);
+  line-height: var(--ui-line-caption);
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .context-information > strong {
+  font-size: var(--ui-font-title);
+  line-height: var(--ui-line-title);
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .context-information dd {
+  font-size: var(--ui-font-body);
+  line-height: var(--ui-line-body);
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .context-information dl > div {
+  grid-template-columns: 36px minmax(0, 1fr);
+  gap: 12px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .context-information .context-information__primary-value {
+  max-width: 192px;
+  font-size: var(--ui-font-body);
+  line-height: var(--ui-line-body);
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .context-panel--bottom.is-collapsed {
+  /* Use the Root initial edge, independent of later context content. */
+  left: auto;
+  right: 16px;
+  bottom: 16px;
+  width: 128px;
+  height: var(--ui-control-size);
+  max-height: var(--ui-control-size);
+  padding: 0;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .context-panel--bottom.is-collapsed .context-panel-header {
+  width: 100%;
+  min-height: var(--ui-control-size);
+  padding: 0;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .context-panel--bottom.is-collapsed .context-panel-header-actions {
+  width: 100%;
+  min-width: 0;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  gap: 8px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .context-panel--bottom .context-panel-header-actions .context-panel-publish {
+  min-height: var(--ui-control-size);
+  min-width: 0;
+  font-size: var(--ui-font-body);
+  line-height: var(--ui-line-body);
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .context-panel--bottom.is-collapsed .context-panel-header-actions .context-panel-publish {
+  flex: 1 1 88px;
+  min-width: 0;
+  padding: 0;
+  text-align: left;
+  white-space: nowrap;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .context-panel-details-toggle {
+  flex: 0 0 var(--ui-control-size);
+  width: var(--ui-control-size);
+  min-width: var(--ui-control-size);
+  height: var(--ui-control-size);
+  min-height: var(--ui-control-size);
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .context-panel-details-toggle .canvas-tool-icon {
+  width: 16px;
+  height: 16px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .context-panel--bottom.is-collapsed .context-panel-details-toggle .canvas-tool-icon {
+  width: 20px;
+  height: 20px;
+}
+/* Existing right-column layout; the scene remains the full-size surface. */
+.app-shell.app-shell--overview-reference[data-native-document="true"].has-description-editor .canvas-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, var(--native-right-column-width));
+  grid-template-rows: minmax(32px, max-content) minmax(0, 1fr) max-content;
+  row-gap: 16px;
+  padding: 16px 16px 72px 0;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"].has-description-editor .canvas-panel > .excalidraw {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"].has-description-editor .canvas-status-region {
+  position: relative;
+  inset: auto;
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  align-self: start;
+  margin: 0;
+  max-width: 100%;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"].has-description-editor .description-workspace {
+  position: relative;
+  inset: auto;
+  grid-column: 2;
+  grid-row: 2;
+  justify-self: end;
+  align-self: safe center;
+  width: 100%;
+  max-width: 100%;
+  min-height: 0;
+  max-height: 100%;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"].has-description-editor .context-information {
+  position: relative;
+  inset: auto;
+  grid-column: 2;
+  grid-row: 3;
+  justify-self: end;
+  margin: 0;
+}
+/* Existing transformed cover owns preview motion. Compensate its final scale
+   at the operation node; animated hit testing is a separate validation gate. */
+.app-shell.app-shell--overview-reference[data-native-document="true"] .folder-workspace-preview-actions {
+  --ui-folder-actions-transform: scale(calc(1 / var(--folder-preview-ui-scale, 1)));
+  --ui-folder-actions-origin: left top;
+  --ui-folder-actions-top: calc(-1 * (var(--ui-control-size) + var(--ui-action-gap)) / var(--folder-preview-ui-scale, 1));
+  --ui-folder-actions-left: calc(var(--ui-action-gap) / var(--folder-preview-ui-scale, 1));
+}
+/* Preserve the previously confirmed compact breakpoints and arrangements. */
+@media (max-height: 620px) {
+  .app-shell.app-shell--overview-reference[data-native-document="true"] { --native-header-top: 12px; }
+  .app-shell.app-shell--overview-reference[data-native-document="true"] .app-header { top: 12px; }
+  .app-shell.app-shell--overview-reference[data-native-document="true"] .left-tool-rail { top: 64px; gap: 6px; }
+  .app-shell.app-shell--overview-reference[data-native-document="true"] .tool-rail-group { gap: 2px; }
+  .app-shell.app-shell--overview-reference[data-native-document="true"] .tool-rail-group--utility { margin-top: 8px; }
+}
+@media (max-height: 560px) {
+  .app-shell.app-shell--overview-reference[data-native-document="true"] .canvas-view-controls { left: 72px; }
+}
+@media (max-width: 780px) {
+  .app-shell.app-shell--overview-reference[data-native-document="true"] { --native-rail-left: 12px; --native-header-top: 12px; }
+  .app-shell.app-shell--overview-reference[data-native-document="true"] .app-header { top: 12px; left: 12px; }
+  .app-shell.app-shell--overview-reference[data-native-document="true"] .left-tool-rail { top: 64px; left: 12px; }
+}
+@media (min-width: 1800px) and (max-height: 720px), (max-height: 520px) {
+  .app-shell.app-shell--overview-reference[data-native-document="true"] { --native-header-top: 12px; }
+  .app-shell.app-shell--overview-reference[data-native-document="true"] .app-header { top: 12px; }
+  .app-shell.app-shell--overview-reference[data-native-document="true"] .left-tool-rail { top: 64px; width: calc(var(--native-tool-size) * 2 + 8px); gap: 6px; }
+  .app-shell.app-shell--overview-reference[data-native-document="true"] .tool-rail-group { display: grid; grid-template-columns: repeat(2, var(--native-tool-size)); gap: 4px; }
+  .app-shell.app-shell--overview-reference[data-native-document="true"] .tool-rail-group--utility { margin-top: 8px; }
+  .app-shell.app-shell--overview-reference[data-native-document="true"] .canvas-view-controls { left: calc(var(--native-rail-left) + var(--native-tool-size) * 2 + 24px); }
+}
+
+/* Contract 52: 125% UI dimensions, real viewport edge anchors; no scene scaling. */
+@media (width > 1920px) and (height > 780px) {
+.app-shell.app-shell--overview-reference[data-native-document="true"] {
+  --ui-font-caption: 15px;
+  --ui-line-caption: 20px;
+  --ui-font-body: 17.5px;
+  --ui-line-body: 25px;
+  --ui-font-title: 20px;
+  --ui-line-title: 27.5px;
+  --ui-font-dialog: 25px;
+  --ui-line-dialog: 32.5px;
+  --ui-control-size: 40px;
+  --ui-menu-row-min-height: 40px;
+  --ui-menu-padding-block: 7.5px;
+  --ui-menu-padding-inline: 15px;
+  --ui-menu-container-padding: 5px;
+  --ui-menu-icon-size: 25px;
+  --ui-close-icon-size: 20px;
+  --ui-button-padding-block: 6.25px;
+  --ui-button-padding-inline: 15px;
+  --ui-button-min-width: 120px;
+  --ui-field-padding-inline: 15px;
+  --ui-field-padding-block: 6.25px;
+  --ui-editor-padding: 15px;
+  --ui-editor-min-height: 200px;
+  --ui-panel-padding: 20px;
+  --ui-panel-gap: 20px;
+  --ui-header-gap: 15px;
+  --ui-action-gap: 10px;
+  --ui-compact-gap: 5px;
+  --ui-selection-menu-width: 140px;
+  --ui-selection-menu-height: 50px;
+  --ui-selection-menu-padding: 3.75px;
+  /* Reserve the draft's 1px box budget without adding a visible outline. */
+  --ui-icon-control-min-width: 40px;
+  --ui-width-settings: 350px;
+  --ui-width-context-menu: 325px;
+  --ui-width-folder-menu: 200px;
+  --ui-width-help: 900px;
+  --ui-width-shortcuts: 800px;
+  --ui-width-read: 1000px;
+  --ui-width-dialog: 550px;
+  --ui-settings-max-height: calc(100dvh - var(--native-header-top) - var(--ui-control-size) - 15px - 16px);
+  --ui-read-grid-template: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  --ui-read-header-padding: 0 0 15px;
+  --native-tool-size: 50px;
+  --native-tool-icon-size: 25px;
+  --native-right-column-width: 450px;
+  --native-status-height-budget: min(150px, calc(100dvh / 4));
+  --native-status-main-budget: min(80px, calc(100dvh / 8));
+  --native-status-gap: 5px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .app-brand-cluster {
+  gap: 10px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .app-settings-glyph {
+  font-size: 25px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .app-help-trigger .canvas-tool-icon {
+  width: 25px;
+  height: 25px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .left-tool-rail {
+  top: 76px;
+  gap: 10px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .tool-rail-group {
+  gap: 5px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .tool-rail-group--utility {
+  margin-top: 10px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .canvas-view-controls {
+  gap: 5px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .canvas-view-controls button {
+  font-size: 25px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .canvas-view-controls .canvas-tool-icon {
+  width: 25px;
+  height: 25px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .canvas-view-controls__readout {
+  width: 60px !important;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .canvas-status-region {
+  /* Budget header controls, both gutters, and a 24px separating gap. */
+  max-width: min(550px, max(0px, calc(100vw - 300px)));
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .canvas-status-region .header-status {
+  gap: 10px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .canvas-status-region .status-dot {
+  width: 7.5px;
+  height: 7.5px;
+  flex-basis: 7.5px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .context-information {
+  bottom: 86px;
+  max-width: min(300px, calc(100vw - 32px));
+  max-height: max(0px, calc(100dvh - var(--native-status-height-budget) - 140px));
+  gap: 10px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .context-information[data-idle-root="true"] {
+  width: 160px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .context-information dl {
+  gap: 5px;
+  margin-top: 5px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .context-information img {
+  width: 95px;
+  height: 72.5px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .context-information dl > div {
+  grid-template-columns: 45px minmax(0, 1fr);
+  gap: 15px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .context-information .context-information__primary-value {
+  max-width: 240px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .context-panel--bottom.is-collapsed {
+  /* Use the Root initial edge, independent of later context content. */
+  width: 160px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .context-panel--bottom.is-collapsed .context-panel-header-actions {
+  gap: 10px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .context-panel--bottom.is-collapsed .context-panel-header-actions .context-panel-publish {
+  flex: 1 1 110px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .context-panel-details-toggle .canvas-tool-icon {
+  width: 20px;
+  height: 20px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"] .context-panel--bottom.is-collapsed .context-panel-details-toggle .canvas-tool-icon {
+  width: 25px;
+  height: 25px;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"].has-description-editor .canvas-panel {
+  grid-template-rows: minmax(40px, max-content) minmax(0, 1fr) max-content;
+  row-gap: 20px;
+  padding: 16px 16px 86px 0;
+}
+}

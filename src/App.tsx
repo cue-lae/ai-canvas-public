@@ -5656,6 +5656,18 @@ const App = () => {
 
     let frame = 0;
     const measureUnderlay = () => {
+      const folderElements = Array.from(
+        panel.querySelectorAll<HTMLElement>('[data-canvas-object="folder"]'),
+      );
+      if (
+        !visibleOverlayElements.some(
+          (element) => !element.isDeleted && element.opacity !== 0,
+        ) &&
+        folderElements.length === 0
+      ) {
+        setHasCanvasViewControlsContentUnderlay((current) => current ? false : current);
+        return;
+      }
       const controlsRect = controls.getBoundingClientRect();
       const appState = api.getAppState();
       const hasSceneUnderlay = visibleOverlayElements.some((element) => {
@@ -5676,9 +5688,7 @@ const App = () => {
           bottom: Math.max(topLeft.y, bottomRight.y),
         });
       });
-      const hasFolderUnderlay = Array.from(
-        panel.querySelectorAll<HTMLElement>('[data-canvas-object="folder"]'),
-      ).some((element) => {
+      const hasFolderUnderlay = folderElements.some((element) => {
         const target =
           element
             .querySelector<HTMLElement>(".folder-workspace-hit-target")
@@ -6028,6 +6038,10 @@ const App = () => {
         ];
       });
 
+      if (descriptionRects.length === 0 && imageRects.length === 0) {
+        targets.forEach((target) => target.classList.remove("has-content-underlay"));
+        return;
+      }
       targets.forEach((target) => {
         const targetRect = target.getBoundingClientRect();
         const hasUnderlay =
@@ -6892,109 +6906,6 @@ const App = () => {
     });
   }, [selectionNumberByRegion]);
 
-  const runCanvasContextCommand = useCallback(async (command: CanvasContextCommand, argument?: string) => {
-    const context = canvasContext;
-    if (!context || !api || busy || businessNoticeRef.current || canvasPointerSessionRef.current.kind !== "idle") return;
-    const offered = getCanvasContextItems(context).flatMap(item => item.children?.length && !item.disabled ? [item, ...item.children] : [item]);
-    if (!offered.some(item => item.id === command && item.argument === argument && !item.disabled)) return;
-    const target = context.target;
-    const current = migrateBusinessStateToV2(businessRef.current);
-    if (folderScopeId(folderNavigationRef.current, current) !== context.folderId) return;
-    try {
-      if (command === "undo" || command === "redo") { replayGlobalHistory(command); return; }
-      if (command === "import-image") { inputRef.current?.click(); return; }
-      if (command === "new-description") { beginDescription(); return; }
-      if (command === "new-folder") { createFolderFromSelection(); return; }
-      if (command === "overview") { showCanvasOverview(); return; }
-      if (command === "select-all") { selectAllCanvasContent(); return; }
-      if (command === "paste") {
-        if (clipboardBusyRef.current) return;
-        let text = ""; const images: File[] = [];
-        clipboardBusyRef.current = true; setBusy(true);
-        try {
-          for (const item of await readNativeMenuClipboard(() => navigator.clipboard.read())) {
-            if (item.types.includes("text/plain")) text = await (await item.getType("text/plain")).text();
-            const mime = item.types.find(isBridgePublishableImageMimeType);
-            if (mime) images.push(new File([await item.getType(mime)], `剪贴板图片-${images.length + 1}.${mime.split("/")[1]}`, { type: mime }));
-          }
-        } finally { clipboardBusyRef.current = false; setBusy(false); }
-        await pasteCanvasContent(text, images, { point: context.scenePoint, folderId: context.folderId }); return;
-      }
-      if (target.kind === "canvas") return;
-      const selected = contextClipboardSelection(target, clipboardSelection());
-      if (command === "copy") { await copyCanvasContent(undefined, selected); return; }
-      if (target.kind === "image") {
-        const placement = current.imagePlacements[target.id];
-        if (!placement?.active || placement.folderId !== context.folderId) return;
-        if (command === "focus-image") { enterSelectedCanvasObject(placement.imageId); return; }
-        if (command === "quick-annotation") { setSelectedImageId(placement.imageId); beginQuickAnnotation(); return; }
-        if (command === "create-region" && (argument === "rectangle" || argument === "ellipse" || argument === "path")) {
-          setSelectedImageId(placement.imageId); setLastSelectionTool(argument); beginAnnotationSelection(argument, placement.imageId); return;
-        }
-        if (command === "move-to-folder" && argument) {
-          if (current.folders[argument]?.kind !== "folder" || folderNavigationRef.current.layer !== "overview") return;
-          const directSelection = {
-            imageIds: [...new Set((selected.imagePlacementIds ?? []).flatMap(id => current.imagePlacements[id]?.active ? [current.imagePlacements[id].imageId] : []))],
-            descriptionIds: [...(selected.descriptionIds ?? [])],
-          };
-          const required = requiredDirectObjectsForReparent({ business: current, ...directSelection });
-          if (required.imageIds.length || required.descriptionIds.length) {
-            await showBusinessNotice({ title: "请补选关联内容", message: `还需同时选择 ${required.imageIds.length} 张关联图片和 ${required.descriptionIds.length} 条关联说明，再收进 Folder。` }); return;
-          }
-          if (!applyExistingFolderDrop({ business: current, elements: latestElementsRef.current, targetFolderId: argument, directSelection }))
-            await showBusinessNotice({ title: "尚未收进 Folder", message: "目标或内容关系未能通过检查，原内容保持不变。" });
-          return;
-        }
-      }
-      if (target.kind === "folder") {
-        if (current.folders[target.id]?.kind !== "folder") return;
-        if (command === "preview-folder") selectFolder(target.id);
-        else if (command === "open-folder") enterFolder(target.id);
-        else if (command === "ungroup-folder") ungroupFolder(target.id);
-        else if (command === "rename-folder") {
-          const name = await showBusinessNamePrompt("重命名 Folder", "文件夹名称", current.folders[target.id].name);
-          if (name !== null) {
-            const latest = migrateBusinessStateToV2(businessRef.current);
-            const renamed = renameCanvasFolder(latest, target.id, name);
-            if (renamed !== latest) { commitBusiness(renamed, "folder-rename"); setStatus(`已重命名文件夹：${name}。`); }
-          }
-        } else if (command === "delete") await deleteFolder(target.id);
-      } else if (target.kind === "description" && command === "copy-description-text") {
-        const description = current.descriptions[target.id];
-        if (description?.active) { await navigator.clipboard.writeText(description.text); setStatus("已复制说明正文。"); }
-      } else if (target.kind === "description" && command === "locate-related" && argument) {
-        const id = argument.slice(argument.indexOf(":") + 1);
-        const regionIds = current.document.descriptionScopeLinkIds.flatMap(linkId => {
-          const link = current.descriptionScopeLinks[linkId]; return link?.descriptionId === target.id ? [link.regionId] : [];
-        });
-        const region = argument.startsWith("region:") ? current.regions[id] : undefined;
-        const imageId = argument.startsWith("image:") ? id : region?.imageId;
-        if (!regionIds.some(regionId => current.regions[regionId]?.active && (region ? regionId === id : current.regions[regionId].imageId === imageId))) return;
-        const elementId = region?.elementId ?? Object.values(current.imagePlacements).find(row => row.active && row.imageId === imageId)?.elementId;
-        const element = latestElementsRef.current.find(row => row.id === elementId && !row.isDeleted);
-        if (element) {
-          if (folderNavigationRef.current.layer === "description") returnFromFolderLayer();
-          requestAnimationFrame(() => scrollElementsAtCurrentZoom([element]));
-          setStatus("已定位关联内容，画布比例保持不变。");
-        }
-      } else if (command === "edit-description" && target.kind === "description") {
-        if (folderNavigationRef.current.layer === "description") returnFromFolderLayer();
-        selectDescriptionObject(target.id); setDescriptionEditorFocusId(target.id);
-      } else if (command === "delete") {
-        if (folderNavigationRef.current.layer === "image" || folderNavigationRef.current.layer === "description") returnFromFolderLayer();
-        updateCanvasSelection(createCanvasSelection(selected)); deleteSelectedCanvasObjects();
-      }
-    } catch (error) {
-      void showBusinessNotice({ title: "操作未完成", message: command === "paste"
-        ? "无法从剪贴板读取内容。请在画布中按 Ctrl+V 重试。"
-        : error instanceof Error ? error.message : "目标内容未能完整核对，请重试。" });
-    }
-  }, [canvasContext, api, busy, getCanvasContextItems, replayGlobalHistory, beginDescription, createFolderFromSelection, showCanvasOverview,
-    selectAllCanvasContent, pasteCanvasContent, clipboardSelection, copyCanvasContent, enterSelectedCanvasObject, beginQuickAnnotation,
-    beginAnnotationSelection, applyExistingFolderDrop, showBusinessNotice, showBusinessNamePrompt, commitBusiness, selectFolder,
-    enterFolder, ungroupFolder, deleteFolder, selectDescriptionObject, returnFromFolderLayer, updateCanvasSelection, deleteSelectedCanvasObjects, scrollElementsAtCurrentZoom]);
-
-
   const arrangeCurrentCanvas = useCallback(() => {
     const navigation = folderNavigationRef.current;
     const panel = canvasPanelRef.current;
@@ -7303,6 +7214,110 @@ const App = () => {
         return;
     }
   };
+
+  const runCanvasContextCommand = useCallback(async (command: CanvasContextCommand, argument?: string) => {
+    const context = canvasContext;
+    if (!context || !api || busy || businessNoticeRef.current || canvasPointerSessionRef.current.kind !== "idle") return;
+    const offered = getCanvasContextItems(context).flatMap(item => item.children?.length && !item.disabled ? [item, ...item.children] : [item]);
+    if (!offered.some(item => item.id === command && item.argument === argument && !item.disabled)) return;
+    const target = context.target;
+    const current = migrateBusinessStateToV2(businessRef.current);
+    if (folderScopeId(folderNavigationRef.current, current) !== context.folderId) return;
+    try {
+      if (command === "undo" || command === "redo") { replayGlobalHistory(command); return; }
+      if (command === "import-image") { inputRef.current?.click(); return; }
+      if (command === "new-description") { beginDescription(); return; }
+      if (command === "new-folder") { createFolderFromSelection(); return; }
+      if (command === "overview") { showCanvasOverview(); return; }
+      if (command === "arrange" && target.kind === "canvas") { arrangeCurrentCanvas(); return; }
+      if (command === "select-all") { selectAllCanvasContent(); return; }
+      if (command === "paste") {
+        if (clipboardBusyRef.current) return;
+        let text = ""; const images: File[] = [];
+        clipboardBusyRef.current = true; setBusy(true);
+        try {
+          for (const item of await readNativeMenuClipboard(() => navigator.clipboard.read())) {
+            if (item.types.includes("text/plain")) text = await (await item.getType("text/plain")).text();
+            const mime = item.types.find(isBridgePublishableImageMimeType);
+            if (mime) images.push(new File([await item.getType(mime)], `剪贴板图片-${images.length + 1}.${mime.split("/")[1]}`, { type: mime }));
+          }
+        } finally { clipboardBusyRef.current = false; setBusy(false); }
+        await pasteCanvasContent(text, images, { point: context.scenePoint, folderId: context.folderId }); return;
+      }
+      if (target.kind === "canvas") return;
+      const selected = contextClipboardSelection(target, clipboardSelection());
+      if (command === "copy") { await copyCanvasContent(undefined, selected); return; }
+      if (target.kind === "image") {
+        const placement = current.imagePlacements[target.id];
+        if (!placement?.active || placement.folderId !== context.folderId) return;
+        if (command === "focus-image") { enterSelectedCanvasObject(placement.imageId); return; }
+        if (command === "quick-annotation") { setSelectedImageId(placement.imageId); beginQuickAnnotation(); return; }
+        if (command === "create-region" && (argument === "rectangle" || argument === "ellipse" || argument === "path")) {
+          setSelectedImageId(placement.imageId); setLastSelectionTool(argument); beginAnnotationSelection(argument, placement.imageId); return;
+        }
+        if (command === "move-to-folder" && argument) {
+          if (current.folders[argument]?.kind !== "folder" || folderNavigationRef.current.layer !== "overview") return;
+          const directSelection = {
+            imageIds: [...new Set((selected.imagePlacementIds ?? []).flatMap(id => current.imagePlacements[id]?.active ? [current.imagePlacements[id].imageId] : []))],
+            descriptionIds: [...(selected.descriptionIds ?? [])],
+          };
+          const required = requiredDirectObjectsForReparent({ business: current, ...directSelection });
+          if (required.imageIds.length || required.descriptionIds.length) {
+            await showBusinessNotice({ title: "请补选关联内容", message: `还需同时选择 ${required.imageIds.length} 张关联图片和 ${required.descriptionIds.length} 条关联说明，再收进 Folder。` }); return;
+          }
+          if (!applyExistingFolderDrop({ business: current, elements: latestElementsRef.current, targetFolderId: argument, directSelection }))
+            await showBusinessNotice({ title: "尚未收进 Folder", message: "目标或内容关系未能通过检查，原内容保持不变。" });
+          return;
+        }
+      }
+      if (target.kind === "folder") {
+        if (current.folders[target.id]?.kind !== "folder") return;
+        if (command === "preview-folder") selectFolder(target.id);
+        else if (command === "open-folder") enterFolder(target.id);
+        else if (command === "ungroup-folder") ungroupFolder(target.id);
+        else if (command === "rename-folder") {
+          const name = await showBusinessNamePrompt("重命名 Folder", "文件夹名称", current.folders[target.id].name);
+          if (name !== null) {
+            const latest = migrateBusinessStateToV2(businessRef.current);
+            const renamed = renameCanvasFolder(latest, target.id, name);
+            if (renamed !== latest) { commitBusiness(renamed, "folder-rename"); setStatus(`已重命名文件夹：${name}。`); }
+          }
+        } else if (command === "delete") await deleteFolder(target.id);
+      } else if (target.kind === "description" && command === "copy-description-text") {
+        const description = current.descriptions[target.id];
+        if (description?.active) { await navigator.clipboard.writeText(description.text); setStatus("已复制说明正文。"); }
+      } else if (target.kind === "description" && command === "locate-related" && argument) {
+        const id = argument.slice(argument.indexOf(":") + 1);
+        const regionIds = current.document.descriptionScopeLinkIds.flatMap(linkId => {
+          const link = current.descriptionScopeLinks[linkId]; return link?.descriptionId === target.id ? [link.regionId] : [];
+        });
+        const region = argument.startsWith("region:") ? current.regions[id] : undefined;
+        const imageId = argument.startsWith("image:") ? id : region?.imageId;
+        if (!regionIds.some(regionId => current.regions[regionId]?.active && (region ? regionId === id : current.regions[regionId].imageId === imageId))) return;
+        const elementId = region?.elementId ?? Object.values(current.imagePlacements).find(row => row.active && row.imageId === imageId)?.elementId;
+        const element = latestElementsRef.current.find(row => row.id === elementId && !row.isDeleted);
+        if (element) {
+          if (folderNavigationRef.current.layer === "description") returnFromFolderLayer();
+          requestAnimationFrame(() => scrollElementsAtCurrentZoom([element]));
+          setStatus("已定位关联内容，画布比例保持不变。");
+        }
+      } else if (command === "edit-description" && target.kind === "description") {
+        if (folderNavigationRef.current.layer === "description") returnFromFolderLayer();
+        selectDescriptionObject(target.id); setDescriptionEditorFocusId(target.id);
+      } else if (command === "delete") {
+        if (folderNavigationRef.current.layer === "image" || folderNavigationRef.current.layer === "description") returnFromFolderLayer();
+        updateCanvasSelection(createCanvasSelection(selected)); deleteSelectedCanvasObjects();
+      }
+    } catch (error) {
+      void showBusinessNotice({ title: "操作未完成", message: command === "paste"
+        ? "无法从剪贴板读取内容。请在画布中按 Ctrl+V 重试。"
+        : error instanceof Error ? error.message : "目标内容未能完整核对，请重试。" });
+    }
+  }, [canvasContext, api, busy, getCanvasContextItems, replayGlobalHistory, beginDescription, createFolderFromSelection, showCanvasOverview, arrangeCurrentCanvas,
+    selectAllCanvasContent, pasteCanvasContent, clipboardSelection, copyCanvasContent, enterSelectedCanvasObject, beginQuickAnnotation,
+    beginAnnotationSelection, applyExistingFolderDrop, showBusinessNotice, showBusinessNamePrompt, commitBusiness, selectFolder,
+    enterFolder, ungroupFolder, deleteFolder, selectDescriptionObject, returnFromFolderLayer, updateCanvasSelection, deleteSelectedCanvasObjects, scrollElementsAtCurrentZoom]);
+
 
   const handleCanvasClickCapture = useCallback(
     (event: ReactMouseEvent<HTMLElement>) => {
@@ -8249,6 +8264,7 @@ const App = () => {
       }`}
       data-canvas-theme={canvasTheme}
       data-host-presentation={hostPresentation}
+      data-native-document={nativeDocumentIdentity() ? "true" : undefined}
       style={canvasThemeCssVariables(canvasTheme) as CSSProperties}
       onPointerDownCapture={handleAppPointerDownCapture}
       onContextMenuCapture={handleCanvasContextMenu}

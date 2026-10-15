@@ -208,7 +208,7 @@ internal sealed class DocumentDragPreview : IDisposable
         Brush Token(string key) => new SolidColorBrush((Color)ColorConverter.ConvertFromString(document.Palette[key]));
         var title = new DockPanel { Margin = new Thickness(9, 0, 9, 0) };
         title.Children.Add(new Image { Source = icon, Width = 16, Height = 16, Margin = new Thickness(0, 0, 8, 0) });
-        title.Children.Add(new TextBlock { Text = document.State.Name + (document.State.Dirty ? " *" : ""), FontSize = 12.5,
+        title.Children.Add(new TextBlock { Text = document.State.Name + (document.State.Dirty ? " *" : ""), FontSize = 14, LineHeight = 20, LineStackingStrategy = LineStackingStrategy.BlockLineHeight,
             FontWeight = FontWeights.SemiBold, Foreground = Token("text"), VerticalAlignment = VerticalAlignment.Center,
             TextTrimming = TextTrimming.CharacterEllipsis });
         _grid = new Grid(); _grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(32) });
@@ -245,7 +245,7 @@ internal sealed class DocumentDropHint : IDisposable
     internal DocumentDropHint(IReadOnlyDictionary<string, string> palette)
     {
         var background = DocumentThemeTokens.Mix(palette["accentSurface"], palette["header"], .18);
-        _text = new TextBlock { FontSize = 12, Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(palette["text"])),
+        _text = new TextBlock { FontSize = 12, LineHeight = 16, LineStackingStrategy = LineStackingStrategy.BlockLineHeight, Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(palette["text"])),
             TextTrimming = TextTrimming.CharacterEllipsis, VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(10,0,10,0) };
         var panel = new Border { Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(background)), CornerRadius = new CornerRadius(6), Child = _text };
         _overlay = new DocumentDragOverlay(panel, 380, 28);

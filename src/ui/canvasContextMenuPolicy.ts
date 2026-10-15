@@ -5,7 +5,7 @@ export type CanvasContextTarget = { kind: "canvas" } | {
   id: string;
 };
 export type CanvasContextCommand = "paste" | "select-all" | "copy" | "delete" | "edit-description" | "open-folder" | "ungroup-folder"
-  | "undo" | "redo" | "import-image" | "new-description" | "new-folder" | "overview"
+  | "undo" | "redo" | "import-image" | "new-description" | "new-folder" | "overview" | "arrange"
   | "focus-image" | "quick-annotation" | "create-region" | "move-to-folder"
   | "copy-description-text" | "locate-related" | "preview-folder" | "rename-folder";
 export interface CanvasContextItem {
@@ -40,6 +40,7 @@ export const canvasContextItems = (kind: CanvasContextTarget["kind"], options: C
       { id: "new-description", label: "新建说明", group: "create", disabled: options.canEditScope === false },
       { id: "new-folder", label: "建立 Folder", group: "create", disabled: !options.canCreateFolder },
       { id: "overview", label: "全览画布", group: "view" },
+      { id: "arrange", label: "整理画布", group: "view", disabled: options.canEditScope === false },
     ];
     case "image": return [
       { id: "focus-image", label: "聚焦查看", disabled: options.canFocusImage === false, group: "image" },

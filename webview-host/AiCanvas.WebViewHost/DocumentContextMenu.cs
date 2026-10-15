@@ -18,11 +18,11 @@ internal static class DocumentContextMenu
         var menu = new ContextMenu {
             PlacementTarget = owner, Placement = PlacementMode.MousePoint,
             Background = Token("surface"), BorderBrush = Token("border"), BorderThickness = new Thickness(1),
-            Foreground = Token("text"), FontFamily = new FontFamily("Segoe UI"), FontSize = 13,
-            Padding = new Thickness(4), MinWidth = 232, OverridesDefaultStyle = true, UseLayoutRounding = true };
+            Foreground = Token("text"), FontFamily = new FontFamily("Segoe UI"), FontSize = 14,
+            Padding = new Thickness(4), MinWidth = 276, OverridesDefaultStyle = true, UseLayoutRounding = true };
         var panel = new FrameworkElementFactory(typeof(Border));
         panel.SetValue(Border.CornerRadiusProperty, new CornerRadius(8));
-        panel.SetValue(Border.MinWidthProperty, 232d);
+        panel.SetValue(Border.WidthProperty, 260d);
         panel.SetValue(Border.MarginProperty, new Thickness(8));
         panel.SetValue(Border.EffectProperty, new DropShadowEffect { BlurRadius = 16, ShadowDepth = 4, Opacity = .18 });
         foreach (var (property, name) in new[] { (Border.BackgroundProperty,"Background"), (Border.BorderBrushProperty,"BorderBrush"),
@@ -38,10 +38,12 @@ internal static class DocumentContextMenu
         label.SetValue(ContentPresenter.ContentSourceProperty, "Header");
         label.SetValue(ContentPresenter.MarginProperty, new Thickness(12, 0, 12, 0));
         label.SetValue(ContentPresenter.VerticalAlignmentProperty, VerticalAlignment.Center);
+        label.SetValue(TextBlock.LineHeightProperty, 20d);
+        label.SetValue(TextBlock.LineStackingStrategyProperty, LineStackingStrategy.BlockLineHeight);
         row.AppendChild(label);
         var style = new Style(typeof(MenuItem));
         style.Setters.Add(new Setter(Control.TemplateProperty, new ControlTemplate(typeof(MenuItem)) { VisualTree = row }));
-        style.Setters.Add(new Setter(FrameworkElement.HeightProperty, 32d));
+        style.Setters.Add(new Setter(FrameworkElement.MinHeightProperty, 32d));
         style.Setters.Add(new Setter(Control.BackgroundProperty, Brushes.Transparent));
         style.Setters.Add(new Setter(Control.ForegroundProperty, Token("text")));
         style.Setters.Add(new Setter(FrameworkElement.FocusVisualStyleProperty, null));

@@ -1,6 +1,6 @@
 {
   "schema": "ai-canvas-accepted-sources-v1",
-  "releaseVersion": "1.0.6",
+  "releaseVersion": "1.0.11",
   "sources": [
     {
       "path": "desktop-package/tests/DocumentSessionTests/DocumentSessionTests.csproj",
@@ -12,7 +12,7 @@
     },
     {
       "path": "src/App.tsx",
-      "sha256": "3f208db3b0566fbe0f0238ff67aabf5c6b78fb4bc3fed7881d1aad51c269ccdd"
+      "sha256": "54d4b245eca044c8d39b8f441639af309afb2acf33bc1d9801410017c81ca550"
     },
     {
       "path": "src/domain/annotationSelection.test.ts",
@@ -160,7 +160,7 @@
     },
     {
       "path": "src/main.tsx",
-      "sha256": "665b7547a22efe89e88b7a05ba05fba6edd7969a78d37f60edf61c4fd4366f8a"
+      "sha256": "9e6cb047a9da8f598f8e169b68b4db3a8e0347b955e30b35594f4056ece80d18"
     },
     {
       "path": "src/performance/benchmark.ts",
@@ -252,7 +252,7 @@
     },
     {
       "path": "src/styles.css",
-      "sha256": "3f7fceae275276bb32966880da11149fb30a510ce64439e4897118fcbb9b6d33"
+      "sha256": "e8c8452e11c8520c0234d4a78ebd5f35ca8fa6cad7d1a1200d261ec7b200bbef"
     },
     {
       "path": "src/test/canvasClipboardFixture.ts",
@@ -300,11 +300,11 @@
     },
     {
       "path": "src/ui/canvasContextMenuPolicy.test.ts",
-      "sha256": "b01c11eedc0d8992cb47a1e1981fd05d44adda47798534f4f30bc9ecc277c939"
+      "sha256": "d294d202afe6e58a32583018c06f9a3ac7908e233151c8ffdbed5ebf689a282e"
     },
     {
       "path": "src/ui/canvasContextMenuPolicy.ts",
-      "sha256": "43318a84387a7b43ec01eb13f93ca875084884daed50164019cbb091b625ecc5"
+      "sha256": "14a5081c3fdc6af174d6dc063bd8498c846dc612912d51a91e2241871c27bfa6"
     },
     {
       "path": "src/ui/canvasInteractionHostController.test.ts",
@@ -524,7 +524,7 @@
     },
     {
       "path": "src/ui/folderWorkspace.tsx",
-      "sha256": "162044c16a95f81607782392d934f26829dcd901fb7d603998e60a3f3bfc840c"
+      "sha256": "5ac308763e8ef4762c8672b5a5d1e56d2a3f4752a6e31a435e3af85bd9d2ffe3"
     },
     {
       "path": "src/ui/globalHistorySceneSync.test.ts",
@@ -680,7 +680,7 @@
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/AiCanvas.WebViewHost.csproj",
-      "sha256": "42c635e4a6f8f1e16a2bf03a4c6d2cdc67836079aedb3f7cb079b370e01cabfb"
+      "sha256": "cf7a334fc49ca1128b26a5001d1c03cda6a4d2eaa12f7eb2e3d6009921dda534"
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/App.xaml",
@@ -716,7 +716,7 @@
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/DocumentCloseDialog.cs",
-      "sha256": "c56d897057ae129aabdb23a2528f3ed68d164ffd31ae6b738c472a9092f16094"
+      "sha256": "f9623fbbc83273fef81f5c3e4e13a94f961db10759dfffe4511d0c334504d7cf"
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/DocumentCloseStateBarrier.cs",
@@ -724,7 +724,7 @@
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/DocumentContextMenu.cs",
-      "sha256": "5f9ad26d9d213e8dafe462ebd9601393ec985339368301479c98325d96736957"
+      "sha256": "66ee8f339132695f0b1743a60578108e3d3ad88eb2963b7e396fe1829c2a23da"
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/DocumentDispatchBroker.cs",
@@ -740,7 +740,7 @@
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/DocumentDragPreview.cs",
-      "sha256": "37a851d6a365d45f4c346ffd92c8dbc186e4a422634a7d28416bdffe2f3fd58d"
+      "sha256": "d5886ede306d55228f380d69409f532dd95491ddd19249ea7b5fc24c28174c80"
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/DocumentFileStore.cs",
@@ -780,7 +780,7 @@
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/DocumentTabController.cs",
-      "sha256": "980f06f958428b06301c9f08f5e0561a8f078a6d7f642e34d42c8597d4430f43"
+      "sha256": "c22d14d47ea2c83ec1d8e9a55eac540a1b11da20db5cc2e47d4b03433a4c61e5"
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/DocumentThemeTokens.cs",
@@ -800,11 +800,11 @@
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/MainWindow.xaml",
-      "sha256": "4af68958facf848e79ed2ba34a189100d09e46ddf8501a94f74a873593df5b5b"
+      "sha256": "a9aa447a294c596a5a08dfdeb12711824729cdd4cfbdadaded89d69cdce80d4e"
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/MainWindow.xaml.cs",
-      "sha256": "60d98b8c6792ed65c679c43833354378262b0e197f1391b03b9acd9e4539a0a9"
+      "sha256": "afd50179bf5c30c6078ffc005d1eded9e6dbcf6a4aeb4a34b1a0d8d2cada712d"
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/PackageWindowLifetime.cs",
@@ -816,7 +816,7 @@
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/StartupLoadingSurface.cs",
-      "sha256": "1c270212e8b76470e9e161d638fb7f41053361ecceab8b369f8e495edc26a17f"
+      "sha256": "d8c6eb761bea718b4f2afbf6ef2724ca28f4781436f89af29baaee233f93e75a"
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/StartupNavigationState.cs",
@@ -837,7 +837,15 @@
     {
       "path": "src/ui/productionDiagnosticsIsolation.test.ts",
       "sha256": "5f474b4f00a1c2a3812a0d5a0f85a747c9606d1ffd4051f930d8f57d51ef96a4"
+    },
+    {
+      "path": "src/ui/nativeDisplay.css",
+      "sha256": "a526b999b495a38687459bde650cbf33bba60c7ab2fc00df9a066b2593148bc0"
+    },
+    {
+      "path": "webview-host/AiCanvas.WebViewHost/app.manifest",
+      "sha256": "cc88b9efb4e937d0b00229967e628394893bc116d1bfc42547262db506e8780f"
     }
   ],
-  "basis": "User-accepted canvas interaction repairs and authorized production diagnostic entry isolation; 209 exact runtime sources; independent public history retained."
+  "basis": "User-accepted desktop display sizing, DPI handling, save/menu integration, logo114/142.5 and theme-row gap4/5 repair; 211 exact runtime inputs; independent public history retained."
 }
