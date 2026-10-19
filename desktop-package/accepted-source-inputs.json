@@ -1,6 +1,6 @@
 {
   "schema": "ai-canvas-accepted-sources-v1",
-  "releaseVersion": "1.0.12",
+  "releaseVersion": "1.0.13",
   "sources": [
     {
       "path": "desktop-package/tests/DocumentSessionTests/DocumentSessionTests.csproj",
@@ -283,20 +283,52 @@
       "sha256": "cba59c2ee776d4e6ed312b3da5f0fb5f3c1b911a60a06fbb2872e259e0c68419"
     },
     {
-      "path": "src/ui/canvasCardShadowVisibility.test.ts",
-      "sha256": "5fe30e86139d1e279eba9d6b4c502e2d3e64c633e12434037b89066f6b0ef4f3"
-    },
-    {
-      "path": "src/ui/canvasCardShadowVisibility.ts",
-      "sha256": "b71593c4ce4e532a159011e1d3a9e2698850a895eeb660b038689009c58c6705"
-    },
-    {
       "path": "src/ui/CanvasContextMenu.test.tsx",
       "sha256": "229755ab806e3d84539ee587269e76fd2fe4b992814b122d419a5438cf455a90"
     },
     {
       "path": "src/ui/CanvasContextMenu.tsx",
       "sha256": "02d204a8682ba5447422b51cfc330ebd9ab0daa174d62c096826a5090ebad848"
+    },
+    {
+      "path": "src/ui/CanvasToolIcon.tsx",
+      "sha256": "5bba695c9846273f83bd717ef762c019becbfc01f71f1feb3b6e8dbe96f768a1"
+    },
+    {
+      "path": "src/ui/DescriptionCanvasOverlay.tsx",
+      "sha256": "7c54d1095c3a46b2f1599e87c5bcef3a7479b39894c5d699892be57b3533088e"
+    },
+    {
+      "path": "src/ui/DescriptionCanvasOverlayAdapter.tsx",
+      "sha256": "1d66c9b1c1bf9061f78124e734ef877b636ed1a69b135eef51ee8d0edac00abd"
+    },
+    {
+      "path": "src/ui/DescriptionWorkspace.tsx",
+      "sha256": "c6334d9ae667a6128bafe4c19894fe6401a65c78ad17605f41f40f8ab396b4cd"
+    },
+    {
+      "path": "src/ui/ImageRotationFeedback.test.tsx",
+      "sha256": "0109aac7eb1001754610ec1396779c685730320d27f0c36525e9e02235ca4f43"
+    },
+    {
+      "path": "src/ui/ImageRotationFeedback.tsx",
+      "sha256": "0e1ac128271636e4db22a7bdb37073a98cc38a633411e4cc4ea98c179a2838a9"
+    },
+    {
+      "path": "src/ui/QuickAnnotationOverlay.tsx",
+      "sha256": "77d04e7efe2db65e3ac1a6e26449585109e4f3b9a674c83b17615fa28f92729d"
+    },
+    {
+      "path": "src/ui/SelectionCanvasOverlay.tsx",
+      "sha256": "08265f46f1aba6c0a361a6ab20c4b16ca3a78e1a95f7c01ca2a90f3df1b221ae"
+    },
+    {
+      "path": "src/ui/canvasCardShadowVisibility.test.ts",
+      "sha256": "5fe30e86139d1e279eba9d6b4c502e2d3e64c633e12434037b89066f6b0ef4f3"
+    },
+    {
+      "path": "src/ui/canvasCardShadowVisibility.ts",
+      "sha256": "b71593c4ce4e532a159011e1d3a9e2698850a895eeb660b038689009c58c6705"
     },
     {
       "path": "src/ui/canvasContextMenuPolicy.test.ts",
@@ -399,10 +431,6 @@
       "sha256": "d08311487e5e44b29e871862198b1d13bdb6c439e937beb7b30a8ebafedb7077"
     },
     {
-      "path": "src/ui/CanvasToolIcon.tsx",
-      "sha256": "5bba695c9846273f83bd717ef762c019becbfc01f71f1feb3b6e8dbe96f768a1"
-    },
-    {
       "path": "src/ui/canvasWorkspaceContract.test.ts",
       "sha256": "5c2fca0fe7ae3307612fbfe83ecc0e4cc6f742e0147a6b975d73a31f06725abc"
     },
@@ -425,14 +453,6 @@
     {
       "path": "src/ui/contextInformationSelection.ts",
       "sha256": "2490b5366869811359dc8e73b34313b93c0a4054359b868e7e17442c7ba52bf4"
-    },
-    {
-      "path": "src/ui/DescriptionCanvasOverlay.tsx",
-      "sha256": "7c54d1095c3a46b2f1599e87c5bcef3a7479b39894c5d699892be57b3533088e"
-    },
-    {
-      "path": "src/ui/DescriptionCanvasOverlayAdapter.tsx",
-      "sha256": "1d66c9b1c1bf9061f78124e734ef877b636ed1a69b135eef51ee8d0edac00abd"
     },
     {
       "path": "src/ui/descriptionCanvasSelectionAdapter.test.ts",
@@ -483,10 +503,6 @@
       "sha256": "64c44fd8d1597686a7c1b22cf5db6904c81fe0b5b3a4f8b6feb69a375b325626"
     },
     {
-      "path": "src/ui/DescriptionWorkspace.tsx",
-      "sha256": "c6334d9ae667a6128bafe4c19894fe6401a65c78ad17605f41f40f8ab396b4cd"
-    },
-    {
       "path": "src/ui/descriptionWorkspaceInteraction.test.ts",
       "sha256": "4fd7dd8524515af7126272a921388ac1044252a594c79a6ba3b53c472fd4a57f"
     },
@@ -535,16 +551,12 @@
       "sha256": "78b9390436b66fef95677cf1dde7dba2a3181ba3eac9b75f22cc2ed63c4adb64"
     },
     {
-      "path": "src/ui/ImageRotationFeedback.test.tsx",
-      "sha256": "0109aac7eb1001754610ec1396779c685730320d27f0c36525e9e02235ca4f43"
-    },
-    {
-      "path": "src/ui/ImageRotationFeedback.tsx",
-      "sha256": "0e1ac128271636e4db22a7bdb37073a98cc38a633411e4cc4ea98c179a2838a9"
-    },
-    {
       "path": "src/ui/importViewContract.test.ts",
       "sha256": "3c9b01ac32b24a3efaabc53a616cc7a02309684dd8bd707e3c04c08c09a2902b"
+    },
+    {
+      "path": "src/ui/nativeDisplay.css",
+      "sha256": "a526b999b495a38687459bde650cbf33bba60c7ab2fc00df9a066b2593148bc0"
     },
     {
       "path": "src/ui/nativeToolShortcutGuard.test.ts",
@@ -555,16 +567,16 @@
       "sha256": "5c7b108e7de73676df8359039e75c0346e5e544b36123d1b825536661ab8bdfe"
     },
     {
+      "path": "src/ui/productionDiagnosticsIsolation.test.ts",
+      "sha256": "5f474b4f00a1c2a3812a0d5a0f85a747c9606d1ffd4051f930d8f57d51ef96a4"
+    },
+    {
       "path": "src/ui/quickAnnotationConnector.test.ts",
       "sha256": "909d49dca02d78f895f3b4c9a472246426201ffd471d1c5cfe10ad71eeea6736"
     },
     {
       "path": "src/ui/quickAnnotationConnector.ts",
       "sha256": "8fa8bc07b04957290c934b9e3c4427dbb7e7f2bc2b1882b36d03040998e13423"
-    },
-    {
-      "path": "src/ui/QuickAnnotationOverlay.tsx",
-      "sha256": "77d04e7efe2db65e3ac1a6e26449585109e4f3b9a674c83b17615fa28f92729d"
     },
     {
       "path": "src/ui/quickAnnotationPreview.test.ts",
@@ -579,16 +591,16 @@
       "sha256": "24409a556974b900d8a4684320760fba420a1d6687f317f39ad1aa12d7518d56"
     },
     {
+      "path": "src/ui/quickAnnotationVisualInteraction.test.ts",
+      "sha256": "eb030911c5b1a2bd95489c23c3c90872845ed8c1ff4d721f8774073d6c9f27f5"
+    },
+    {
       "path": "src/ui/quickAnnotations.test.ts",
       "sha256": "bf860e8dd671c800786020de58d57df0b6ae08be5491d69ed8658d2e49b9bb8b"
     },
     {
       "path": "src/ui/quickAnnotations.ts",
       "sha256": "2b2c22dc78c9bec8339f123c85f58f802f275d7656128835827c83f5715997be"
-    },
-    {
-      "path": "src/ui/quickAnnotationVisualInteraction.test.ts",
-      "sha256": "eb030911c5b1a2bd95489c23c3c90872845ed8c1ff4d721f8774073d6c9f27f5"
     },
     {
       "path": "src/ui/rotationFeedbackPresentation.test.ts",
@@ -607,10 +619,6 @@
       "sha256": "6895fdd7d8d8bda24aca67b2a6d3e5246ebedbfbebc69dd1dd19fca5966fe32f"
     },
     {
-      "path": "src/ui/SelectionCanvasOverlay.tsx",
-      "sha256": "5d88462c322c98cb1bc1198c107d3e42cd2246d66fc69d2304f8ec858fc842cd"
-    },
-    {
       "path": "src/ui/selectionGeometry.test.ts",
       "sha256": "30d14b1271ea0675c2edcd8f205f34c4952a68fb93481f2fbe3ca91bcf8c630c"
     },
@@ -620,11 +628,11 @@
     },
     {
       "path": "src/ui/selectionOcclusion.test.ts",
-      "sha256": "671011027759456eb11548bd3e57ea8990ced7f19f985a60de93cddb91b0f389"
+      "sha256": "35eef6c6b5327f4da01f460a15a3a6ffde90e0c182b1d6f4a9baa6da5a6e2976"
     },
     {
       "path": "src/ui/selectionOcclusion.ts",
-      "sha256": "84afca37fe946fcbfedf09e3d9e74dea9eda51d255f01d45875ef71af77d682b"
+      "sha256": "f8ec3ea1f0ec7adda394dcef0947782e73ab7cbd2b02c7f507054dd0a7473109"
     },
     {
       "path": "src/ui/selectionOrdinalBadge.test.ts",
@@ -643,6 +651,10 @@
       "sha256": "c8e1b1aed9b883607dec41a39d27e77ad64af0d952f59f43c2b3e6a8f8961baf"
     },
     {
+      "path": "src/ui/selectionOverlapInteraction.test.tsx",
+      "sha256": "ed0e2532b7cb7f8f0a5edd1b8d4ace45d3f854da47700c967821e91fb7bb538e"
+    },
+    {
       "path": "src/ui/selectionOverlayContract.test.ts",
       "sha256": "194ae436c4d90b294532f66ff9eba3bb9ed2b810aafe07e0dab1bd1f8ee97e32"
     },
@@ -653,6 +665,10 @@
     {
       "path": "src/ui/selectionPathDraft.ts",
       "sha256": "2e8e8a9bf137189b453ecad4bdae9ccbb09cab83012207b2fb7185e2a687f23e"
+    },
+    {
+      "path": "src/ui/selectionPreviewMasks.test.tsx",
+      "sha256": "59fa4c49a261814b2a57984fe97853baffd482fb49b929653e447262c9208623"
     },
     {
       "path": "src/ui/selectionToolFocus.test.ts",
@@ -827,25 +843,14 @@
       "sha256": "872966c65002cbfc8de764d5dd76c9246fce1c942ddb70e7da85e10b6f8447e0"
     },
     {
-      "path": "webview-host/tests/HostContract.Tests.ps1",
-      "sha256": "d797e8476db602224daf91904500d36506fdb40edf3eda0074039372df69aac3"
-    },
-    {
-      "path": "src/ui/selectionOverlapInteraction.test.tsx",
-      "sha256": "ed0e2532b7cb7f8f0a5edd1b8d4ace45d3f854da47700c967821e91fb7bb538e"
-    },
-    {
-      "path": "src/ui/productionDiagnosticsIsolation.test.ts",
-      "sha256": "5f474b4f00a1c2a3812a0d5a0f85a747c9606d1ffd4051f930d8f57d51ef96a4"
-    },
-    {
-      "path": "src/ui/nativeDisplay.css",
-      "sha256": "a526b999b495a38687459bde650cbf33bba60c7ab2fc00df9a066b2593148bc0"
-    },
-    {
       "path": "webview-host/AiCanvas.WebViewHost/app.manifest",
       "sha256": "cc88b9efb4e937d0b00229967e628394893bc116d1bfc42547262db506e8780f"
+    },
+    {
+      "path": "webview-host/tests/HostContract.Tests.ps1",
+      "sha256": "d797e8476db602224daf91904500d36506fdb40edf3eda0074039372df69aac3"
     }
   ],
-  "basis": "User-accepted native installation-folder picker trial: read-only location, immediate adoption on selection, unchanged path on cancel; update directory and safety checks preserved; all211 approved runtime sources and logo114/142.5 unchanged. Source-only synchronization; installer not published."
+  "basis": "Derived preview mask rendering repair; same animation parameters and editing behavior; automatic and instrumented native checks do not replace installation or user acceptance.",
+  "upstreamPublicCommit": "2647f92b23b2066b54bfab13504f8488a6c090e3"
 }

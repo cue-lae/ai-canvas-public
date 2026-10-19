@@ -279,3 +279,4 @@
 # Preserve accepted display adaptation source bytes.
 /src/ui/nativeDisplay.css -text
 /webview-host/AiCanvas.WebViewHost/app.manifest -text
+/src/ui/selectionPreviewMasks.test.tsx -text

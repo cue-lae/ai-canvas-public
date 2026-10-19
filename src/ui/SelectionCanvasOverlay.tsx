@@ -27,6 +27,9 @@ import {
   ellipseScenePoints,
   higherImageElementsFor,
   rotatedRectScenePoints,
+  selectionMaskBounds,
+  selectionMaskBoundsIntersect,
+  type SelectionMaskBounds,
 } from "./selectionOcclusion";
 import {
   clampScenePointToElementBounds,
@@ -216,12 +219,13 @@ export const SelectionCanvasOverlay = ({
   const rootRef = useRef<HTMLDivElement | null>(null);
   const draggingRef = useRef<SelectionDrag | null>(null);
   const creationDragRef = useRef<CreationDrag | null>(null);
-  const [panelBounds, setPanelBounds] = useState({ left: 0, top: 0 });
+  const [panelBounds, setPanelBounds] = useState({ left: 0, top: 0, width: 0, height: 0 });
   const [pathDraft, setPathDraft] = useState<readonly ScenePoint[]>([]);
   const pathDraftRef = useRef<readonly ScenePoint[]>([]);
   const [draftCursor, setDraftCursor] = useState<ScenePoint | null>(null);
   const [boxDraft, setBoxDraft] = useState<CreationDrag | null>(null);
   const [isDraggingSelection, setIsDraggingSelection] = useState(false);
+  const boundedPreview = readOnly && previewMotion !== null;
   const selections = useMemo(
     () =>
       getSelectionElements(
@@ -279,9 +283,10 @@ export const SelectionCanvasOverlay = ({
     const update = () => {
       const bounds = root.getBoundingClientRect();
       setPanelBounds((current) =>
-        current.left === bounds.left && current.top === bounds.top
+        current.left === bounds.left && current.top === bounds.top &&
+        current.width === bounds.width && current.height === bounds.height
           ? current
-          : { left: bounds.left, top: bounds.top },
+          : { left: bounds.left, top: bounds.top, width: bounds.width, height: bounds.height },
       );
     };
     update();
@@ -641,6 +646,8 @@ export const SelectionCanvasOverlay = ({
     ],
   );
   const selectionOcclusionMasks = useMemo(() => {
+    const coversByImage = new Map<string, readonly { path: string; bounds?: SelectionMaskBounds }[]>();
+    const badgeRowsByRegion = new Map(bindingBadgeRows.map((row) => [row.regionId, row]));
     const masks = new Map<
       string,
       {
@@ -648,6 +655,11 @@ export const SelectionCanvasOverlay = ({
         badgeId: string;
         selectionPath: string;
         coverPaths: readonly string[];
+        badgeCoverPaths: readonly string[];
+        bounds?: SelectionMaskBounds;
+        badgeBounds?: SelectionMaskBounds;
+        clip: boolean;
+        badgeClip: boolean;
       }
     >();
     selections.forEach((selection, index) => {
@@ -666,21 +678,41 @@ export const SelectionCanvasOverlay = ({
       const selectionPoints = selectionPointsScene.map((point) =>
         sceneToPanel(point, viewport, panelBounds),
       );
-      const coverPaths = higherImages.map((image) => {
+      const covers = (boundedPreview && coversByImage.get(selection.imageId)) || higherImages.map((image) => {
         const imagePoints = rotatedRectScenePoints(image).map((point) =>
           sceneToPanel(point, viewport, panelBounds),
         );
-        return closedPathData(imagePoints);
+        return { path: closedPathData(imagePoints), bounds: boundedPreview ? selectionMaskBounds(imagePoints, panelBounds) : undefined };
       });
+      if (boundedPreview) coversByImage.set(selection.imageId, covers);
+      const badgeRow = badgeRowsByRegion.get(selection.regionId);
+      const badgeLayout = boundedPreview && badgeRow
+        ? horizontalSelectionBadgeLayout({ ordinal: badgeRow.ordinal, bindings: badgeRow.bindings, scale: badgeRow.ordinal.scale })
+        : undefined;
+      const bounds = boundedPreview ? selectionMaskBounds(selectionPoints, panelBounds, 2) : undefined;
+      // Include the surface stroke and its 0 1px 3px drop shadow when culling.
+      const badgeBounds = badgeLayout ? selectionMaskBounds([
+        { x: badgeLayout.left, y: badgeLayout.top },
+        { x: badgeLayout.left + badgeLayout.width, y: badgeLayout.top + badgeLayout.height },
+      ], panelBounds, 12) : undefined;
+      const intersectingPaths = (target: SelectionMaskBounds | undefined) =>
+        covers.filter((cover) => !target || !cover.bounds || selectionMaskBoundsIntersect(target, cover.bounds)).map((cover) => cover.path);
+      const coverPaths = intersectingPaths(bounds);
+      const badgeCoverPaths = intersectingPaths(badgeBounds);
       masks.set(selection.regionId, {
         id: `selection-occlusion-${index}`,
         badgeId: `selection-badge-occlusion-${index}`,
         selectionPath: closedPathData(selectionPoints),
         coverPaths,
+        badgeCoverPaths,
+        bounds,
+        badgeBounds,
+        clip: boundedPreview && bounds !== undefined && coverPaths.length === 0,
+        badgeClip: boundedPreview && badgeBounds !== undefined && badgeCoverPaths.length === 0,
       });
     });
     return masks;
-  }, [elements, panelBounds, selections, viewport]);
+  }, [bindingBadgeRows, boundedPreview, elements, panelBounds, selections, viewport]);
 
   return (
     <div
@@ -715,8 +747,11 @@ export const SelectionCanvasOverlay = ({
             : cancelCreationDrag(event)
         }
       >
-
-
+        {[...selectionOcclusionMasks.values()].some((mask) => mask.clip) ? <defs>
+          <clipPath id="selection-preview-viewport" clipPathUnits="userSpaceOnUse">
+            <rect width="100%" height="100%" />
+          </clipPath>
+        </defs> : null}
         {creationTool === "path" && panelPathDraft.length > 0 && (
           <g className="selection-canvas-overlay__draft">
             <path
@@ -790,9 +825,11 @@ export const SelectionCanvasOverlay = ({
             panelBounds,
           );
           const ellipseHandles = ellipseHandleScenePoints(element);
-          const occlusionMask = selectionOcclusionMasks.get(
+          const occlusion = selectionOcclusionMasks.get(
             selection.regionId,
           );
+          const occlusionMask = occlusion?.clip ? undefined : occlusion;
+          const occlusionClip = occlusion?.clip ? occlusion : undefined;
 
           return (
             <svg
@@ -807,9 +844,15 @@ export const SelectionCanvasOverlay = ({
               onPointerUp={(event) => updateSelectionDrag(event, true)}
               onPointerCancel={(event) => updateSelectionDrag(event, true)}
             >
-              {occlusionMask ? (
+              {occlusionClip ? <defs>
+                <clipPath id={occlusionClip.id} clipPathUnits="userSpaceOnUse">
+                  <path d={occlusionClip.selectionPath} clipPath="url(#selection-preview-viewport)" />
+                </clipPath>
+              </defs> : occlusionMask ? (
                 <defs>
-                  <mask id={occlusionMask.id} maskUnits="userSpaceOnUse" x="0" y="0" width="100%" height="100%">
+                  <mask id={occlusionMask.id} maskUnits="userSpaceOnUse"
+                    x={occlusionMask.bounds?.x ?? 0} y={occlusionMask.bounds?.y ?? 0}
+                    width={occlusionMask.bounds?.width ?? "100%"} height={occlusionMask.bounds?.height ?? "100%"}>
                     <rect width="100%" height="100%" fill="black" />
                     <path d={occlusionMask.selectionPath} fill="white" />
                     {occlusionMask.coverPaths.map((path, index) => (
@@ -842,6 +885,7 @@ export const SelectionCanvasOverlay = ({
                   mask={
                     occlusionMask ? `url(#${occlusionMask.id})` : undefined
                   }
+                  clipPath={occlusionClip ? `url(#${occlusionClip.id})` : undefined}
                   data-selection-drag="move"
                   data-region-id={selection.regionId}
                   data-image-id={selection.imageId}
@@ -853,6 +897,7 @@ export const SelectionCanvasOverlay = ({
                   mask={
                     occlusionMask ? `url(#${occlusionMask.id})` : undefined
                   }
+                  clipPath={occlusionClip ? `url(#${occlusionClip.id})` : undefined}
                   data-selection-drag="move"
                   data-region-id={selection.regionId}
                   data-image-id={selection.imageId}
@@ -913,18 +958,22 @@ export const SelectionCanvasOverlay = ({
       >
         {selectionOcclusionMasks.size > 0 ? (
           <defs>
-            {[...selectionOcclusionMasks.values()].map((mask) => (
+            {[...selectionOcclusionMasks.values()].map((mask) => mask.badgeClip ? (
+              <clipPath key={mask.badgeId} id={mask.badgeId} clipPathUnits="userSpaceOnUse">
+                <rect width="100%" height="100%" />
+              </clipPath>
+            ) : (
               <mask
                 key={mask.badgeId}
                 id={mask.badgeId}
                 maskUnits="userSpaceOnUse"
-                x="0"
-                y="0"
-                width="100%"
-                height="100%"
+                x={mask.badgeBounds?.x ?? 0}
+                y={mask.badgeBounds?.y ?? 0}
+                width={mask.badgeBounds?.width ?? "100%"}
+                height={mask.badgeBounds?.height ?? "100%"}
               >
                 <rect width="100%" height="100%" fill="white" />
-                {mask.coverPaths.map((path, index) => (
+                {mask.badgeCoverPaths.map((path, index) => (
                   <path
                     key={`${mask.badgeId}-cover-${index}`}
                     d={path}
@@ -958,10 +1007,11 @@ export const SelectionCanvasOverlay = ({
                 data-region-id={row.regionId}
                 aria-label={layout.segments.map((segment) => segment.text).join("｜")}
                 mask={
-                  badgeOcclusionMask
+                  badgeOcclusionMask && !badgeOcclusionMask.badgeClip
                     ? `url(#${badgeOcclusionMask.badgeId})`
                     : undefined
                 }
+                clipPath={badgeOcclusionMask?.badgeClip ? `url(#${badgeOcclusionMask.badgeId})` : undefined}
               >
                 <rect
                   className={`selection-canvas-overlay__badge-group-surface ${
