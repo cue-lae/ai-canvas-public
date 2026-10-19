@@ -10,7 +10,7 @@ AI Canvas 是面向图片、说明与局部视觉任务的桌面画布，支持�
 - 缩小需要保留的遮罩绘制范围，排除确定不相交的遮挡；无相交遮挡时使用原生SVG裁切。
 - 保留既有动画参数、普通编辑流程、项目格式，以及1.0.12的界面和安装流程。
 
-本目录为1.0.13预览性能修复源码候选，安装包尚未公开发布。当前公开下载保持1.0.12；本轮验证范围和未完成的验收见验证记录。
+1.0.13安装包与对应源码已发布，当前公开下载为1.0.13；旧版本与附件保留。本轮验证范围、NOTICE历史文字更正和未完成的验收见验证记录。
 
 ## 1.0.12 源码更新
 
@@ -32,7 +32,7 @@ AI Canvas 是面向图片、说明与局部视觉任务的桌面画布，支持�
 
 ## 下载
 
-[下载 AI Canvas 1.0.12（Windows x64）](https://github.com/cue-lae/ai-canvas-public/releases/download/v1.0.12/AI-Canvas-1.0.12-Windows-x64.zip) · [版本说明及源码](https://github.com/cue-lae/ai-canvas-public/releases/tag/v1.0.12)
+[下载 AI Canvas 1.0.13（Windows x64）](https://github.com/cue-lae/ai-canvas-public/releases/download/v1.0.13/AI-Canvas-1.0.13-Windows-x64.zip) · [版本说明及源码](https://github.com/cue-lae/ai-canvas-public/releases/tag/v1.0.13)
 
 Windows ZIP 包含安装器、许可与第三方声明、对应源码 ZIP。安装由用户操作；请先保存并关闭画布，按安装程序的安全检查继续。旧版本在 [Releases](https://github.com/cue-lae/ai-canvas-public/releases) 保留。
 
@@ -64,4 +64,4 @@ Windows ZIP 包含安装器、许可与第三方声明、对应源码 ZIP。安�
 
 [提交问题](https://github.com/cue-lae/ai-canvas-public/issues)时请提供版本、操作步骤和可公开截图，移除个人内容与凭据。本仓库不包含内部 Git 历史、治理记录、个人画布或本机凭据。
 
-SOURCE_MANIFEST.json 记录本目录源码候选的文件摘要（自身除外）；候选说明已与原交付源码 ZIP 分开记录，原安装器及 ZIP 保持原字节。正式下载以 Release 附件及 SHA256SUMS.txt 为准。
+SOURCE_MANIFEST.json 记录本目录源码文件摘要（自身除外）；公开说明与原交付源码 ZIP 分开记录，212项应用输入一致，原安装器及 ZIP 保持原字节。正式下载以 Release 附件及 SHA256SUMS.txt 为准。
