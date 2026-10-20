@@ -1,6 +1,6 @@
 {
   "schema": "ai-canvas-accepted-sources-v1",
-  "releaseVersion": "1.0.13",
+  "releaseVersion": "1.0.14",
   "sources": [
     {
       "path": "desktop-package/tests/DocumentSessionTests/DocumentSessionTests.csproj",
@@ -524,11 +524,11 @@
     },
     {
       "path": "src/ui/folderPreviewMotion.test.ts",
-      "sha256": "16a1ac4c6d139a27f05bcfc73b7f60b73278a00542a7ccd1fb4fba5653041769"
+      "sha256": "e9e3229464cbbff89a5401617ae33353268f476639db7ea56b47083893920953"
     },
     {
       "path": "src/ui/folderPreviewMotion.ts",
-      "sha256": "57adbd66f8f1df5ada1c72b34a3a510915f4edccff8397b74009787809deef01"
+      "sha256": "c6d8104562ffae4081772db341fd54f43b1c7e45de7e7e8cb5fdfca4729ea76c"
     },
     {
       "path": "src/ui/folderPreviewPresentation.test.ts",
@@ -851,6 +851,6 @@
       "sha256": "d797e8476db602224daf91904500d36506fdb40edf3eda0074039372df69aac3"
     }
   ],
-  "basis": "Derived preview mask rendering repair; same animation parameters and editing behavior; automatic and instrumented native checks do not replace installation or user acceptance.",
-  "upstreamPublicCommit": "2647f92b23b2066b54bfab13504f8488a6c090e3"
+  "basis": "Native preview readiness repair: prepare the same paused effects while actual images decode, then resume the existing group. Preserve animation parameters and prior masks; native readiness is not a GPU presentation fence. Source synchronization preparation only; formal installation and user acceptance remain separate.",
+  "upstreamPublicCommit": "8d96343fffaa9fcb5003d7ee231bf842235087cd"
 }

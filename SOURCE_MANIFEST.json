@@ -1,10 +1,10 @@
 {
-  "releaseVersion": "1.0.13",
+  "releaseVersion": "1.0.14",
   "revision": "r1",
-  "date": "2026-10-19",
+  "date": "2026-10-20",
   "license": "GPL-3.0-only",
   "publicAttribution": "cue-lae",
-  "basis": "Published original 1.0.13 installer; 212 runtime inputs retained; published download entry and external NOTICE legacy-text erratum recorded; formal installation and user acceptance remain separate",
+  "basis": "1.0.14 native preview readiness source synchronized for authorized original installer publication; 212 runtime inputs retained; download entry updated after verified publication; formal installation and user acceptance remain separate",
   "manifestSelfExcluded": true,
   "files": [
     {
@@ -29,8 +29,8 @@
     },
     {
       "path": "README.md",
-      "size": 4418,
-      "sha256": "f69c46f3f458252b72c0e6cb49ca338c524958f412f9789c517ccf5d5ec81596"
+      "size": 5053,
+      "sha256": "9bcb309969649f3fe3417a0d82a7ae7976e12940e5d02b87f9144e56a658811a"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",
@@ -54,8 +54,8 @@
     },
     {
       "path": "desktop-package/accepted-source-inputs.json",
-      "size": 33434,
-      "sha256": "f3baf3187058f4246cc6633e0b95962684b5399a216f0a76a0f26fc3b339ba62"
+      "size": 33578,
+      "sha256": "aa632bc68d61a28d38f43c68cb74c27d1ab15e5e5cd3a628e7097b62d220361a"
     },
     {
       "path": "desktop-package/accepted-source-policy.mjs",
@@ -345,7 +345,7 @@
     {
       "path": "desktop-package/release.json",
       "size": 60,
-      "sha256": "cdd55c90da952d1f34218293dab43cfbb2ebf833449c77c347828fde55bc331b"
+      "sha256": "a853a2ccc417bfbdb5802d6541ae1ee3cbb527a0568d857f2330cb190c03f8f8"
     },
     {
       "path": "desktop-package/tests/DocumentSessionTests/DocumentSessionTests.csproj",
@@ -454,8 +454,8 @@
     },
     {
       "path": "docs/VERIFICATION.md",
-      "size": 9296,
-      "sha256": "69a12088d72c18479a50c23550856984a86649791194ffb0b6a7e1762e3546f9"
+      "size": 10854,
+      "sha256": "e04eb1caff1aaecf73d679ee20a6328e3e4b1f9a07510950ad0ce79e5c98af0a"
     },
     {
       "path": "index.html",
@@ -1159,13 +1159,13 @@
     },
     {
       "path": "src/ui/folderPreviewMotion.test.ts",
-      "size": 5237,
-      "sha256": "16a1ac4c6d139a27f05bcfc73b7f60b73278a00542a7ccd1fb4fba5653041769"
+      "size": 12971,
+      "sha256": "e9e3229464cbbff89a5401617ae33353268f476639db7ea56b47083893920953"
     },
     {
       "path": "src/ui/folderPreviewMotion.ts",
-      "size": 2899,
-      "sha256": "57adbd66f8f1df5ada1c72b34a3a510915f4edccff8397b74009787809deef01"
+      "size": 4813,
+      "sha256": "c6d8104562ffae4081772db341fd54f43b1c7e45de7e7e8cb5fdfca4729ea76c"
     },
     {
       "path": "src/ui/folderPreviewPresentation.test.ts",
@@ -3338,6 +3338,5 @@
       "sha256": "fbf3344788e99620cfa7e399ef1caa4f1f22d12913cf0a62d8a8191c8f3eec84"
     }
   ],
-  "upstreamPublicCommit": "2647f92b23b2066b54bfab13504f8488a6c090e3",
-  "releaseSourceCommit": "475d6d872bbf845e550d1cb801dbd64378c9c799"
+  "upstreamPublicCommit": "8d96343fffaa9fcb5003d7ee231bf842235087cd"
 }
