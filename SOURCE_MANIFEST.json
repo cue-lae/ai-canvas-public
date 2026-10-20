@@ -4,7 +4,7 @@
   "date": "2026-10-20",
   "license": "GPL-3.0-only",
   "publicAttribution": "cue-lae",
-  "basis": "1.0.14 native preview readiness source synchronized for authorized original installer publication; 212 runtime inputs retained; download entry updated after verified publication; formal installation and user acceptance remain separate",
+  "basis": "Published original 1.0.14 installer and matching source; 212 runtime inputs retained; full anonymous asset verification and NOTICE legacy-text erratum recorded; formal installation and user acceptance remain separate",
   "manifestSelfExcluded": true,
   "files": [
     {
@@ -29,8 +29,8 @@
     },
     {
       "path": "README.md",
-      "size": 5053,
-      "sha256": "9bcb309969649f3fe3417a0d82a7ae7976e12940e5d02b87f9144e56a658811a"
+      "size": 4974,
+      "sha256": "9947ea67f51fc9fe04b4f27872b74ac836791e0de0637e6f2a6cb0e4f5a7e427"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",
@@ -454,8 +454,8 @@
     },
     {
       "path": "docs/VERIFICATION.md",
-      "size": 10854,
-      "sha256": "e04eb1caff1aaecf73d679ee20a6328e3e4b1f9a07510950ad0ce79e5c98af0a"
+      "size": 12574,
+      "sha256": "93c4645ee08a9a72075ea38fedc92f4bd01ec92d7540e1e7d2e78a72c4518582"
     },
     {
       "path": "index.html",
@@ -3338,5 +3338,6 @@
       "sha256": "fbf3344788e99620cfa7e399ef1caa4f1f22d12913cf0a62d8a8191c8f3eec84"
     }
   ],
-  "upstreamPublicCommit": "8d96343fffaa9fcb5003d7ee231bf842235087cd"
+  "upstreamPublicCommit": "8d96343fffaa9fcb5003d7ee231bf842235087cd",
+  "releaseSourceCommit": "5b4931b047806978b23a765a8857087fe9c936cd"
 }
