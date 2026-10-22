@@ -1,10 +1,10 @@
 {
   "releaseVersion": "1.0.16",
-  "revision": "release-r1",
+  "revision": "published-download-docs-r1",
   "date": "2026-10-23",
   "license": "GPL-3.0-only",
   "publicAttribution": "cue-lae",
-  "basis": "Cumulative application source synchronization and nine actual UI screenshots. Original installer/source/Windows archives retained; third-party photograph credits remain separate.",
+  "basis": "Published original 1.0.16 installer archives, cumulative source and nine actual UI screenshots; server digests and full anonymous downloads verified, prior releases and tags preserved. Installation lifecycle remains separate.",
   "manifestSelfExcluded": true,
   "files": [
     {
@@ -494,8 +494,8 @@
     },
     {
       "path": "docs/VERIFICATION.md",
-      "size": 15001,
-      "sha256": "1a40a8c6b762b284f82fd01310d1c7cfb95d067b1b30ce2ea30743e37df87fe8"
+      "size": 16623,
+      "sha256": "d1618449929f5af2ba3dabddf711f3ece5dd183ba5cc8491e778bb8333689742"
     },
     {
       "path": "index.html",
@@ -529,8 +529,8 @@
     },
     {
       "path": "README.md",
-      "size": 6114,
-      "sha256": "ff8ff36946087f78fa169b4b324f7fee8b26b3ffff73fae934fcaf39fbb6a479"
+      "size": 6099,
+      "sha256": "934cf6948de1185544767749d2f73c87a51287e547f70d3c35dd9dc5db7f697d"
     },
     {
       "path": "scripts/ai-canvas-local.mjs",
@@ -590,7 +590,7 @@
     {
       "path": "SOURCE-INPUTS.json",
       "size": 126019,
-      "sha256": "00dcf543452dd4b521ee307ee48b1914a8b6e599cc242bb2bed0e403f2e4066c"
+      "sha256": "e786cb5cd885581939d5550016fdf95d0476601778c7339f6a675484165cc2a7"
     },
     {
       "path": "SOURCE-README-PROVENANCE.json",

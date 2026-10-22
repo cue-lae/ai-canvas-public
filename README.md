@@ -14,7 +14,7 @@ AI Canvas 是面向图片、说明与局部视觉任务的桌面画布，支持�
 
 本次累计包含此前仅本地交付的 1.0.15 改动，无须另发 1.0.15。查看[九组实际界面截图](docs/releases/1.0.16/SCREENSHOTS.md)和[验证记录](docs/VERIFICATION.md)。
 
-1.0.16 正在准备公开同步，尚未发布安装包；下方下载入口仍保留当前已发布的 1.0.14。公开 Git 目录使用 `SOURCE_MANIFEST.json` 核对完整文件，`SOURCE-INPUTS.json` 核对当前源码输入。原 1.0.16 源码 ZIP 则由其包内 `SOURCE-INPUTS.json` 记录 676 项，不含 repo 专用的 `SOURCE_MANIFEST.json`。两者因公开说明和清单适配存在元数据差异，应用源码相同。
+1.0.16 安装包、对应源码和九张实际界面截图已发布，下方下载入口已更新到 1.0.16。公开 Git 目录使用 `SOURCE_MANIFEST.json` 核对完整文件，`SOURCE-INPUTS.json` 核对当前源码输入。原 1.0.16 源码 ZIP 则由其包内 `SOURCE-INPUTS.json` 记录 676 项，不含 repo 专用的 `SOURCE_MANIFEST.json`。两者因公开说明和清单适配存在元数据差异，应用源码相同。
 
 ## 1.0.14 预览动画时序修复
 
@@ -22,7 +22,7 @@ AI Canvas 是面向图片、说明与局部视觉任务的桌面画布，支持�
 - 取消过期的异步准备，保留关闭、反向及减少动态效果路径；沿用既有时长、缓动、错峰和遮罩性能修复。
 - 预览场景、布局、项目格式及普通编辑保持；原生就绪并不等于每个GPU呈现帧均已验证。
 
-1.0.14安装包与对应源码已发布，当前公开下载为1.0.14；旧版本、附件和标签保留。验证范围、NOTICE历史文字更正及未完成的正式安装验收见验证记录。
+1.0.14安装包与对应源码作为历史版本保留；旧版本、附件和标签均保留。验证范围、NOTICE历史文字更正及未完成的正式安装验收见验证记录。
 
 ## 1.0.13 预览性能修复
 
@@ -52,7 +52,7 @@ AI Canvas 是面向图片、说明与局部视觉任务的桌面画布，支持�
 
 ## 下载
 
-[下载 AI Canvas 1.0.14（Windows x64）](https://github.com/cue-lae/ai-canvas-public/releases/download/v1.0.14/AI-Canvas-1.0.14-Windows-x64.zip) · [版本说明及源码](https://github.com/cue-lae/ai-canvas-public/releases/tag/v1.0.14)
+[下载 AI Canvas 1.0.16（Windows x64）](https://github.com/cue-lae/ai-canvas-public/releases/download/v1.0.16/AI-Canvas-1.0.16-Windows-x64.zip) · [版本说明及源码](https://github.com/cue-lae/ai-canvas-public/releases/tag/v1.0.16)
 
 Windows ZIP 包含安装器、许可与第三方声明、对应源码 ZIP。安装由用户操作；请先保存并关闭画布，按安装程序的安全检查继续。旧版本在 [Releases](https://github.com/cue-lae/ai-canvas-public/releases) 保留。
 

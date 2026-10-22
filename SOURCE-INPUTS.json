@@ -489,8 +489,8 @@
     },
     {
       "path": "docs/VERIFICATION.md",
-      "size": 15001,
-      "sha256": "1a40a8c6b762b284f82fd01310d1c7cfb95d067b1b30ce2ea30743e37df87fe8"
+      "size": 16623,
+      "sha256": "d1618449929f5af2ba3dabddf711f3ece5dd183ba5cc8491e778bb8333689742"
     },
     {
       "path": "index.html",
@@ -524,8 +524,8 @@
     },
     {
       "path": "README.md",
-      "size": 6114,
-      "sha256": "ff8ff36946087f78fa169b4b324f7fee8b26b3ffff73fae934fcaf39fbb6a479"
+      "size": 6099,
+      "sha256": "934cf6948de1185544767749d2f73c87a51287e547f70d3c35dd9dc5db7f697d"
     },
     {
       "path": "scripts/ai-canvas-local.mjs",
