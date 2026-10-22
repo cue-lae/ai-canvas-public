@@ -1,6 +1,6 @@
 {
   "name": "ai-canvas-native-trial",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "AI Canvas：读取主动交接的画布，并按精确选区进行视觉编辑。",
   "author": {
     "name": "AI Canvas project"

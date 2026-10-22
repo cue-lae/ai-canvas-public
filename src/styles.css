@@ -710,7 +710,7 @@ pre {
   .description-overview-list
   button.is-active {
   border-color: transparent;
-  color: #4c4753;
+  color: var(--canvas-muted-text);
   background: transparent;
 }
 
@@ -724,9 +724,26 @@ pre {
   .context-panel-content
   .description-overview-list
   button:focus-visible {
-  border-color: #d9d0e6;
-  color: #4c4753;
-  background: #f1edf7;
+  border-color: transparent;
+  border-radius: 9px;
+  color: var(--canvas-muted-text);
+  background: color-mix(in srgb, var(--canvas-accent-surface) 42%, transparent);
+}
+
+.app-shell--overview-reference .context-panel--bottom.is-expanded
+  .context-panel-content .description-overview-list button:focus-visible {
+  outline: 2px solid var(--canvas-accent);
+  outline-offset: 2px;
+}
+
+.app-shell--overview-reference .context-panel--bottom.is-expanded
+  .context-panel-content .description-overview-list strong {
+  color: var(--canvas-muted-text);
+  font-size: var(--ui-font-caption, 8px);
+  font-weight: 750;
+  line-height: var(--ui-line-caption, inherit);
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .description-overview-list span,
@@ -3477,7 +3494,7 @@ body {
   border-radius: 7px;
   padding: var(--ui-field-padding-block, 5px) var(--ui-field-padding-inline, 7px) var(--ui-field-padding-block, 5px) var(--ui-field-padding-inline, 7px);
   color: var(--canvas-text);
-  background: var(--canvas-surface);
+  background: transparent;
   font-size: var(--ui-font-body, 10px);
   line-height: var(--ui-line-body, inherit);
 }
@@ -3508,9 +3525,13 @@ body {
 .description-workspace__image-group {
   display: grid;
   gap: var(--ui-compact-gap, 5px);
-  border: 1px solid var(--canvas-border);
+  border: 1px solid transparent;
   border-radius: 9px;
   padding: var(--ui-action-gap, 6px);
+}
+
+.description-workspace.has-content-underlay .description-workspace__image-group {
+  border-color: color-mix(in srgb, var(--canvas-muted-text) 22%, transparent);
 }
 
 .description-workspace__image-summary {
@@ -3530,7 +3551,13 @@ body {
 .description-workspace__image-summary:hover:not(:disabled),
 .description-workspace__image-summary:focus-visible {
   color: var(--canvas-accent-text);
-  background: color-mix(in srgb, var(--canvas-accent-surface) 72%, transparent);
+  background: color-mix(in srgb, var(--canvas-accent-surface) 42%, transparent);
+}
+
+.description-workspace__image-summary:focus-visible,
+.description-workspace__scope-row > button:focus-visible {
+  outline: 2px solid var(--canvas-accent);
+  outline-offset: 2px;
 }
 
 .description-workspace__image-summary img,
@@ -3571,7 +3598,7 @@ body {
 
 .description-workspace__scope-row > button {
   min-height: var(--ui-control-size, 27px);
-  border: 1px solid var(--canvas-border);
+  border: 1px solid transparent;
   border-radius: 7px;
   padding: var(--ui-button-padding-block, 4px) var(--ui-button-padding-inline, 7px) var(--ui-button-padding-block, 4px) var(--ui-button-padding-inline, 7px);
   color: var(--canvas-text);
@@ -3581,52 +3608,24 @@ body {
   line-height: var(--ui-line-body, inherit);
 }
 
-.description-workspace.has-content-underlay
-  .description-workspace__scope-row
-  > button:not(.description-workspace__scope-toggle),
-.description-workspace.has-content-underlay
-  .description-workspace__scope-row:not(.is-linked)
-  > .description-workspace__scope-toggle {
-  background: color-mix(in srgb, var(--canvas-raised) 53%, transparent);
-}
-
-.description-workspace__scope-row > button:not(.description-workspace__scope-toggle) {
-  background: transparent;
-}
-
-.description-workspace:not(.has-content-underlay)
-  .description-workspace__scope-row
-  > button:not(.description-workspace__scope-toggle):hover:not(:disabled),
-.description-workspace:not(.has-content-underlay)
-  .description-workspace__scope-row
-  > button:not(.description-workspace__scope-toggle):focus-visible {
-  border-color: color-mix(in srgb, var(--canvas-accent) 56%, var(--canvas-border));
-  color: var(--canvas-accent-text);
-  background: color-mix(in srgb, var(--canvas-accent-surface) 72%, transparent);
+.description-workspace__scope-row > button:hover:not(:disabled),
+.description-workspace__scope-row > button:focus-visible {
+  border-color: transparent;
+  background: color-mix(in srgb, var(--canvas-accent-surface) 42%, transparent);
 }
 
 .description-workspace__scope-row > .description-workspace__scope-toggle {
-  min-width: 50px;
-  color: var(--canvas-accent-text);
+  /* Retain the original body-sized action's hit area after using caption text. */
+  min-width: max(50px, calc(var(--ui-font-body, 10px) * 2 + var(--ui-button-padding-inline, 7px) * 2 + 2px));
+  color: var(--canvas-muted-text);
+  font-size: var(--ui-font-caption, 11px);
+  font-weight: 750;
+  line-height: var(--ui-line-caption, inherit);
   text-align: center;
-  background: transparent;
-}
-
-.description-workspace:not(.has-content-underlay)
-  .description-workspace__scope-row
-  > .description-workspace__scope-toggle:hover:not(:disabled),
-.description-workspace:not(.has-content-underlay)
-  .description-workspace__scope-row
-  > .description-workspace__scope-toggle:focus-visible {
-  border-color: color-mix(in srgb, var(--canvas-accent) 56%, var(--canvas-border));
-  color: var(--canvas-accent-text);
-  background: color-mix(in srgb, var(--canvas-accent-surface) 72%, transparent);
 }
 
 .description-workspace__scope-row.is-linked > .description-workspace__scope-toggle {
-  border-color: color-mix(in srgb, var(--canvas-accent) 56%, var(--canvas-border));
-  color: var(--canvas-accent-text);
-  background: color-mix(in srgb, var(--canvas-accent-surface) 72%, transparent);
+  min-width: max(50px, calc(var(--ui-font-body, 10px) * 3 + var(--ui-button-padding-inline, 7px) * 2 + 2px));
 }
 
 .context-panel--bottom {
@@ -6004,50 +6003,9 @@ body {
   backdrop-filter: blur(16px);
 }
 
-.folder-workspace-preview-actions {
-  position: absolute;
-  z-index: 1;
-  top: var(--ui-folder-actions-top, -34px);
-  left: var(--ui-folder-actions-left, 8px);
-  display: flex;
-  width: var(--ui-folder-actions-width, auto);
-  gap: var(--ui-action-gap, 6px);
-  transform: var(--ui-folder-actions-transform, none);
-  transform-origin: var(--ui-folder-actions-origin, 50% 50%);
-}
-
-.folder-workspace-preview-actions.is-low-zoom {
-  z-index: 6;
-  top: var(--ui-folder-actions-top, -27px);
-  left: var(--ui-folder-actions-left, 5px);
-  gap: var(--ui-action-gap, 3px);
-  transform: var(--ui-folder-actions-transform, scale(max(0.55, var(--folder-scene-scale, 1))));
-  transform-origin: var(--ui-folder-actions-origin, left bottom);
-}
-
 .folder-workspace-layer[data-folder-layer="preview"]
   .folder-workspace-item.is-selected {
   z-index: 60;
-}
-
-.folder-workspace-layer[data-folder-layer="preview"]
-  .folder-workspace-item.is-selected
-  .folder-workspace-preview-actions {
-  z-index: 61;
-}
-
-.folder-workspace-preview-actions.is-low-zoom .folder-workspace-enter,
-.folder-workspace-preview-actions.is-low-zoom .folder-workspace-remove,
-.folder-workspace-preview-actions.is-low-zoom .folder-workspace-ungroup {
-  width: var(--ui-folder-action-width, auto) !important;
-  min-width: var(--ui-button-min-width, 0) !important;
-  min-height: var(--ui-control-size, 0) !important;
-  height: var(--ui-control-size, 22px);
-  border-radius: 11px;
-  padding: var(--ui-button-padding-block, 2px) var(--ui-button-padding-inline, 6px) var(--ui-button-padding-block, 2px) var(--ui-button-padding-inline, 6px);
-  font-size: var(--ui-font-body, 8px);
-  line-height: var(--ui-line-body, 1);
-  box-shadow: 0 3px 8px color-mix(in srgb, var(--canvas-shadow) 8%, transparent);
 }
 
 .folder-workspace-actions {
@@ -6055,10 +6013,7 @@ body {
   gap: 6px;
 }
 
-.folder-workspace-enter,
-.folder-workspace-collapse,
-.folder-workspace-remove,
-.folder-workspace-ungroup {
+.folder-workspace-collapse {
   width: var(--ui-folder-action-width, max-content);
   min-width: var(--ui-button-min-width, auto);
   flex-shrink: var(--ui-control-flex-shrink, 1);
@@ -6068,24 +6023,6 @@ body {
   font-size: var(--ui-font-body, 10px);
   box-shadow: 0 8px 20px color-mix(in srgb, var(--canvas-shadow) 7%, transparent);
   line-height: var(--ui-line-body, inherit);
-}
-
-.folder-workspace-enter {
-  border: 1px solid color-mix(in srgb, var(--canvas-text) 82%, transparent);
-  color: var(--canvas-background);
-  background: color-mix(in srgb, var(--canvas-text) 92%, black);
-}
-
-.folder-workspace-remove {
-  border: 1px solid var(--canvas-border);
-  color: var(--canvas-text);
-  background: var(--canvas-raised);
-}
-
-.folder-workspace-ungroup {
-  border: 1px solid var(--canvas-border);
-  color: var(--canvas-text);
-  background: var(--canvas-raised);
 }
 
 .folder-workspace-collapse {
@@ -6123,71 +6060,6 @@ body {
 
 .folder-description-item.is-empty-at-100 {
   height: 135px;
-}
-
-.folder-workspace-more {
-  width: var(--ui-control-size, 28px);
-  min-width: var(--ui-icon-control-min-width, auto);
-  flex-shrink: var(--ui-control-flex-shrink, 1);
-  height: var(--ui-control-size, 28px);
-  min-height: var(--ui-control-size, 0);
-  padding: 0;
-  border: 0;
-  border-radius: 50%;
-  color: var(--canvas-text);
-  background: transparent;
-  box-shadow: none;
-  font-size: 20px;
-  line-height: 1;
-}
-
-.folder-workspace-more:hover {
-  background: var(--canvas-accent-surface);
-  color: var(--canvas-accent-text);
-}
-
-.folder-preview-management {
-  position: absolute;
-  z-index: 2;
-  top: calc(100% + 6px);
-  left: 0;
-  min-width: var(--ui-width-folder-menu, 112px);
-  padding: var(--ui-menu-container-padding, 5px);
-  border: 1px solid var(--canvas-border);
-  border-radius: 9px;
-  background: var(--canvas-card);
-  box-shadow: 0 8px 20px color-mix(in srgb, var(--canvas-shadow) 12%, transparent);
-  width: var(--ui-width-folder-menu, auto);
-  max-width: var(--ui-panel-max-width, none);
-  max-height: var(--ui-panel-max-height, none);
-  overflow-y: var(--ui-panel-overflow, visible);
-  --ui-folder-action-width: var(--ui-folder-menu-item-width, auto);
-}
-
-.folder-workspace-preview-actions .folder-preview-management button {
-  display: block;
-  width: 100%;
-  min-height: var(--ui-menu-row-min-height, var(--ui-control-size, 30px));
-  border: 0;
-  border-radius: 5px;
-  padding: var(--ui-menu-padding-block, 5px) var(--ui-menu-padding-inline, 10px) var(--ui-menu-padding-block, 5px) var(--ui-menu-padding-inline, 10px);
-  background: transparent;
-  box-shadow: none;
-  color: var(--canvas-text);
-  font-size: var(--ui-font-body, 12px);
-  text-align: left;
-  line-height: var(--ui-line-body, inherit);
-}
-
-.folder-workspace-preview-actions .folder-preview-management button:hover {
-  background: var(--canvas-accent-surface);
-}
-
-.folder-workspace-preview-actions .folder-preview-management .folder-workspace-remove {
-  margin-top: var(--ui-compact-gap, 5px);
-  border-top: 1px solid var(--canvas-border);
-  border-radius: 0 0 5px 5px;
-  color: var(--danger, #c64b60);
 }
 
 .folder-description-item.is-low-zoom {
@@ -6845,7 +6717,7 @@ body {
 .app-shell--overview-reference
   .context-panel--bottom.is-expanded
   .context-panel-content {
-  grid-template-columns: var(--ui-read-grid-template, repeat(3, minmax(0, 1fr)));
+  grid-template-columns: var(--ui-read-grid-template, repeat(auto-fit, minmax(min(100%, 208px), 1fr)));
   align-items: start;
   gap: var(--ui-panel-gap, 18px);
   overflow: auto;
@@ -7137,6 +7009,39 @@ body {
   height: 100%;
   gap: var(--ui-panel-gap, 12px);
   padding: var(--ui-panel-padding, 22px var(--description-content-inline-padding, 18px) 20px);
+  scrollbar-color: color-mix(in srgb, var(--canvas-muted-text) 72%, transparent) transparent;
+}
+
+/* Only the empty scope hint consumes spare space; long content keeps the
+   existing detail scrollport and all preceding controls in normal flow. */
+.app-shell.has-description-editor .description-workspace__surface:has(.description-workspace__empty-scopes) {
+  grid-template-rows: minmax(0, 1fr);
+}
+
+.app-shell.has-description-editor .description-workspace__detail:has(.description-workspace__empty-scopes) {
+  grid-template-rows: auto auto auto minmax(max-content, 1fr);
+}
+
+.app-shell.has-description-editor .description-workspace__scopes:has(.description-workspace__empty-scopes) {
+  grid-template-rows: auto minmax(max-content, 1fr);
+}
+
+.app-shell.has-description-editor .description-workspace__scope-groups:has(.description-workspace__empty-scopes) {
+  align-content: end;
+  padding-inline: var(--ui-button-padding-inline, 4px);
+}
+
+.app-shell.has-description-editor .description-workspace__detail::-webkit-scrollbar,
+.app-shell.has-description-editor .description-workspace__detail::-webkit-scrollbar-track,
+.app-shell.has-description-editor .description-workspace__detail::-webkit-scrollbar-track-piece,
+.app-shell.has-description-editor .description-workspace__detail::-webkit-scrollbar-button,
+.app-shell.has-description-editor .description-workspace__detail::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+.app-shell.has-description-editor .description-workspace__detail::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--canvas-muted-text) 72%, transparent);
 }
 
 .app-shell.has-description-editor .description-workspace__detail-heading {
@@ -7190,6 +7095,10 @@ body {
   min-height: var(--ui-control-size, 44px);
   align-items: center;
   padding: var(--ui-button-padding-block, 0) var(--ui-button-padding-inline, 4px);
+}
+
+.app-shell.has-description-editor .description-workspace__section-heading {
+  border-radius: 8px;
 }
 
 .app-shell.has-description-editor .description-workspace__reference > button:hover,
@@ -7285,16 +7194,10 @@ body {
   }
 }
 
-/* Preview controls must stay above the temporary image motion layer. */
+/* The selected preview cover stays above the temporary image motion layer. */
 .folder-workspace-layer[data-folder-layer="preview"]
   .folder-workspace-item.is-selected {
   z-index: 60 !important;
-}
-
-.folder-workspace-layer[data-folder-layer="preview"]
-  .folder-workspace-item.is-selected
-  .folder-workspace-preview-actions {
-  z-index: 61 !important;
 }
 
 /* Align status text with the description content, including its inner inset. */
@@ -7457,4 +7360,289 @@ body {
 .canvas-context-menu > button.is-danger { color: var(--canvas-danger); }
 .canvas-context-menu kbd { color: var(--canvas-muted-text); font: inherit; font-size: var(--ui-font-caption, 11px);
   line-height: var(--ui-line-caption, inherit);
+}
+
+/* Read owns one content scrollbar; its track exposes the existing panel blur. */
+.app-shell--overview-reference .context-panel--bottom.is-expanded .context-panel-content {
+  scrollbar-color: color-mix(in srgb, var(--canvas-muted-text) 72%, transparent) transparent;
+}
+.app-shell--overview-reference .context-panel--bottom.is-expanded .context-panel-content::-webkit-scrollbar,
+.app-shell--overview-reference .context-panel--bottom.is-expanded .context-panel-content::-webkit-scrollbar-track,
+.app-shell--overview-reference .context-panel--bottom.is-expanded .context-panel-content::-webkit-scrollbar-track-piece,
+.app-shell--overview-reference .context-panel--bottom.is-expanded .context-panel-content::-webkit-scrollbar-button,
+.app-shell--overview-reference .context-panel--bottom.is-expanded .context-panel-content::-webkit-scrollbar-corner {
+  background: transparent;
+}
+.app-shell--overview-reference .context-panel--bottom.is-expanded .context-panel-content::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--canvas-muted-text) 72%, transparent);
+}
+
+.context-panel--bottom .read-focus-images {
+  display: grid;
+  min-width: 0;
+  gap: var(--ui-action-gap, 8px);
+}
+.context-panel--bottom .read-focus-images h4 {
+  margin: 0;
+  color: var(--canvas-muted-text);
+  font-size: var(--ui-font-title, 11px);
+  font-weight: 800;
+  line-height: var(--ui-line-title, inherit);
+  letter-spacing: 0.08em;
+}
+.context-panel--bottom .read-focus-images__list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--ui-action-gap, 6px);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.context-panel--bottom .read-focus-images__item {
+  min-width: 0;
+}
+.app-shell--overview-reference .context-panel--bottom.is-expanded .context-panel-content .read-focus-images__row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--ui-action-gap, 6px);
+  width: 100%;
+  min-width: 0;
+  min-height: var(--ui-control-size, 32px);
+  padding: var(--ui-compact-gap, 4px) var(--ui-action-gap, 6px);
+  border: 1px solid transparent;
+  border-radius: 9px;
+  color: var(--canvas-text);
+  background: transparent;
+  text-align: left;
+}
+.app-shell--overview-reference .context-panel--bottom.is-expanded .context-panel-content .read-focus-images__row:hover {
+  background: color-mix(in srgb, var(--canvas-accent-surface) 42%, transparent);
+}
+.app-shell--overview-reference .context-panel--bottom.is-expanded .context-panel-content .read-focus-images__row[aria-disabled="true"]:hover {
+  background: transparent;
+}
+.app-shell--overview-reference .context-panel--bottom.is-expanded .context-panel-content .read-focus-images__row:focus-visible {
+  outline: 2px solid var(--canvas-accent);
+  outline-offset: 2px;
+  background: color-mix(in srgb, var(--canvas-accent-surface) 42%, transparent);
+}
+.context-panel--bottom .read-focus-images__row[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+.context-panel--bottom .read-focus-images__row[aria-disabled="true"]:active {
+  transform: none;
+}
+.context-panel--bottom .read-focus-images__thumbnail {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 22px;
+  overflow: hidden;
+  border: 1px solid var(--canvas-border);
+  border-radius: 5px;
+  color: var(--canvas-accent-text);
+  background: var(--canvas-surface);
+  object-fit: cover;
+  font-size: var(--ui-font-caption, 11px);
+  line-height: var(--ui-line-caption, inherit);
+}
+.context-panel--bottom .read-focus-images__name {
+  min-width: 0;
+  max-width: 6em;
+  overflow: hidden;
+  color: var(--canvas-muted-text);
+  font-size: var(--ui-font-caption, 8px);
+  font-weight: 750;
+  line-height: var(--ui-line-caption, inherit);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.context-panel--bottom .read-focus-images__action {
+  box-sizing: content-box;
+  width: 3em;
+  flex-shrink: 0;
+  padding: 2px var(--ui-compact-gap, 4px);
+  border: 1px solid transparent;
+  border-radius: 5px;
+  color: var(--canvas-muted-text);
+  font-size: var(--ui-font-caption, 11px);
+  font-weight: 750;
+  line-height: var(--ui-line-caption, inherit);
+  text-align: center;
+  white-space: nowrap;
+}
+.app-shell--overview-reference .context-panel--bottom.is-expanded .context-panel-content .read-focus-images :is(.read-focus-images__scope, .read-focus-images__messages p, .read-focus-images__unavailable, .read-focus-images__helper) {
+  margin: 0;
+  color: var(--canvas-muted-text);
+  font-size: var(--ui-font-caption, 11px);
+  line-height: var(--ui-line-caption, 1.5);
+  overflow-wrap: anywhere;
+}
+.context-panel--bottom .read-focus-images__messages:empty {
+  display: none;
+}
+.context-panel--bottom .read-focus-images__unavailable {
+  padding-block: var(--ui-compact-gap, 4px);
+}
+
+.app-shell--overview-reference .context-panel--bottom.is-expanded
+  .context-panel-header-actions :is(.context-panel-publish, .context-panel-details-toggle) {
+  border-radius: 6px;
+}
+.app-shell--overview-reference .context-panel--bottom.is-expanded
+  .context-panel-header-actions :is(.context-panel-publish, .context-panel-details-toggle):focus-visible {
+  outline: 2px solid var(--canvas-accent);
+  outline-offset: 2px;
+  color: var(--canvas-accent-text);
+  background: color-mix(in srgb, var(--canvas-accent-surface) 42%, transparent);
+}
+
+/* Auxiliary Read text shares the caption scale without shrinking published content. */
+.app-shell--overview-reference .context-panel--bottom.is-expanded
+  .context-preview > :is(.selection-label, .selection-total),
+.app-shell--overview-reference .context-panel--bottom.is-expanded
+  .context-descriptions > :is(.selection-label, .description-overview-hint),
+.app-shell--overview-reference .context-panel--bottom.is-expanded
+  .context-handoff > .empty-state {
+  --ui-read-paragraph-font-size: var(--ui-font-caption, 11px);
+  --ui-read-paragraph-line-height: var(--ui-line-caption, 1.5);
+}
+
+/* A square icon button does not inherit the text action's inline padding. */
+.app-shell--overview-reference .context-panel--bottom.is-expanded
+  .context-panel-header-actions .context-panel-details-toggle {
+  padding: 0;
+}
+
+/* The preview shares Read's scrollport and never changes the image row grid. */
+.app-shell--overview-reference .context-panel--bottom.is-expanded .has-image-browser {
+  --read-preview-image-height: 89.6px;
+  --read-focus-mark-size: 12px;
+  --read-focus-mark-gap: 4px;
+  --read-focus-mark-color: #6b56a5;
+}
+.app-shell.is-theme-black.app-shell--overview-reference
+  .context-panel--bottom.is-expanded .has-image-browser {
+  --read-focus-mark-color: #c3b1ef;
+}
+.app-shell.app-shell--overview-reference[data-native-document="true"]
+  .context-panel--bottom.is-expanded .context-panel-content.has-image-browser {
+  --read-preview-image-height: calc(var(--ui-panel-gap) * 5.6);
+  --read-focus-mark-size: calc(var(--ui-panel-gap) * .75);
+  --read-focus-mark-gap: var(--ui-compact-gap);
+  /* Include the existing panel inset in the scrollport, compensating inside it
+     so all original column and row coordinates and the right scrollbar stay put. */
+  box-sizing: border-box;
+  margin-left: calc(var(--ui-panel-padding) * -1);
+  padding-left: var(--ui-panel-padding);
+  width: calc(100% + var(--ui-panel-padding));
+}
+.app-shell--overview-reference .context-panel--bottom.is-expanded
+  .context-preview--image-browser {
+  align-self: stretch;
+}
+.app-shell--overview-reference .context-panel--bottom.is-expanded
+  .read-focus-images__mark {
+  position: absolute;
+  left: calc((var(--read-focus-mark-size) + var(--read-focus-mark-gap)) * -1 - 1px);
+  top: 50%;
+  transform: translateY(-50%);
+  width: var(--read-focus-mark-size);
+  height: var(--read-focus-mark-size);
+  display: grid;
+  place-items: center;
+  color: var(--read-focus-mark-color);
+  visibility: hidden;
+  pointer-events: none;
+}
+.app-shell--overview-reference .context-panel--bottom.is-expanded
+  .read-focus-images__row.is-selected .read-focus-images__mark {
+  visibility: visible;
+}
+.context-panel--bottom .read-focus-images__mark svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.app-shell--overview-reference .context-panel--bottom.is-expanded .read-image-preview {
+  --ui-read-paragraph-font-size: var(--ui-font-caption, 11px);
+  --ui-read-paragraph-line-height: var(--ui-line-caption, 1.5);
+  display: grid;
+  min-width: 0;
+  gap: calc(var(--ui-action-gap, 8px) * 1.5);
+  align-content: start;
+  margin-top: var(--ui-panel-gap, 16px);
+}
+.app-shell--overview-reference .context-panel--bottom.is-expanded
+  .read-image-preview[data-sticky="true"] {
+  position: sticky;
+  top: 8px;
+}
+.app-shell--overview-reference .context-panel--bottom.is-expanded
+  .read-image-preview .read-image-preview__label {
+  margin: 0;
+  color: var(--canvas-muted-text);
+  font-size: var(--ui-font-caption, 11px);
+  font-weight: 750;
+  line-height: var(--ui-line-caption, 1.5);
+}
+.context-panel--bottom .read-image-preview__group {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: inherit;
+  width: 80%;
+  min-width: 0;
+  justify-self: center;
+}
+.context-panel--bottom .read-image-preview__group:has(.read-image-preview__image) {
+  width: fit-content;
+  max-width: 80%;
+}
+.context-panel--bottom .read-image-preview__frame {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  place-items: center;
+  width: 100%;
+  height: var(--read-preview-image-height);
+  min-width: 0;
+  margin-inline: auto;
+}
+.context-panel--bottom .read-image-preview__image {
+  display: block;
+  width: auto;
+  height: var(--read-preview-image-height);
+  min-width: 0;
+  min-height: 0;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 6px;
+  opacity: .85;
+}
+.app-shell--overview-reference .context-panel--bottom.is-expanded
+  .read-image-preview :is(.read-image-preview__name, .read-image-preview__reason,
+    .read-image-preview__placeholder) {
+  margin: 0;
+  color: var(--canvas-muted-text);
+  font-size: var(--ui-font-caption, 11px);
+  line-height: var(--ui-line-caption, 1.5);
+  white-space: normal;
+  overflow-wrap: anywhere;
+  opacity: 1;
+}
+.context-panel--bottom .read-image-preview :is(.read-image-preview__name, .read-image-preview__reason) {
+  width: 0;
+  min-width: 100%;
+  justify-self: center;
+  text-align: left;
+}
+.context-panel--bottom .read-image-preview__name {
+  font-weight: 500;
 }

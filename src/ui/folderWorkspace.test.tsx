@@ -92,8 +92,7 @@ describe("FolderWorkspace", () => {
         onSelectFolder={noop}
         onEnterFolder={noop}
         onMoveFolder={noop}
-        onDeleteFolder={noop}
-        onUngroupFolder={noop}
+        onOpenFolderContextMenu={noop}
         onSelectDescription={noop}
         onMoveDescription={noop}
       />,
@@ -102,7 +101,7 @@ describe("FolderWorkspace", () => {
     expect(html).toContain('data-folder-layer="overview"');
   });
 
-  it("renders a selected Folder with an independent enter action", () => {
+  it("renders a selected Folder preview without floating actions", () => {
     const html = renderToStaticMarkup(
       <FolderWorkspace
         navigation={{ layer: "preview", selectedFolderId: "folder-a" }}
@@ -134,17 +133,16 @@ describe("FolderWorkspace", () => {
         onSelectFolder={noop}
         onEnterFolder={noop}
         onMoveFolder={noop}
-        onDeleteFolder={noop}
-        onUngroupFolder={noop}
+        onOpenFolderContextMenu={noop}
         onSelectDescription={noop}
         onMoveDescription={noop}
       />,
     );
     expect(html).toContain("Folder A");
-    expect(html).toContain("进入");
+    expect(html).not.toContain("data-folder-preview-actions");
     expect(html).toContain("双击进入");
-    expect(html).toContain("folder-workspace-more");
-    expect(html).toContain('aria-haspopup="menu"');
+    expect(html).not.toContain("folder-workspace-more");
+    expect(html).not.toContain('aria-haspopup="menu"');
     expect(html).not.toContain('role="menu"');
     expect(html).not.toContain("收起");
     expect(html).toContain('src="data:image/png;base64,AAAA"');
@@ -186,8 +184,7 @@ describe("FolderWorkspace", () => {
         onSelectFolder={noop}
         onEnterFolder={noop}
         onMoveFolder={noop}
-        onDeleteFolder={noop}
-        onUngroupFolder={noop}
+        onOpenFolderContextMenu={noop}
         onSelectDescription={noop}
         onMoveDescription={noop}
       />,
@@ -248,8 +245,7 @@ describe("FolderWorkspace", () => {
         onSelectFolder={noop}
         onEnterFolder={noop}
         onMoveFolder={noop}
-        onDeleteFolder={noop}
-        onUngroupFolder={noop}
+        onOpenFolderContextMenu={noop}
         onSelectDescription={noop}
         onMoveDescription={noop}
       />,
@@ -297,8 +293,7 @@ describe("FolderWorkspace", () => {
         onSelectFolder={noop}
         onEnterFolder={noop}
         onMoveFolder={noop}
-        onDeleteFolder={noop}
-        onUngroupFolder={noop}
+        onOpenFolderContextMenu={noop}
         onSelectDescription={noop}
         onMoveDescription={noop}
       />,
@@ -342,8 +337,7 @@ describe("FolderWorkspace", () => {
           onSelectFolder={noop}
           onEnterFolder={noop}
           onMoveFolder={noop}
-          onDeleteFolder={noop}
-          onUngroupFolder={noop}
+          onOpenFolderContextMenu={noop}
           onSelectDescription={noop}
           onMoveDescription={noop}
         />,
@@ -391,8 +385,7 @@ describe("FolderWorkspace", () => {
         onSelectFolder={noop}
         onEnterFolder={noop}
         onMoveFolder={noop}
-        onDeleteFolder={noop}
-        onUngroupFolder={noop}
+        onOpenFolderContextMenu={noop}
         onSelectDescription={noop}
         onMoveDescription={noop}
       />,
@@ -403,8 +396,8 @@ describe("FolderWorkspace", () => {
     expect(html).toContain('data-folder-preview-state="selected"');
     expect(html).toContain('data-folder-preview-state="context"');
     expect(html).toContain('aria-disabled="true"');
-    expect(html.match(/folder-workspace-enter/g)).toHaveLength(1);
-    expect(html.match(/class="folder-workspace-more"/g)).toHaveLength(1);
+    expect(html).not.toContain("folder-workspace-enter");
+    expect(html).not.toContain("folder-workspace-more");
     expect(html).not.toContain('role="menu"');
   });
 
@@ -441,8 +434,7 @@ describe("FolderWorkspace", () => {
         onSelectFolder={noop}
         onEnterFolder={noop}
         onMoveFolder={noop}
-        onDeleteFolder={noop}
-        onUngroupFolder={noop}
+        onOpenFolderContextMenu={noop}
         onSelectDescription={noop}
         onMoveDescription={noop}
       />,
@@ -499,8 +491,7 @@ describe("FolderWorkspace", () => {
         onSelectFolder={noop}
         onEnterFolder={noop}
         onMoveFolder={noop}
-        onDeleteFolder={noop}
-        onUngroupFolder={noop}
+        onOpenFolderContextMenu={noop}
         onSelectDescription={noop}
         onMoveDescription={noop}
       />,
@@ -543,8 +534,7 @@ describe("FolderWorkspace", () => {
         onSelectFolder={noop}
         onEnterFolder={noop}
         onMoveFolder={noop}
-        onDeleteFolder={noop}
-        onUngroupFolder={noop}
+        onOpenFolderContextMenu={noop}
         onSelectDescription={noop}
         onMoveDescription={noop}
       />,

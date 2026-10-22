@@ -19,7 +19,13 @@ import type {
   QuickAnnotationRecord,
 } from "../domain/types";
 import type { SelectionCanvasViewport } from "./SelectionCanvasOverlay";
-import { folderPreviewAttachmentAttributes, folderPreviewAttachmentStyle } from "./folderPreviewAttachment";
+import {
+  folderPreviewAttachmentAttributes,
+  folderPreviewAttachmentCounterRotation,
+  folderPreviewAttachmentLocalCounterStyle,
+  folderPreviewAttachmentStyle,
+  type FolderPreviewAttachmentMotion,
+} from "./folderPreviewAttachment";
 import { resizeQuickAnnotationBounds, withQuickAnnotationBounds } from "./quickAnnotations";
 import { quickAnnotationPreviewLabelFits } from "./quickAnnotationPreview";
 import { resolveQuickAnnotationConnector, type ConnectorSide } from "./quickAnnotationConnector";
@@ -35,11 +41,7 @@ interface QuickAnnotationOverlayProps {
   nextOrdinal: number;
   selectedId: string | null;
   viewport: SelectionCanvasViewport;
-  previewMotion?: Readonly<{
-    sourceRect: Readonly<{ left: number; top: number }>;
-    imageIds: ReadonlySet<string>;
-    targets?: ReadonlyMap<string, Readonly<{ left: number; top: number; width: number; height: number }>>;
-  }> | null;
+  previewMotion?: FolderPreviewAttachmentMotion | null;
   onCreate: (
     input: { labelAnchor?: Point; labelSide?: "left" | "right" } & (
       | { imageId: string; mode: "point"; anchor: Point; text: string }
@@ -991,15 +993,25 @@ export const QuickAnnotationOverlay = ({
             sceneToPanel(normalizedToScene(point, image), viewport, panelBounds),
           );
           const outline = `${corners.map((point, index) => `${index ? "L" : "M"} ${point.x} ${point.y}`).join(" ")} Z`;
+          const counterRotation = readOnly
+            ? folderPreviewAttachmentCounterRotation(previewMotion, annotation.imageId)
+            : undefined;
+          const rectanglePath = (
+            <path
+              className={`quick-annotation-overlay__rectangle${!readOnly && selectedId === annotation.id ? " is-selected" : ""}`}
+              d={outline}
+            />
+          );
           return (
             <g key={`rect-${annotation.id}`}
               className={previewMotion?.imageIds.has(annotation.imageId) ? "quick-annotation-preview-motion" : undefined}
               style={previewMotionStyleFor(annotation.imageId, image)}
               {...folderPreviewAttachmentAttributes(previewMotion, annotation.imageId)}>
-            <path
-              className={`quick-annotation-overlay__rectangle${!readOnly && selectedId === annotation.id ? " is-selected" : ""}`}
-              d={outline}
-            />
+            {counterRotation === undefined ? rectanglePath : (
+              <g className="quick-annotation-preview-counter-rotation" transform={counterRotation}>
+                {rectanglePath}
+              </g>
+            )}
             {!readOnly && <>
             <path className="quick-annotation-overlay__range-hit" d={outline}
               aria-label={`移动快速标注 Q${annotation.ordinal} 矩形范围`}
@@ -1177,6 +1189,17 @@ export const QuickAnnotationOverlay = ({
             if (!target || !previewMotion?.imageIds.has(annotation.imageId)) {
               return <span key={`preview-marker-${annotation.id}`}>{marker}</span>;
             }
+            const localCounterStyle = folderPreviewAttachmentLocalCounterStyle(previewMotion, annotation.imageId);
+            const localMarker = (
+              <span
+                className="quick-annotation-overlay__preview-marker"
+                style={{
+                  left: point.x - target.left - 6,
+                  top: point.y - target.top - 6,
+                }}
+                aria-hidden="true"
+              />
+            );
             return (
               <span
                 key={`preview-marker-${annotation.id}`}
@@ -1191,14 +1214,11 @@ export const QuickAnnotationOverlay = ({
                 {...folderPreviewAttachmentAttributes(previewMotion, annotation.imageId)}
                 aria-hidden="true"
               >
-                <span
-                  className="quick-annotation-overlay__preview-marker"
-                  style={{
-                    left: point.x - target.left - 6,
-                    top: point.y - target.top - 6,
-                  }}
-                  aria-hidden="true"
-                />
+                {localCounterStyle ? (
+                  <span className="quick-annotation-preview-counter-rotation" style={localCounterStyle}>
+                    {localMarker}
+                  </span>
+                ) : localMarker}
               </span>
             );
           }

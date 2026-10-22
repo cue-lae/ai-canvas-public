@@ -10,7 +10,13 @@ internal static class DocumentCloseDialog
 {
     private static Brush Token(IReadOnlyDictionary<string, string> palette, string key) =>
         new SolidColorBrush((Color)ColorConverter.ConvertFromString(palette[key]));
-    private static Button Button(string title, IReadOnlyDictionary<string, string> palette, bool primary = false, bool low = false)
+    private static Brush ClosePromptToken(IReadOnlyDictionary<string, string> palette, string key, double opacity)
+    {
+        var brush = Token(palette, key);
+        brush.Opacity = opacity;
+        return brush;
+    }
+    private static Button Button(string title, IReadOnlyDictionary<string, string> palette, bool primary = false, bool low = false, bool closePrompt = false)
     {
         var border = new FrameworkElementFactory(typeof(Border));
         border.SetValue(Border.CornerRadiusProperty, new CornerRadius(7));
@@ -23,22 +29,22 @@ internal static class DocumentCloseDialog
         content.SetBinding(ContentPresenter.MarginProperty, new Binding("Padding") { RelativeSource = new RelativeSource(RelativeSourceMode.TemplatedParent) });
         border.AppendChild(content);
         var button = new Button { Content = title, FontSize = 14, MinHeight = 32, MinWidth = 96, Padding = new Thickness(12,5,12,5),
-            Background = Token(palette, primary ? "accent" : "surface"),
-            Foreground = Token(palette, primary ? "raised" : low ? "mutedText" : "text"),
-            BorderBrush = Token(palette, "border"), BorderThickness = new Thickness(primary || low ? 0 : 1),
+            Background = closePrompt ? Brushes.Transparent : Token(palette, primary ? "accent" : "surface"),
+            Foreground = Token(palette, closePrompt ? "text" : primary ? "raised" : low ? "mutedText" : "text"),
+            BorderBrush = closePrompt ? Brushes.Transparent : Token(palette, "border"), BorderThickness = new Thickness(primary || low ? 0 : 1),
             Template = new ControlTemplate(typeof(Button)) { VisualTree = border } };
-        button.MouseEnter += (_, _) => button.Background = Token(palette, primary ? "accent" : "header");
-        button.MouseLeave += (_, _) => button.Background = Token(palette, primary ? "accent" : "surface");
+        button.MouseEnter += (_, _) => button.Background = closePrompt ? ClosePromptToken(palette, "text", .10) : Token(palette, primary ? "accent" : "header");
+        button.MouseLeave += (_, _) => button.Background = closePrompt ? Brushes.Transparent : Token(palette, primary ? "accent" : "surface");
         return button;
     }
-    private static Window Window(Window owner, string title, StackPanel panel, IReadOnlyDictionary<string, string> palette)
+    private static Window Window(Window owner, string title, StackPanel panel, IReadOnlyDictionary<string, string> palette, bool closePrompt = false)
     {
         KeyboardNavigation.SetTabNavigation(panel, KeyboardNavigationMode.Cycle);
         return new Window { Owner = owner, Title = title, Tag = palette, Width = Math.Min(440, Math.Max(320, owner.ActualWidth - 32)),
             SizeToContent = SizeToContent.Height, WindowStyle = WindowStyle.None, AllowsTransparency = true, Background = Brushes.Transparent,
             ShowInTaskbar = false, ResizeMode = ResizeMode.NoResize, WindowStartupLocation = WindowStartupLocation.CenterOwner,
-            Content = new Border { CornerRadius = new CornerRadius(14), Background = Token(palette, "surface"),
-                BorderBrush = Token(palette, "border"), BorderThickness = new Thickness(1), Child = panel } };
+            Content = new Border { CornerRadius = new CornerRadius(14), Background = closePrompt ? ClosePromptToken(palette, "surface", .70) : Token(palette, "surface"),
+                BorderBrush = closePrompt ? ClosePromptToken(palette, "mutedText", .22) : Token(palette, "border"), BorderThickness = new Thickness(1), Child = panel } };
     }
     private static TextBlock Text(string text, IReadOnlyDictionary<string, string> palette, bool title = false) => new()
     {
@@ -59,12 +65,12 @@ internal static class DocumentCloseDialog
         buttons.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(8) });
         buttons.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
         buttons.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-        var discard = Button("不保存并关闭",palette,low:true);
-        var cancel = Button("取消",palette); cancel.Margin = new Thickness(0,0,8,0); cancel.IsCancel = true;
-        var save = Button("保存并关闭",palette,primary:true);
+        var discard = Button("不保存并关闭",palette,low:true,closePrompt:true);
+        var cancel = Button("取消",palette,closePrompt:true); cancel.Margin = new Thickness(0,0,8,0); cancel.IsCancel = true;
+        var save = Button("保存并关闭",palette,primary:true,closePrompt:true);
         buttons.Children.Add(discard); Grid.SetColumn(cancel,2);buttons.Children.Add(cancel);Grid.SetColumn(save,3);buttons.Children.Add(save);
         panel.Children.Add(buttons);
-        var dialog = Window(owner,"关闭文档",panel,palette);
+        var dialog = Window(owner,"关闭文档",panel,palette,closePrompt:true);
         discard.Click += (_,_) => { answer = DocumentCloseChoice.Discard; dialog.Close(); };
         cancel.Click += (_,_) => dialog.Close();
         save.Click += (_,_) => { answer = DocumentCloseChoice.Save; dialog.Close(); };

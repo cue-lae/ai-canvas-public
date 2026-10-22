@@ -233,6 +233,10 @@ import {
   translateQuickAnnotation,
 } from "./ui/quickAnnotations";
 import { DescriptionWorkspace } from "./ui/DescriptionWorkspace";
+import { ReadFocusImages } from "./ui/ReadFocusImages";
+import { ReadImagePreview, useReadImagePreview } from "./ui/ReadImagePreview";
+import { deriveReadFocusCandidates } from "./ui/readFocusCandidates";
+import { createReadPublicationRequestGuard, type ReadPublicationRequestToken } from "./ui/readPublicationRequest";
 import { CanvasBridgeConnection } from "./ui/CanvasBridgeConnection";
 import { CANVAS_SELECTION_STATUS, createCanvasStatusPresentation } from "./ui/canvasStatusPresentation";
 import {
@@ -870,12 +874,31 @@ const App = () => {
   }));
   const hasCanvasImages = Object.keys(business.imageAssets).length > 0;
   const businessRef = useRef(business);
-  const [folderNavigation, setFolderNavigation] =
+  const [folderNavigation, setFolderNavigationState] =
     useState<FolderNavigationState>({
       layer: "overview",
       selectedFolderId: null,
     });
   const folderNavigationRef = useRef(folderNavigation);
+  const readRestoreGenerationRef = useRef(0);
+  const readPublicationGuardRef = useRef(createReadPublicationRequestGuard({
+    documentId: business.document.id,
+    restoreGeneration: 0,
+    folderScopeId: folderScopeId(folderNavigation, migrateBusinessStateToV2(business)),
+  }));
+  const syncReadPublicationIdentity = useCallback((navigation = folderNavigationRef.current) => {
+    const current = migrateBusinessStateToV2(businessRef.current);
+    readPublicationGuardRef.current.syncIdentity({
+      documentId: current.document.id,
+      restoreGeneration: readRestoreGenerationRef.current,
+      folderScopeId: folderScopeId(navigation, current),
+    });
+  }, []);
+  const setFolderNavigation = useCallback((next: FolderNavigationState) => {
+    // Observe each transition synchronously, including a batched leave/return.
+    syncReadPublicationIdentity(next);
+    setFolderNavigationState(next);
+  }, [syncReadPublicationIdentity]);
   const [folderPreviewMotion, setFolderPreviewMotion] =
     useState<FolderPreviewMotion | null>(null);
   const folderPreviewMotionRef = useRef<FolderPreviewMotion | null>(null);
@@ -938,7 +961,13 @@ const App = () => {
   const [folderDropSuccessId, setFolderDropSuccessId] = useState<string | null>(
     null,
   );
-  const [busy, setBusy] = useState(false);
+  const [busy, setBusyState] = useState(false);
+  const readBusyOwnerRef = useRef<ReadPublicationRequestToken | null>(null);
+  const setBusy = useCallback((value: boolean) => {
+    // Existing operations retain their behavior and take cleanup ownership.
+    readBusyOwnerRef.current = null;
+    setBusyState(value);
+  }, []);
   const [businessNotice, setBusinessNotice] = useState<CanvasBusinessNoticeData | null>(null);
   const businessNoticeRef = useRef<CanvasBusinessNoticeData | null>(null);
   const businessNoticeResolveRef = useRef<((accepted: boolean, value?: string) => void) | null>(null);
@@ -4216,9 +4245,21 @@ const App = () => {
       normalizeFocusedImageIds(business, focusImageIds, activeFolderScopeId),
     [activeFolderScopeId, business, focusImageIds],
   );
-  const selectedCanvasImage = selectedCanvasImageId
-    ? business.imageAssets[selectedCanvasImageId] ?? null
-    : null;
+  useLayoutEffect(() => {
+    syncReadPublicationIdentity();
+  }, [activeFolderScopeId, business.document.id, syncReadPublicationIdentity]);
+  useEffect(() => () => readPublicationGuardRef.current.invalidate(), []);
+  const readFocusCandidates = deriveReadFocusCandidates({
+    business: migrateBusinessStateToV2(business),
+    folderId: activeFolderScopeId,
+    elements: latestElementsRef.current as unknown as readonly SceneElementLike[],
+    files: latestFilesRef.current,
+    focusedImageIds,
+  });
+  const readPreviewIdentity = JSON.stringify([
+    business.document.id, activeFolderScopeId, readRestoreGenerationRef.current,
+  ]);
+  const readImagePreview = useReadImagePreview(readFocusCandidates, readPreviewIdentity);
   const contextInformationData = useMemo(() => {
     const selectionTarget = resolveContextInformationSelection({
       selection: canvasSelection,
@@ -4308,37 +4349,27 @@ const App = () => {
     });
   }, [business]);
 
-  const addSelectedImageToFocus = useCallback(() => {
-    if (!selectedCanvasImageId || !selectedCanvasImage) {
-      setStatus("请直接选中一张图片后，再设为本次重点。");
-      return;
-    }
-    if (focusedImageIds.includes(selectedCanvasImageId)) {
-      setStatus(`“${selectedCanvasImage.name}”已是本次重点。`);
-      return;
-    }
-    if (focusedImageIds.length >= focusedPublishLimits.maxImages) {
-      setStatus(
-        `本次最多可设 ${focusedPublishLimits.maxImages} 张重点图片；请先移除一张后再添加。`,
-      );
-      return;
-    }
-    setFocusImageIds((current) =>
-      addFocusedImage(current, selectedCanvasImageId),
-    );
+  const toggleReadFocusImage = useCallback((imageId: string) => {
+    if (busy) return;
+    const currentBusiness = migrateBusinessStateToV2(businessRef.current);
+    const scope = folderScopeId(folderNavigationRef.current, currentBusiness);
+    setFocusImageIds((current) => {
+      const scoped = normalizeFocusedImageIds(currentBusiness, current, scope);
+      const row = deriveReadFocusCandidates({
+        business: currentBusiness,
+        folderId: scope,
+        elements: latestElementsRef.current as unknown as readonly SceneElementLike[],
+        files: latestFilesRef.current,
+        focusedImageIds: scoped,
+      }).find((candidate) => candidate.imageId === imageId);
+      if (!row) return current;
+      if (scoped.includes(imageId)) return removeFocusedImage(current, imageId);
+      if (row.unavailableReason || scoped.length >= focusedPublishLimits.maxImages) return current;
+      return addFocusedImage(current, imageId);
+    });
     setCodexContext(null);
-    setStatus(`已将“${selectedCanvasImage.name}”设为本次重点。`);
-  }, [focusedImageIds, selectedCanvasImage, selectedCanvasImageId]);
-
-  const removeImageFromFocus = useCallback(
-    (imageId: string) => {
-      const imageName = business.imageAssets[imageId]?.name ?? imageId;
-      setFocusImageIds((current) => removeFocusedImage(current, imageId));
-      setCodexContext(null);
-      setStatus(`已从本次重点移除“${imageName}”。`);
-    },
-    [business.imageAssets],
-  );
+    setStatus("重点选择待重新交接；请点击 Codex Read 更新，上次交接仍可能可读。");
+  }, [busy]);
 
   useEffect(() => {
     setAnnotationText(
@@ -5338,7 +5369,10 @@ const App = () => {
       targets: new Map(
         folderPreviewMotionState.images.map((image) => [
           image.id,
-          folderWorkspaceViewportRect(image.target, canvasViewport, panel.getBoundingClientRect()),
+          {
+            ...folderWorkspaceViewportRect(image.target, canvasViewport, panel.getBoundingClientRect()),
+            angle: image.target.angle,
+          },
         ]),
       ),
     };
@@ -6184,6 +6218,18 @@ const App = () => {
     setStatus("已全选当前画布的图片、说明和选区；文件夹保持独立操作。");
   }, [api, busy, activateCanvasTool, updateCanvasSelection]);
 
+  const openFolderContextMenu = useCallback((folderId: string, clientPoint: { x: number; y: number }) => {
+    closeCanvasContext();
+    if (!api || busy || businessNoticeRef.current || canvasPointerSessionRef.current.kind !== "idle" || nativeHistoryGestureBarrierRef.current.active) return;
+    const navigation = folderNavigationRef.current;
+    const current = migrateBusinessStateToV2(businessRef.current);
+    if (current.folders[folderId]?.kind !== "folder" || !(navigation.layer === "overview" ||
+        navigation.layer === "preview" && navigation.selectedFolderId === folderId)) return;
+    const scenePoint = viewportCoordsToSceneCoords({ clientX: clientPoint.x, clientY: clientPoint.y }, api.getAppState());
+    setIsCanvasMenuOpen(false);
+    setCanvasContext({ target: { kind: "folder", id: folderId }, clientPoint, scenePoint, folderId: folderScopeId(navigation, current) });
+  }, [api, busy, closeCanvasContext]);
+
   const handleCanvasContextMenu = useCallback((event: ReactMouseEvent<HTMLElement>) => {
     const element = event.target instanceof Element ? event.target : null;
     if (!element || isTextEntryKeyboardTarget(element)) return;
@@ -6192,17 +6238,17 @@ const App = () => {
     closeCanvasContext();
     if (!api || busy || businessNoticeRef.current || element.closest(".canvas-dialog-backdrop") ||
         canvasPointerSessionRef.current.kind !== "idle" || nativeHistoryGestureBarrierRef.current.active) return;
+    const object = element.closest<HTMLElement>("[data-canvas-object]");
+    if (object?.dataset.canvasObject === "folder" && object.dataset.folderId) {
+      openFolderContextMenu(object.dataset.folderId, { x: event.clientX, y: event.clientY });
+      return;
+    }
     const navigation = folderNavigationRef.current;
     const current = migrateBusinessStateToV2(businessRef.current);
     const scope = folderScopeId(navigation, current);
     const point = viewportCoordsToSceneCoords({ clientX: event.clientX, clientY: event.clientY }, api.getAppState());
-    const object = element.closest<HTMLElement>("[data-canvas-object]");
     let target: CanvasContextTarget | null = null;
-    if (object?.dataset.canvasObject === "folder" && object.dataset.folderId) {
-      const id = object.dataset.folderId;
-      if (current.folders[id]?.kind === "folder" && (navigation.layer === "overview" ||
-          navigation.layer === "preview" && navigation.selectedFolderId === id)) target = { kind: "folder", id };
-    } else if (navigation.layer === "overview" || navigation.layer === "folder" || navigation.layer === "image" || navigation.layer === "description") {
+    if (navigation.layer === "overview" || navigation.layer === "folder" || navigation.layer === "image" || navigation.layer === "description") {
       if (object?.dataset.canvasObject === "description" && object.dataset.descriptionId) {
         const id = object.dataset.descriptionId;
         if (current.descriptions[id]?.active && current.descriptions[id].folderId === scope &&
@@ -6221,7 +6267,7 @@ const App = () => {
     if (!target) return;
     setIsCanvasMenuOpen(false);
     setCanvasContext({ target, clientPoint: { x: event.clientX, y: event.clientY }, scenePoint: point, folderId: scope });
-  }, [api, busy, closeCanvasContext]);
+  }, [api, busy, closeCanvasContext, openFolderContextMenu]);
 
   const closeDescriptionEditorOnEscape = useCallback(
     (event: KeyboardEvent): boolean => {
@@ -6447,10 +6493,6 @@ const App = () => {
     const onKeyDown = (event: KeyboardEvent) => {
       if(businessNoticeRef.current)return;
       if (event.target instanceof Element && event.target.closest("[data-canvas-context-menu]")) return;
-      // Let native buttons and the preview menu receive their own key events.
-      // The controller's handled-overlay branch deliberately stops propagation.
-      if (event.target instanceof Element && event.target.closest("[data-folder-preview-actions]") &&
-          !((event.ctrlKey||event.metaKey) && !event.altKey && ["KeyC","KeyX"].includes(event.code))) return;
       keyboardController.onKeyDown(event);
     };
     window.addEventListener("keydown", onKeyDown, true);
@@ -6528,6 +6570,8 @@ const App = () => {
     if (!api) {
       return;
     }
+    readRestoreGenerationRef.current += 1;
+    readPublicationGuardRef.current.invalidate();
     const restoredCanvasTheme = readApplicationTheme()?.theme ?? workbenchPreferences.canvasTheme;
     api.resetScene();
     const restoredBusiness = migrateBusinessStateToV2(bundle.business);
@@ -7339,6 +7383,8 @@ const App = () => {
     if (!api) {
       return;
     }
+    readRestoreGenerationRef.current += 1;
+    readPublicationGuardRef.current.invalidate();
     const reset = createCanvasSessionResetState();
     commitBusiness(reset.business);
     clearCanvasPointerSession();
@@ -7592,17 +7638,24 @@ const App = () => {
   }, [api, selectedRegion]);
 
   const prepareFocusedCodexContext = useCallback(async () => {
+    if (busy) return;
     if (!api) {
       setStatus("Excalidraw 尚未加载，无法准备上下文。");
       return;
     }
+    // Geometry comes from the canonical scene, never the Folder display projection.
+    // Native frames can reuse element objects, so detach this publication before awaits.
+    const publicationBusiness = structuredClone(businessRef.current);
+    const publicationElements = structuredClone(latestElementsRef.current);
+    const renderedElements = structuredClone(api.getSceneElements());
+    const publicationFolderId = folderScopeId(
+      folderNavigationRef.current,
+      migrateBusinessStateToV2(publicationBusiness),
+    );
     const currentFocusImageIds = normalizeFocusedImageIds(
-      businessRef.current,
+      publicationBusiness,
       focusedImageIds,
-      folderScopeId(
-        folderNavigationRef.current,
-        migrateBusinessStateToV2(businessRef.current),
-      ),
+      publicationFolderId,
     );
     if (currentFocusImageIds.length === 0) {
       setCodexContext(null);
@@ -7617,7 +7670,7 @@ const App = () => {
       originalImageDataUrl: string;
     }[] = [];
     for (const imageId of currentFocusImageIds) {
-      const image = businessRef.current.imageAssets[imageId];
+      const image = publicationBusiness.imageAssets[imageId];
       const file = image ? files[image.fileId] : null;
       if (!image || !file) {
         setCodexContext(null);
@@ -7652,9 +7705,7 @@ const App = () => {
 
     const appState = api.getAppState();
     const visibleSceneBounds = getVisibleSceneBounds(appState);
-    const visibleElements = api
-      .getSceneElements()
-      .filter((element) =>
+    const visibleElements = renderedElements.filter((element) =>
         isViewportVisibleElement(element, visibleSceneBounds),
       );
     const visibleRegionIds = visibleElements.flatMap((element) =>
@@ -7665,7 +7716,7 @@ const App = () => {
         : [],
     );
     const hasDescriptionMode =
-      activeDescriptionEntries(businessRef.current).length > 0;
+      activeDescriptionEntries(publicationBusiness).length > 0;
     const visibleSelectionInstructions = hasDescriptionMode
       ? []
       : visibleElements.flatMap((element) => {
@@ -7698,11 +7749,11 @@ const App = () => {
       ...visibleSelectionInstructions.map((instruction) => instruction.regionId),
     ];
     const focusedPublishBusiness: BusinessState = hasDescriptionMode
-      ? businessRef.current
+      ? publicationBusiness
       : {
-          ...businessRef.current,
+          ...publicationBusiness,
           annotations: {
-            ...businessRef.current.annotations,
+            ...publicationBusiness.annotations,
             ...Object.fromEntries(
               visibleSelectionInstructions.map((instruction) => [
                 instruction.id,
@@ -7712,10 +7763,17 @@ const App = () => {
           },
         };
 
-    setBusy(true);
+    syncReadPublicationIdentity();
+    const request = readPublicationGuardRef.current.begin();
+    readBusyOwnerRef.current = request;
+    setBusyState(true);
+    const isCurrentRequest = () => {
+      syncReadPublicationIdentity();
+      return readPublicationGuardRef.current.isCurrent(request);
+    };
     try {
       const overviewSnapshot = await createCanvasSnapshot({
-        elements: api.getSceneElements(),
+        elements: renderedElements,
         appState,
         files,
         viewportBounds: {
@@ -7725,17 +7783,16 @@ const App = () => {
           height: visibleSceneBounds[3] - visibleSceneBounds[1],
         },
       });
+      if (!isCurrentRequest()) return;
       const context = buildFocusedCanvasContext({
         business: focusedPublishBusiness,
-        focusFolderId: folderScopeId(
-          folderNavigationRef.current,
-          migrateBusinessStateToV2(focusedPublishBusiness),
-        ),
+        sceneElements: publicationElements,
+        focusFolderId: publicationFolderId,
         focusImageIds: currentFocusImageIds,
         visibleRegionIds,
         visibleAnnotationRegionIds,
         overviewSnapshot: {
-          filename: `${businessRef.current.document.id}-viewport.png`,
+          filename: `${publicationBusiness.document.id}-viewport.png`,
           mimeType: overviewSnapshot.mimeType,
           width: overviewSnapshot.width,
           height: overviewSnapshot.height,
@@ -7747,6 +7804,7 @@ const App = () => {
         overviewSnapshotDataUrl: overviewSnapshot.dataUrl,
         focusedImages: focusedImagePublications,
       });
+      if (!isCurrentRequest()) return;
       setCodexContext(context);
       const visibleAnnotationCount = context.focusImages.reduce(
         (count, image) => count + image.visibleAnnotations.length,
@@ -7758,6 +7816,7 @@ const App = () => {
           : `已准备，等待 Codex 读取。已交接当前视窗概览、${context.focusImages.length} 张重点原图和 ${visibleAnnotationCount} 项当前可见标注语义；版本 ${receipt.revision}。`,
       );
     } catch (error) {
+      if (!isCurrentRequest()) return;
       const prefix =
         error instanceof CanvasContextBridgeError ||
         error instanceof CanvasSnapshotError
@@ -7770,9 +7829,12 @@ const App = () => {
         }`,
       );
     } finally {
-      setBusy(false);
+      if (readPublicationGuardRef.current.finish(request) && readBusyOwnerRef.current === request) {
+        readBusyOwnerRef.current = null;
+        setBusyState(false);
+      }
     }
-  }, [api, focusedImageIds]);
+  }, [api, busy, focusedImageIds, syncReadPublicationIdentity]);
 
   const prepareCodexContext = useCallback(async () => {
     if (!api) {
@@ -7786,7 +7848,17 @@ const App = () => {
       );
       return;
     }
-    const activeRegion = selectedRegion?.geometry ? selectedRegion : null;
+    const publicationBusiness = structuredClone(businessRef.current);
+    const publicationElements = structuredClone(latestElementsRef.current);
+    const renderedElements = structuredClone(api.getSceneElements());
+    const files = { ...api.getFiles() };
+    const appState = api.getAppState();
+    const currentRegion = selectedRegion
+      ? publicationBusiness.regions[selectedRegion.id]
+      : null;
+    const activeRegion = currentRegion?.active && currentRegion.geometry
+      ? currentRegion
+      : null;
     if (selectedImageId && !activeRegion) {
       setCodexContext(null);
       setStatus(
@@ -7798,7 +7870,7 @@ const App = () => {
       setBusy(true);
       try {
         const receipt = await publishNoActiveRegion({
-          documentId: businessRef.current.document.id,
+          documentId: publicationBusiness.document.id,
         });
         setCodexContext(null);
         setStatus(
@@ -7820,16 +7892,16 @@ const App = () => {
     const imageId =
       activeRegion?.imageId ??
       selectedImageId ??
-      (businessRef.current.document.imageAssetIds.length === 1
-        ? businessRef.current.document.imageAssetIds[0]
+      (publicationBusiness.document.imageAssetIds.length === 1
+        ? publicationBusiness.document.imageAssetIds[0]
         : null);
     if (!imageId) {
       setCodexContext(null);
       setStatus("当前画布没有可交接的选区。请先选择一张图片并创建选区。");
       return;
     }
-    const imageAsset = businessRef.current.imageAssets[imageId];
-    const file = imageAsset ? api.getFiles()[imageAsset.fileId] : null;
+    const imageAsset = publicationBusiness.imageAssets[imageId];
+    const file = imageAsset ? files[imageAsset.fileId] : null;
     if (!imageAsset || !file) {
       setStatus("原始图片或像素数据缺失，无法准备 Codex 上下文。");
       return;
@@ -7845,9 +7917,9 @@ const App = () => {
     setBusy(true);
     try {
       const snapshot = await createCanvasSnapshot({
-        elements: api.getSceneElements(),
-        appState: api.getAppState(),
-        files: api.getFiles(),
+        elements: renderedElements,
+        appState,
+        files,
       });
       const crop = activeRegionGeometry
         ? await createRegionPng(
@@ -7856,7 +7928,8 @@ const App = () => {
           )
         : null;
       const context = buildCodexVisualContext({
-        business: businessRef.current,
+        business: publicationBusiness,
+        sceneElements: publicationElements,
         imageId,
         regionId: activeRegion?.id ?? null,
         question: activeRegion
@@ -7888,7 +7961,7 @@ const App = () => {
         );
       } else {
         const receipt = await publishNoActiveRegion({
-          documentId: businessRef.current.document.id,
+          documentId: publicationBusiness.document.id,
           context,
           originalImageDataUrl: file.dataURL,
           canvasSnapshotDataUrl: snapshot.dataUrl,
@@ -9005,7 +9078,10 @@ const App = () => {
             disabled={!api || busy}
             hasImageSelection={canvasSelection.imagePlacementIds.length > 0}
             onSelectFolder={selectFolder}
-            onEnterFolder={enterFolder}
+            onEnterFolder={(folderId) => {
+              if (!api || busy || businessNoticeRef.current || canvasPointerSessionRef.current.kind !== "idle" || nativeHistoryGestureBarrierRef.current.active) return;
+              enterFolder(folderId);
+            }}
             onMoveFolder={moveFolder}
             onBeginCanvasPan={() => {
               if (!api || busy || folderNavigationRef.current.layer !== "overview") return null;
@@ -9019,8 +9095,7 @@ const App = () => {
                 });
               };
             }}
-            onDeleteFolder={deleteFolder}
-            onUngroupFolder={ungroupFolder}
+            onOpenFolderContextMenu={openFolderContextMenu}
             onSelectDescription={selectDescriptionObject}
             onMoveDescription={moveDescriptionObject}
             onMoveDescriptions={moveDescriptionObjects}
@@ -9231,9 +9306,9 @@ const App = () => {
             </div>
           </div>
 
-            <div className="context-panel-content">
+            <div className="context-panel-content has-image-browser">
               <CanvasBridgeConnection />
-              <section className="context-preview" aria-label="当前视图预览">
+              <section className="context-preview context-preview--image-browser" aria-label="当前视图预览">
                 <p className="context-section-label">当前视图预览</p>
                 {selectedRegionId ? (
                   <p className="selection-label">
@@ -9283,50 +9358,24 @@ const App = () => {
                 <p className="selection-total">
                   全项目选区：{selectionElements.length}
                 </p>
+                <ReadImagePreview
+                  candidate={readImagePreview.candidate}
+                  imageNumberById={imageNumberById}
+                />
               </section>
 
               <section className="context-focus" aria-label="本次重点图片">
-                <p className="context-section-label">本次重点</p>
-                {focusedImageIds.length > 0 ? (
-                  <ul className="focus-image-list">
-                    {focusedImageIds.map((imageId, index) => {
-                      const image = business.imageAssets[imageId];
-                        return (
-                          <li key={imageId} className="focus-image-tag">
-                            <span title={image?.name ?? imageId}>
-                              重点 {index + 1} · {image?.name ?? imageId}
-                            </span>
-                          <button
-                            disabled={busy}
-                            onClick={() => removeImageFromFocus(imageId)}
-                            aria-label={`移除重点 ${index + 1}`}
-                          >
-                            移除
-                          </button>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                ) : (
-                  <p className="selection-label selection-label--warning">
-                    尚未设定重点图片。准备给 Codex 前必须至少设置一张重点。
-                  </p>
-                )}
-                <button
-                  disabled={
-                    !selectedCanvasImage ||
-                    busy ||
-                    focusedImageIds.includes(selectedCanvasImage.id)
-                  }
-                  onClick={addSelectedImageToFocus}
-                >
-                  设为本次重点
-                </button>
-                <p className="focus-image-hint">
-                  {selectedCanvasImage
-                    ? `已直接选中“${selectedCanvasImage.name}”；画布选择本身不会自动成为重点。`
-                    : "请直接点击一张图片后，再设为本次重点。点击选区或标注卡不会替代这一步。"}
-                </p>
+                <ReadFocusImages
+                  key={readPreviewIdentity}
+                  candidates={readFocusCandidates}
+                  focusedImageIds={focusedImageIds}
+                  imageNumberById={imageNumberById}
+                  scopeLabel={`当前范围：${migrateBusinessStateToV2(business).folders[activeFolderScopeId]?.name ?? "Root"}`}
+                  busy={busy}
+                  maxImages={focusedPublishLimits.maxImages}
+                  onToggle={toggleReadFocusImage}
+                  onInspect={readImagePreview.inspect}
+                />
               </section>
 
               <div className="context-handoff">

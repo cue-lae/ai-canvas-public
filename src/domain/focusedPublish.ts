@@ -15,6 +15,11 @@ import {
   quickAnnotationContextsForImage,
   type QuickAnnotationContext,
 } from "../ui/quickAnnotations";
+import {
+  buildPublishedSelectionGeometry,
+  type PublishedSceneElement,
+  type PublishedSelectionGeometry,
+} from "./selectionContext";
 
 export const focusedPublishableImageFormatsLabel = "PNG、JPEG、WebP";
 
@@ -117,6 +122,7 @@ export interface FocusedAnnotationContext {
   clippedPixelBounds: Bounds;
   normalizedCorners: Point[];
   isClipped: boolean;
+  selectionGeometry?: PublishedSelectionGeometry | null;
   selectionVisible: boolean;
   card: {
     annotationId: string;
@@ -158,6 +164,7 @@ export interface FocusedDescriptionScopeContext {
   clippedPixelBounds: Bounds;
   normalizedCorners: Point[];
   isClipped: boolean;
+  selectionGeometry?: PublishedSelectionGeometry | null;
 }
 
 export interface FocusedCanvasContext {
@@ -239,6 +246,7 @@ export const buildFocusedCanvasContext = ({
   visibleRegionIds,
   visibleAnnotationRegionIds,
   overviewSnapshot,
+  sceneElements,
   generatedAt = new Date().toISOString(),
 }: {
   business: BusinessState;
@@ -247,6 +255,7 @@ export const buildFocusedCanvasContext = ({
   visibleRegionIds: Iterable<string>;
   visibleAnnotationRegionIds: Iterable<string>;
   overviewSnapshot: FocusedOverviewSnapshot;
+  sceneElements?: readonly PublishedSceneElement[];
   generatedAt?: string;
 }): FocusedCanvasContext => {
   const scopedBusiness = migrateBusinessStateToV2(business);
@@ -300,6 +309,11 @@ export const buildFocusedCanvasContext = ({
       clippedPixelBounds: region.geometry.clippedPixelBounds,
       normalizedCorners: region.geometry.normalizedCorners,
       isClipped: region.geometry.isClipped,
+      selectionGeometry: buildPublishedSelectionGeometry({
+        business: scopedBusiness,
+        sceneElements,
+        regionId: region.id,
+      }),
     };
   });
   const activeAnnotationsByRegion = new Map(
@@ -372,6 +386,11 @@ export const buildFocusedCanvasContext = ({
             clippedPixelBounds: region.geometry!.clippedPixelBounds,
             normalizedCorners: region.geometry!.normalizedCorners,
             isClipped: region.geometry!.isClipped,
+            selectionGeometry: buildPublishedSelectionGeometry({
+              business: scopedBusiness,
+              sceneElements,
+              regionId: region.id,
+            }),
             selectionVisible: visibleRegions.has(region.id),
             card,
           };

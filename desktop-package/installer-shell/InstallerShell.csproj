@@ -18,7 +18,7 @@
     <FrameworkReference Update="Microsoft.WindowsDesktop.App.WPF" RuntimeFrameworkVersion="8.0.31" />
     <Compile Include="../diagnostics/TimingTrace.cs" Link="TimingTrace.cs" />
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3912.50" />
-    <EmbeddedResource Include="../../assets/installer-flow-preview.html" LogicalName="ApprovedPreview" />
+    <EmbeddedResource Include="../../working/installer-experience-preview-20260928/installer-flow-preview.html" LogicalName="ApprovedPreview" />
     <EmbeddedResource Include="controller.js" LogicalName="Controller" />
     <EmbeddedResource Include="../release.json" LogicalName="Release" />
     <EmbeddedResource Include="../../webview-host/AiCanvas.WebViewHost/Assets/AI-Canvas-Logo-Black-AC-V1.ico" LogicalName="AppIcon" />

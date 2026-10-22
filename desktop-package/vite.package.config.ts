@@ -6,6 +6,6 @@ const root = fileURLToPath(new URL('..', import.meta.url));
 export default defineConfig({
   root,
   // Package builds must not load developer .env files.
-  envDir: resolve(root, '.build/no-env'),
+  envDir: resolve(root, 'temp/desktop-test-installer-update-20260928/no-env'),
   build: { sourcemap: false },
 });

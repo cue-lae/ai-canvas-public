@@ -450,6 +450,21 @@ const readyPayload = (regionId, prompt) => ({
   },
 });
 
+const exactSelectionGeometry = (type = "rectangle", sourceWidth = 3000, sourceHeight = 2000) => ({
+  version: 1,
+  type,
+  coordinateSpace: "original-image-pixels",
+  sourceWidth,
+  sourceHeight,
+  points: type === "path"
+    ? [{ x: 100, y: 120 }, { x: 600, y: 120 }, { x: 300, y: 420 }]
+    : [{ x: 100, y: 120 }, { x: 600, y: 120 }, { x: 600, y: 420 }, { x: 100, y: 420 }],
+  closed: true,
+  fillRule: "nonzero",
+  sampling: "integer",
+  clipBounds: { x: 0, y: 0, width: sourceWidth, height: sourceHeight },
+});
+
 const noActiveRegionSnapshotPayload = () => {
   const payload = readyPayload("region-a", "问题 A");
   return {
@@ -1370,4 +1385,96 @@ test("陈旧能力描述只让 adapter 报 BRIDGE_UNAVAILABLE，不会回退到�
     (error) =>
       error instanceof BridgeProtocolError && error.code === "BRIDGE_UNAVAILABLE",
   );
+});
+
+test("selection geometry: all three routes preserve exact source geometry", () => {
+  for (const type of ["rectangle", "ellipse", "path"]) {
+    const single = readyPayload("region-a", "精确选区");
+    single.context.selection.selectionGeometry = exactSelectionGeometry(type);
+    const focused = focusedDescriptionPayload();
+    focused.context.focusImages[0].visibleAnnotations[0].selectionGeometry = exactSelectionGeometry(type);
+    focused.context.descriptionScopes[0].selectionGeometry = exactSelectionGeometry(type);
+    focused.context.descriptionScopes[1].selectionGeometry = exactSelectionGeometry(type, 2000, 1500);
+    for (const payload of [single, focused]) {
+      const state = createBridgeState();
+      state.publish({ origin, token: state.issueToken(origin).token, payload });
+      const returned = JSON.parse(buildMcpToolResult(state.read()).content[0].text).context;
+      assert.deepEqual(returned, payload.context);
+    }
+  }
+});
+
+test("selection geometry: absent and null remain readable on every route", () => {
+  for (const value of [undefined, null]) {
+    const single = readyPayload("region-a", "旧上下文");
+    const focused = focusedDescriptionPayload();
+    single.context.selection.selectionGeometry = value;
+    focused.context.focusImages[0].visibleAnnotations[0].selectionGeometry = value;
+    focused.context.descriptionScopes[0].selectionGeometry = value;
+    for (const payload of [single, focused]) {
+      const state = createBridgeState();
+      assert.doesNotThrow(() => state.publish({ origin, token: state.issueToken(origin).token, payload }));
+    }
+  }
+});
+
+test("selection geometry: both explicit supported fill rules survive every route", () => {
+  for (const fillRule of ["nonzero", "evenodd"]) {
+    const single = readyPayload("region-a", "保留实际填充规则");
+    const focused = focusedDescriptionPayload();
+    single.context.selection.selectionGeometry = { ...exactSelectionGeometry("path"), fillRule };
+    focused.context.focusImages[0].visibleAnnotations[0].selectionGeometry = { ...exactSelectionGeometry("path"), fillRule };
+    focused.context.descriptionScopes[0].selectionGeometry = { ...exactSelectionGeometry("path"), fillRule };
+    for (const payload of [single, focused]) {
+      const state = createBridgeState();
+      state.publish({ origin, token: state.issueToken(origin).token, payload });
+      assert.deepEqual(state.read().context, payload.context);
+    }
+  }
+});
+
+test("selection geometry: malformed present fields are rejected on every route", () => {
+  const invalid = [
+    { version: 2 }, { type: "diamond" }, { coordinateSpace: "normalized" },
+    { closed: false }, { fillRule: "invalid-rule" }, { sampling: "pixel-center" },
+    { sourceWidth: 3.5 }, { sourceHeight: 0 }, { sourceWidth: 3001 },
+    { points: [{ x: 0, y: 0 }, { x: 1, y: 1 }] },
+    { points: Array.from({ length: 10001 }, () => ({ x: 0, y: 0 })) },
+    { points: [{ x: Infinity, y: 0 }, ...exactSelectionGeometry().points.slice(1)] },
+    { clipBounds: { x: 2999, y: 0, width: 2, height: 2 } },
+    { clipBounds: { x: 0, y: 0, width: 0, height: 2 } },
+  ];
+  for (const patch of invalid) {
+    for (const route of ["single", "visible", "scope"]) {
+      const payload = route === "single" ? readyPayload("region-a", "错误数据") : focusedDescriptionPayload();
+      const target = route === "single" ? payload.context.selection : route === "visible"
+        ? payload.context.focusImages[0].visibleAnnotations[0] : payload.context.descriptionScopes[0];
+      target.selectionGeometry = { ...exactSelectionGeometry(), ...patch };
+      const state = createBridgeState();
+      assert.throws(() => state.publish({ origin, token: state.issueToken(origin).token, payload }),
+        error => error instanceof BridgeProtocolError);
+    }
+  }
+});
+
+test("selection geometry: source ownership and focused source dimensions must agree", () => {
+  for (const route of ["single", "visible", "scope"]) {
+    const payload = route === "single" ? readyPayload("region-a", "错误所属图片") : focusedDescriptionPayload();
+    const target = route === "single" ? payload.context.selection : route === "visible"
+      ? payload.context.focusImages[0].visibleAnnotations[0] : payload.context.descriptionScopes[0];
+    target.selectionGeometry = exactSelectionGeometry();
+    target.imageId = "image-b";
+    const state = createBridgeState();
+    assert.throws(() => state.publish({ origin, token: state.issueToken(origin).token, payload }),
+      error => error instanceof BridgeProtocolError);
+  }
+});
+
+test("selection geometry: a non-focus description may retain self-contained geometry", () => {
+  const payload = focusedDescriptionPayload();
+  payload.context.descriptionScopes[1].imageId = "image-not-published";
+  payload.context.descriptionScopes[1].selectionGeometry = exactSelectionGeometry("path", 800, 600);
+  const state = createBridgeState();
+  state.publish({ origin, token: state.issueToken(origin).token, payload });
+  assert.deepEqual(state.read().context.descriptionScopes[1].selectionGeometry, payload.context.descriptionScopes[1].selectionGeometry);
 });

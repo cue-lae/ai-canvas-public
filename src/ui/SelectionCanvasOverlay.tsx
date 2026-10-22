@@ -12,7 +12,7 @@ import {
   useRef,
   useState,
 } from "react";
-import type { CSSProperties, PointerEvent as ReactPointerEvent } from "react";
+import type { CSSProperties, ReactNode, PointerEvent as ReactPointerEvent } from "react";
 import type { DescriptionRegionBindingLabel } from "./descriptionPresentation";
 import {
   SELECTION_BADGE_VISUALS,
@@ -20,7 +20,15 @@ import {
   selectHighestScreenPoint,
 } from "./selectionBindingBadge";
 import { selectionOrdinalBadgeLayout } from "./selectionOrdinalBadge";
-import { folderPreviewAttachmentAttributes, folderPreviewAttachmentStyle, type FolderPreviewAttachmentMotion } from "./folderPreviewAttachment";
+import {
+  folderPreviewAttachmentAttributes,
+  folderPreviewAttachmentStyle,
+  folderPreviewAttachmentTarget,
+  folderPreviewAttachmentCounterRotation,
+  type FolderPreviewAttachmentMotion,
+  type FolderPreviewAttachmentTarget,
+} from "./folderPreviewAttachment";
+import { folderPreviewMaskSweepBounds } from "./folderPreviewMaskBounds";
 import { releaseSelectionToolFocus } from "./selectionToolFocus";
 import { removeLastSelectionPathAnchor } from "./selectionPathDraft";
 import {
@@ -175,6 +183,21 @@ const closedPathData = (points: readonly ScenePoint[]) =>
   `${points
     .map((point, index) => `${index === 0 ? "M" : "L"} ${point.x} ${point.y}`)
     .join(" ")} Z`;
+
+// Preview projection rotates geometry about the image centre. The image DOM
+// rotates about its top-left, outside the animator's unchanged translate/scale.
+const previewUnrotatedPoints = (
+  points: readonly ScenePoint[], target: FolderPreviewAttachmentTarget,
+) => {
+  const cx = target.left + target.width / 2;
+  const cy = target.top + target.height / 2;
+  const cos = Math.cos(-(target.angle ?? 0));
+  const sin = Math.sin(-(target.angle ?? 0));
+  return points.map(({ x, y }) => ({
+    x: cx + (x - cx) * cos - (y - cy) * sin,
+    y: cy + (x - cx) * sin + (y - cy) * cos,
+  }));
+};
 
 export const SELECTION_HANDLE_DIAMETER_AT_100_PERCENT_PX = 6;
 export const SELECTION_HANDLE_MAX_DIAMETER_PX = 14;
@@ -646,7 +669,10 @@ export const SelectionCanvasOverlay = ({
     ],
   );
   const selectionOcclusionMasks = useMemo(() => {
-    const coversByImage = new Map<string, readonly { path: string; bounds?: SelectionMaskBounds }[]>();
+    const coversByImage = new Map<string, readonly {
+      imageId: string; target?: FolderPreviewAttachmentTarget;
+      path: string; bounds?: SelectionMaskBounds;
+    }[]>();
     const badgeRowsByRegion = new Map(bindingBadgeRows.map((row) => [row.regionId, row]));
     const masks = new Map<
       string,
@@ -660,6 +686,10 @@ export const SelectionCanvasOverlay = ({
         badgeBounds?: SelectionMaskBounds;
         clip: boolean;
         badgeClip: boolean;
+        previewImageId?: string;
+        previewTarget?: FolderPreviewAttachmentTarget;
+        previewSelectionPath?: string;
+        previewCovers?: readonly { imageId: string; target?: FolderPreviewAttachmentTarget; path: string }[];
       }
     >();
     selections.forEach((selection, index) => {
@@ -678,11 +708,19 @@ export const SelectionCanvasOverlay = ({
       const selectionPoints = selectionPointsScene.map((point) =>
         sceneToPanel(point, viewport, panelBounds),
       );
+      const previewTarget = boundedPreview
+        ? folderPreviewAttachmentTarget(previewMotion, selection.imageId) : undefined;
       const covers = (boundedPreview && coversByImage.get(selection.imageId)) || higherImages.map((image) => {
         const imagePoints = rotatedRectScenePoints(image).map((point) =>
           sceneToPanel(point, viewport, panelBounds),
         );
-        return { path: closedPathData(imagePoints), bounds: boundedPreview ? selectionMaskBounds(imagePoints, panelBounds) : undefined };
+        const imageId = image.customData!.imageId as string;
+        return {
+          imageId,
+          target: boundedPreview ? folderPreviewAttachmentTarget(previewMotion, imageId) : undefined,
+          path: closedPathData(imagePoints),
+          bounds: boundedPreview ? selectionMaskBounds(imagePoints, panelBounds) : undefined,
+        };
       });
       if (boundedPreview) coversByImage.set(selection.imageId, covers);
       const badgeRow = badgeRowsByRegion.get(selection.regionId);
@@ -707,12 +745,74 @@ export const SelectionCanvasOverlay = ({
         badgeCoverPaths,
         bounds,
         badgeBounds,
-        clip: boundedPreview && bounds !== undefined && coverPaths.length === 0,
-        badgeClip: boundedPreview && badgeBounds !== undefined && badgeCoverPaths.length === 0,
+        clip: !previewTarget && boundedPreview && bounds !== undefined && coverPaths.length === 0,
+        badgeClip: !previewTarget && boundedPreview && badgeBounds !== undefined && badgeCoverPaths.length === 0,
+        previewImageId: previewTarget ? selection.imageId : undefined,
+        previewTarget,
+        previewSelectionPath: previewTarget
+          ? closedPathData(previewUnrotatedPoints(selectionPoints, previewTarget)) : undefined,
+        // Keep potential in-flight covers. Endpoint intersection is insufficient
+        // when images have different stagger phases or the layout is retargeted.
+        previewCovers: previewTarget ? covers : undefined,
       });
     });
     return masks;
-  }, [bindingBadgeRows, boundedPreview, elements, panelBounds, selections, viewport]);
+  }, [bindingBadgeRows, boundedPreview, elements, panelBounds, selections, viewport, previewMotion]);
+
+  useLayoutEffect(() => {
+    if (!boundedPreview || !rootRef.current || !previewMotion) return;
+    const root = rootRef.current;
+    const contents = new Map([...root.querySelectorAll<SVGGElement>("[data-preview-mask-content]")]
+      .map((node) => [node.dataset.previewMaskContent, node]));
+    for (const mask of root.querySelectorAll<SVGMaskElement>("mask[data-preview-mask-for]")) {
+      const imageId = mask.dataset.previewImageId!;
+      const target = folderPreviewAttachmentTarget(previewMotion, imageId);
+      if (!target) continue;
+      const content = contents.get(mask.dataset.previewMaskFor);
+      let bbox: DOMRect | null = null;
+      let current: DOMMatrix | null = null;
+      try {
+        if (content) {
+          // getBBox includes the static inner inverse, but excludes the frame's
+          // own CSS motion. Never measure a clipped/masked screen rectangle.
+          bbox = content.getBBox();
+          const transform = getComputedStyle(content).transform;
+          current = new DOMMatrix(transform === "none" ? undefined : transform);
+        }
+      } catch { /* Unlaid geometry uses the conservative panel fallback. */ }
+      const bounds = folderPreviewMaskSweepBounds({
+        bbox, target, current,
+        closed: {
+          translateX: previewMotion.sourceRect.left - target.left,
+          translateY: previewMotion.sourceRect.top - target.top,
+          scale: .42,
+        },
+        panel: panelBounds,
+        padding: Number(mask.dataset.previewMaskPadding),
+      });
+      Object.entries(bounds).forEach(([name, value]) => mask.setAttribute(name, String(value)));
+    }
+  }, [boundedPreview, previewMotion, selectionOcclusionMasks, panelBounds]);
+
+  const previewFrame = (children: ReactNode, imageId: string, contentId?: string) => (
+    <g
+      style={folderPreviewAttachmentStyle(previewMotion, imageId, { left: 0, top: 0 })}
+      {...folderPreviewAttachmentAttributes(previewMotion, imageId)}
+      data-preview-mask-content={contentId}
+    >
+      <g transform={folderPreviewAttachmentCounterRotation(previewMotion, imageId)}>{children}</g>
+    </g>
+  );
+  const previewCovers = (covers: readonly { imageId: string; target?: FolderPreviewAttachmentTarget; path: string }[]) =>
+    covers.map((cover) => cover.target ? (
+      <rect key={cover.imageId} fill="black"
+        x={cover.target.left} y={cover.target.top} width={cover.target.width} height={cover.target.height}
+        rx={Math.min(6, cover.target.width / 2, cover.target.height / 2)}
+        style={folderPreviewAttachmentStyle(previewMotion, cover.imageId, cover.target)}
+        {...folderPreviewAttachmentAttributes(previewMotion, cover.imageId)}
+        data-preview-mask-cover={cover.imageId}
+      />
+    ) : <path key={cover.imageId} d={cover.path} fill="black" />);
 
   return (
     <div
@@ -747,7 +847,7 @@ export const SelectionCanvasOverlay = ({
             : cancelCreationDrag(event)
         }
       >
-        {[...selectionOcclusionMasks.values()].some((mask) => mask.clip) ? <defs>
+        {[...selectionOcclusionMasks.values()].some((mask) => mask.clip || mask.previewTarget) ? <defs>
           <clipPath id="selection-preview-viewport" clipPathUnits="userSpaceOnUse">
             <rect width="100%" height="100%" />
           </clipPath>
@@ -828,53 +928,11 @@ export const SelectionCanvasOverlay = ({
           const occlusion = selectionOcclusionMasks.get(
             selection.regionId,
           );
-          const occlusionMask = occlusion?.clip ? undefined : occlusion;
+          const occlusionMask = occlusion?.clip || occlusion?.previewTarget ? undefined : occlusion;
           const occlusionClip = occlusion?.clip ? occlusion : undefined;
 
-          return (
-            <svg
-              key={selection.regionId}
-              className={`selection-canvas-overlay__svg selection-canvas-overlay__region-layer${
-                selected && !creationTool && !readOnly && !interactionDisabled ? " is-active" : ""
-              }`}
-              data-region-layer={selection.regionId}
-              width="100%" height="100%" role="presentation"
-              onPointerDown={handleOverlayPointerDown}
-              onPointerMove={(event) => updateSelectionDrag(event, false)}
-              onPointerUp={(event) => updateSelectionDrag(event, true)}
-              onPointerCancel={(event) => updateSelectionDrag(event, true)}
-            >
-              {occlusionClip ? <defs>
-                <clipPath id={occlusionClip.id} clipPathUnits="userSpaceOnUse">
-                  <path d={occlusionClip.selectionPath} clipPath="url(#selection-preview-viewport)" />
-                </clipPath>
-              </defs> : occlusionMask ? (
-                <defs>
-                  <mask id={occlusionMask.id} maskUnits="userSpaceOnUse"
-                    x={occlusionMask.bounds?.x ?? 0} y={occlusionMask.bounds?.y ?? 0}
-                    width={occlusionMask.bounds?.width ?? "100%"} height={occlusionMask.bounds?.height ?? "100%"}>
-                    <rect width="100%" height="100%" fill="black" />
-                    <path d={occlusionMask.selectionPath} fill="white" />
-                    {occlusionMask.coverPaths.map((path, index) => (
-                      <path key={`${occlusionMask.id}-cover-${index}`} d={path} fill="black" />
-                    ))}
-                  </mask>
-                </defs>
-              ) : null}
-            <g
-              key={selection.regionId}
-              className={`selection-canvas-overlay__selection ${
-                selected ? "is-selected" : ""
-              } ${highlighted ? "is-description-linked" : ""} ${
-                dragging ? "is-dragging" : ""
-              } ${previewMotionActive ? "is-preview-motion" : ""}`}
-              style={previewMotionStyle}
-              {...folderPreviewAttachmentAttributes(previewMotion, selection.imageId)}
-              data-selection-kind={kind}
-              data-canvas-object="region"
-              data-region-id={selection.regionId}
-            >
-              {kind === "ellipse" ? (
+          const moving = boundedPreview && !!folderPreviewAttachmentTarget(previewMotion, selection.imageId);
+          const shape = (kind === "ellipse" ? (
                 <ellipse
                   className="selection-canvas-overlay__shape"
                   cx={center.x}
@@ -902,8 +960,8 @@ export const SelectionCanvasOverlay = ({
                   data-region-id={selection.regionId}
                   data-image-id={selection.imageId}
                 />
-              )}
-              {selected &&
+              ));
+          const handles = (selected &&
                 (kind === "ellipse"
                   ? (Object.entries(ellipseHandles) as [
                       "top" | "right" | "bottom" | "left",
@@ -946,7 +1004,73 @@ export const SelectionCanvasOverlay = ({
                         data-image-id={selection.imageId}
                         data-selection-index={index}
                       />
-                    )))}
+                    ))));
+
+          return (
+            <svg
+              key={selection.regionId}
+              className={`selection-canvas-overlay__svg selection-canvas-overlay__region-layer${
+                selected && !creationTool && !readOnly && !interactionDisabled ? " is-active" : ""
+              }`}
+              data-region-layer={selection.regionId}
+              width="100%" height="100%" role="presentation"
+              onPointerDown={handleOverlayPointerDown}
+              onPointerMove={(event) => updateSelectionDrag(event, false)}
+              onPointerUp={(event) => updateSelectionDrag(event, true)}
+              onPointerCancel={(event) => updateSelectionDrag(event, true)}
+            >
+              {occlusion?.previewTarget ? <defs>
+                <clipPath id={`${occlusion.id}-silhouette`} clipPathUnits="userSpaceOnUse">
+                  <path d={occlusion.previewSelectionPath}
+                    style={previewMotionStyle}
+                    {...folderPreviewAttachmentAttributes(previewMotion, selection.imageId)} />
+                </clipPath>
+                <mask id={occlusion.id} maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse"
+                  data-preview-mask-for={occlusion.id} data-preview-image-id={selection.imageId}
+                  data-preview-mask-padding="2"
+                  x="0" y="0" width={panelBounds.width || "100%"} height={panelBounds.height || "100%"}>
+                  <rect width="100%" height="100%" fill="white" />
+                  {previewCovers(occlusion.previewCovers!)}
+                </mask>
+              </defs> : occlusionClip ? <defs>
+                <clipPath id={occlusionClip.id} clipPathUnits="userSpaceOnUse">
+                  <path d={occlusionClip.selectionPath} clipPath="url(#selection-preview-viewport)" />
+                </clipPath>
+              </defs> : occlusionMask ? (
+                <defs>
+                  <mask id={occlusionMask.id} maskUnits="userSpaceOnUse"
+                    x={occlusionMask.bounds?.x ?? 0} y={occlusionMask.bounds?.y ?? 0}
+                    width={occlusionMask.bounds?.width ?? "100%"} height={occlusionMask.bounds?.height ?? "100%"}>
+                    <rect width="100%" height="100%" fill="black" />
+                    <path d={occlusionMask.selectionPath} fill="white" />
+                    {occlusionMask.coverPaths.map((path, index) => (
+                      <path key={`${occlusionMask.id}-cover-${index}`} d={path} fill="black" />
+                    ))}
+                  </mask>
+                </defs>
+              ) : null}
+            <g
+              key={selection.regionId}
+              className={`selection-canvas-overlay__selection ${
+                selected ? "is-selected" : ""
+              } ${highlighted ? "is-description-linked" : ""} ${
+                dragging ? "is-dragging" : ""
+              } ${previewMotionActive ? "is-preview-motion" : ""}`}
+              style={moving ? undefined : previewMotionStyle}
+              {...folderPreviewAttachmentAttributes(moving ? null : previewMotion, selection.imageId)}
+              data-selection-kind={kind}
+              data-canvas-object="region"
+              data-region-id={selection.regionId}
+            >
+              {moving ? (
+                <g mask={occlusion ? "url(#" + occlusion.id + ")" : undefined}
+                  clipPath={occlusion ? "url(#selection-preview-viewport)" : undefined}>
+                  <g clipPath={occlusion ? "url(#" + occlusion.id + "-silhouette)" : undefined}>
+                    {previewFrame(shape, selection.imageId, occlusion?.id)}
+                  </g>
+                </g>
+              ) : shape}
+              {moving && selected ? previewFrame(handles, selection.imageId) : handles}
             </g>
             </svg>
           );
@@ -958,7 +1082,16 @@ export const SelectionCanvasOverlay = ({
       >
         {selectionOcclusionMasks.size > 0 ? (
           <defs>
-            {[...selectionOcclusionMasks.values()].map((mask) => mask.badgeClip ? (
+            {[...selectionOcclusionMasks.values()].map((mask) => mask.previewTarget ? (
+              <mask key={mask.badgeId} id={mask.badgeId}
+                maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse"
+                data-preview-mask-for={mask.badgeId} data-preview-image-id={mask.previewImageId}
+                data-preview-mask-padding="12"
+                x="0" y="0" width={panelBounds.width || "100%"} height={panelBounds.height || "100%"}>
+                <rect width="100%" height="100%" fill="white" />
+                {previewCovers(mask.previewCovers!)}
+              </mask>
+            ) : mask.badgeClip ? (
               <clipPath key={mask.badgeId} id={mask.badgeId} clipPathUnits="userSpaceOnUse">
                 <rect width="100%" height="100%" />
               </clipPath>
@@ -996,23 +1129,8 @@ export const SelectionCanvasOverlay = ({
               previewMotion, row.imageId, { left: 0, top: 0 },
             );
             const badgeOcclusionMask = selectionOcclusionMasks.get(row.regionId);
-            return (
-              <g
-                key={row.regionId}
-                className={`selection-canvas-overlay__badge-group${
-                  previewMotionActive ? " is-preview-motion" : ""
-                }`}
-                style={previewMotionStyle}
-                {...folderPreviewAttachmentAttributes(previewMotion, row.imageId)}
-                data-region-id={row.regionId}
-                aria-label={layout.segments.map((segment) => segment.text).join("｜")}
-                mask={
-                  badgeOcclusionMask && !badgeOcclusionMask.badgeClip
-                    ? `url(#${badgeOcclusionMask.badgeId})`
-                    : undefined
-                }
-                clipPath={badgeOcclusionMask?.badgeClip ? `url(#${badgeOcclusionMask.badgeId})` : undefined}
-              >
+            const moving = boundedPreview && !!folderPreviewAttachmentTarget(previewMotion, row.imageId);
+            const badge = (<>
                 <rect
                   className={`selection-canvas-overlay__badge-group-surface ${
                     row.highlighted ? "is-description-linked" : ""
@@ -1107,6 +1225,25 @@ export const SelectionCanvasOverlay = ({
                     </g>
                   );
                 })}
+            </>);
+            return (
+              <g
+                key={row.regionId}
+                className={`selection-canvas-overlay__badge-group${
+                  previewMotionActive ? " is-preview-motion" : ""
+                }`}
+                style={moving ? undefined : previewMotionStyle}
+                {...folderPreviewAttachmentAttributes(moving ? null : previewMotion, row.imageId)}
+                data-region-id={row.regionId}
+                aria-label={layout.segments.map((segment) => segment.text).join("｜")}
+                mask={
+                  badgeOcclusionMask && !badgeOcclusionMask.badgeClip
+                    ? `url(#${badgeOcclusionMask.badgeId})`
+                    : undefined
+                }
+                clipPath={badgeOcclusionMask?.previewTarget ? "url(#selection-preview-viewport)" : badgeOcclusionMask?.badgeClip ? `url(#${badgeOcclusionMask.badgeId})` : undefined}
+              >
+                {moving ? previewFrame(badge, row.imageId, badgeOcclusionMask?.badgeId) : badge}
               </g>
             );
           })}

@@ -37,7 +37,7 @@ beforeEach(() => {
     }, bounds: { x: 100, y: 100, width: 300, height: 200 } }],
     descriptions: [], viewport: { zoom: 2, scrollX: 15, scrollY: 25, offsetLeft: 0, offsetTop: 0 },
     onSelectFolder: vi.fn(), onEnterFolder: vi.fn(), onMoveFolder: vi.fn(),
-    onDeleteFolder: vi.fn(), onUngroupFolder: vi.fn(),
+    onOpenFolderContextMenu: vi.fn(),
     onSelectDescription: vi.fn(), onMoveDescription: vi.fn(), onBeginCanvasPan: vi.fn(() => pan),
   };
 });
@@ -72,6 +72,27 @@ describe("middle-button pan from a closed Folder", () => {
     pointer("pointermove", 140, 150); pointer("pointerup", 140, 150); pointer("pointerdown", 100, 120);
     expect(pan).not.toHaveBeenCalled();
     expect(props.onBeginCanvasPan).toHaveBeenCalledTimes(1);
+  });
+  it.each(["Enter", "ContextMenu"])("cancels the pending single click before %s", (key) => {
+    render(); pointer("pointerdown", 100, 120, 0); pointer("pointerup", 100, 120, 0);
+    act(() => host.querySelector(".folder-workspace-hit-target")!.dispatchEvent(new KeyboardEvent("keydown", { key, bubbles: true, cancelable: true })));
+    act(() => vi.advanceTimersByTime(200));
+    expect(props.onSelectFolder).not.toHaveBeenCalled();
+    expect(key === "Enter" ? props.onEnterFolder : props.onOpenFolderContextMenu).toHaveBeenCalledTimes(1);
+  });
+  it("cancels the pending single click when opening the pointer context menu", () => {
+    render(); pointer("pointerdown", 100, 120, 0); pointer("pointerup", 100, 120, 0);
+    pointer("pointerdown", 100, 120, 2); pointer("pointerup", 100, 120, 2);
+    act(() => vi.advanceTimersByTime(200));
+    expect(props.onSelectFolder).not.toHaveBeenCalled();
+  });
+  it("does not enter or open a menu during a Folder drag or middle pan", () => {
+    render(); pointer("pointerdown", 100, 120, 0);
+    act(() => host.querySelector(".folder-workspace-hit-target")!.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true, cancelable: true })));
+    expect(props.onEnterFolder).not.toHaveBeenCalled();
+    pointer("pointercancel", 100, 120, 0); pointer("pointerdown", 100, 120);
+    act(() => host.querySelector(".folder-workspace-hit-target")!.dispatchEvent(new KeyboardEvent("keydown", { key: "ContextMenu", bubbles: true, cancelable: true })));
+    expect(props.onOpenFolderContextMenu).not.toHaveBeenCalled();
   });
   it("retains the existing left-click preview and left-drag move", () => {
     render(); pointer("pointerdown", 100, 120, 0); pointer("pointerup", 100, 120, 0);

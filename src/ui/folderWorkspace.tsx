@@ -215,8 +215,7 @@ export const FolderWorkspace = ({
   onEnterFolder,
   onMoveFolder,
   onBeginCanvasPan,
-  onDeleteFolder,
-  onUngroupFolder,
+  onOpenFolderContextMenu,
   onSelectDescription,
   onMoveDescription,
   onMoveDescriptions = () => false,
@@ -245,8 +244,7 @@ export const FolderWorkspace = ({
   onEnterFolder: (folderId: string) => void;
   onMoveFolder: (folderId: string, dx: number, dy: number) => void;
   onBeginCanvasPan?: () => ((dx: number, dy: number) => void) | null;
-  onDeleteFolder: (folderId: string) => void;
-  onUngroupFolder: (folderId: string) => void;
+  onOpenFolderContextMenu: (folderId: string, clientPoint: { x: number; y: number }) => void;
   onSelectDescription: (descriptionId: string) => void;
   onMoveDescription: (
     descriptionId: string,
@@ -278,17 +276,7 @@ export const FolderWorkspace = ({
   if (!animatorRef.current) animatorRef.current = createFolderPreviewAnimator();
   const onPreviewClosedRef = useRef(onPreviewClosed);
   onPreviewClosedRef.current = onPreviewClosed;
-  const [managementFolderId, setManagementFolderId] = useState<string | null>(null);
   useEffect(() => () => animatorRef.current?.dispose(), []);
-  useEffect(() => {
-    if (!managementFolderId) return;
-    const dismiss = (event: PointerEvent) => {
-      if (!(event.target instanceof Element) || !event.target.closest("[data-folder-preview-actions]")) setManagementFolderId(null);
-    };
-    window.addEventListener("pointerdown", dismiss, true);
-    return () => window.removeEventListener("pointerdown", dismiss, true);
-  }, [managementFolderId]);
-  useEffect(() => { setManagementFolderId(null); }, [navigation.layer, navigation.selectedFolderId, previewClosing]);
   const middlePanRef = useRef<{
     pointerId: number;
     startX: number;
@@ -834,8 +822,25 @@ export const FolderWorkspace = ({
                 aria-disabled={previewContext || focusContext || undefined}
                 tabIndex={previewContext || focusContext ? -1 : undefined}
                 onClick={() => { if (selected && previewClosing) onPreviewReopen?.(); }}
+                onKeyDown={(event) => {
+                  if (event.nativeEvent.isComposing || event.ctrlKey || event.metaKey || event.altKey) return;
+                  const enter = event.key === "Enter";
+                  const contextMenu = event.key === "ContextMenu" || (event.key === "F10" && event.shiftKey);
+                  if (!enter && !contextMenu) return;
+                  event.preventDefault();
+                  event.stopPropagation();
+                  if (event.repeat || disabled || previewContext || focusContext || dragRef.current || middlePanRef.current) return;
+                  clearPendingFolderSelect();
+                  if (enter) {
+                    onEnterFolder(folder.id);
+                  } else {
+                    const bounds = event.currentTarget.getBoundingClientRect();
+                    onOpenFolderContextMenu(folder.id, { x: bounds.left, y: bounds.bottom });
+                  }
+                }}
                 onPointerDown={(event) => {
                   if (middlePanRef.current || dragRef.current) return;
+                  if (event.button === 2) { clearPendingFolderSelect(); return; }
                   if (event.button === 1) {
                     if (disabled || navigation.layer !== "overview") return;
                     const pan = onBeginCanvasPan?.();
@@ -950,57 +955,6 @@ export const FolderWorkspace = ({
                   </>
                 ) : null}
               </button>
-              {selected && navigation.layer === "preview" ? (
-                <div data-folder-preview-actions className={`folder-workspace-preview-actions${
-                  viewport.zoom < 0.7 ? " is-low-zoom" : ""
-                }`} style={{ "--folder-preview-ui-scale": previewScale, visibility: previewClosing ? "hidden" : undefined } as CSSProperties}>
-                  <button
-                    type="button"
-                    className="folder-workspace-enter"
-                    aria-label={`${folder.name}，进入完整文件夹`}
-                    onClick={() => onEnterFolder(folder.id)}
-                  >
-                    进入
-                  </button>
-                  <button type="button" className="folder-workspace-more"
-                    aria-label={`${folder.name}，更多管理操作`} aria-haspopup="menu"
-                    aria-expanded={managementFolderId === folder.id}
-                    onClick={() => setManagementFolderId((current) => current === folder.id ? null : folder.id)}
-                    onKeyDown={(event) => {
-                      if (event.key === "ArrowDown") { event.preventDefault(); setManagementFolderId(folder.id); }
-                      if (event.key === "Escape") { event.preventDefault(); setManagementFolderId(null); }
-                    }}>⋯</button>
-                  {managementFolderId === folder.id ? (
-                    <div className="folder-preview-management" role="menu" aria-label="文件夹管理"
-                      onKeyDown={(event) => {
-                        const buttons = Array.from(event.currentTarget.querySelectorAll<HTMLButtonElement>("button"));
-                        const index = buttons.indexOf(document.activeElement as HTMLButtonElement);
-                        if (event.key === "Escape") {
-                          event.preventDefault(); event.stopPropagation();
-                          event.currentTarget.parentElement?.querySelector<HTMLButtonElement>(".folder-workspace-more")?.focus();
-                          setManagementFolderId(null);
-                        } else if (["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) {
-                          event.preventDefault();
-                          const next = event.key === "Home" ? 0 : event.key === "End" ? buttons.length - 1 : (index + (event.key === "ArrowDown" ? 1 : -1) + buttons.length) % buttons.length;
-                          buttons[next]?.focus();
-                        }
-                      }}>
-                      {folder.imageAssetIds.length + folder.descriptionIds.length > 0 ? (
-                      <button
-                        type="button" role="menuitem" autoFocus
-                        className="folder-workspace-ungroup"
-                        onClick={() => { setManagementFolderId(null); onUngroupFolder(folder.id); }}
-                      >
-                        解组
-                      </button>
-                      ) : null}
-                      <button type="button" role="menuitem" className="folder-workspace-remove"
-                        autoFocus={folder.imageAssetIds.length + folder.descriptionIds.length === 0}
-                        onClick={() => { setManagementFolderId(null); onDeleteFolder(folder.id); }}>删除</button>
-                    </div>
-                  ) : null}
-                </div>
-              ) : null}
             </div>
           );
           })}

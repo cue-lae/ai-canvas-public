@@ -13,7 +13,7 @@ Read Canvas only with this plugin's native `ai_canvas_native_trial` tool. If tha
 
 Resolve the script path relative to this SKILL.md, not a development checkout. The helper discovers the registered installation and uses its bundled Node and image tools. Do not download dependencies, edit Codex settings or bypass execution restrictions. An installed application is required. Generated work belongs in a new user-authorized artifact directory, never inside the plugin or application directory.
 
-Both modes preserve decoded source pixels, including alpha, outside the binary mask; output is a new PNG. JPEG source comparison means decoded pixels, not identical compressed file bytes. Mask geometry uses the original source pixel grid; polygons use even-odd fill and geometry is intersected with the source bounds. Ellipses accept two diagonal corners or four ordered affine corners. Missing geometry, unknown type, zero-area geometry or an empty per-selection mask fails closed. Never replace rotation or skew with an axis-aligned bounding box.
+Both modes preserve decoded source pixels, including alpha, outside the binary mask; output is a new PNG. JPEG source comparison means decoded pixels, not identical compressed file bytes. Published exact geometry uses the original source pixel grid, integer `(x,y)` sampling and its explicit `fillRule` (`nonzero` or `evenodd`); the current Canvas producer declares `nonzero` to retain its visible SVG fill. The mask is intersected with `clipBounds`: the visible original crop intersected with the complete source domain. Rectangles and ellipses retain four ordered affine-frame corners; paths retain every canonical contour point and the closing edge. Missing geometry, unknown type, invalid affine frames or an empty per-selection mask fails closed. A self-intersecting path's zero signed net area does not imply an empty mask. Never replace rotation or skew with an axis-aligned bounding box.
 
 Commands through `scripts/run-visual.ps1`:
 
@@ -22,6 +22,14 @@ Commands through `scripts/run-visual.ps1`:
 - `composite <source> <candidate> <mask.png> <new-output.png>`: candidate compositing; candidate-only resizing is permitted.
 - `tint <source> <mask.png> <RRGGBB> <new-output.png>`: deterministic recoloring with source luminance and alpha retained.
 - `material <source> <reference> <mask.png> <mapping.json> <new-output.png>`: deterministic bilinear reference sampling through an explicit four-corner perspective mapping, retaining source luminance and alpha. Mapping requires `normalizedCorners` in source coordinates in top-left, top-right, bottom-right, bottom-left reference order. It must cover every selected pixel. Do not guess mapping or stretch a reference when visual review rejects it.
+
+Before `mask`, invoke the bundled context adapter directly with the registered installation's Node runtime (use the same installation discovered by `scripts/locate-canvas.ps1`):
+
+`<registered-install-root>/runtime/node.exe <this-skill-directory>/scripts/context-to-mask.mjs context.json new-geometry.json <imageId> <regionId> [<regionId> ...]`
+
+`context.json` is the unchanged `context` object from the native tool's latest text result. The adapter requires explicit image and region IDs and normalizes `selection`, `focusImages[].visibleAnnotations[]`, and `descriptionScopes[]` to one mask input. It requires a published original for the chosen image, checks dimensions and duplicate consistency, and refuses cross-image requests. A non-focus description scope may carry geometry but does not supply an original image. Save the actual matching native-tool original losslessly and verify its decoded dimensions before masking; metadata alone does not establish decoded dimensions. Adapter and mask outputs must be new files.
+
+Old contexts without `selectionGeometry` (or with `null`) remain usable for reading and advice. They cannot authorize exact generation: request a fresh supported publication. Do not synthesize the field from bounds, `normalizedCorners`, screenshots or descriptions. The helper's explicit-type normalized legacy input remains supported with its existing even-odd rule for local callers; it is not a fallback for incomplete published contexts.
 
 For a generative request, first use an available image-generation capability to create a candidate, then composite and inspect it. These helpers do not generate images or grant model access. If generation is unavailable, say so; do not silently run deterministic mode. Deterministic mode requires the user's explicit choice. Run masks and checks for each selection; do not treat a union-only metric as sufficient per-selection review.
 
@@ -36,13 +44,13 @@ For a generative request, first use an available image-generation capability to 
 ## Executable mask workflow
 
 1. Read the latest published Canvas context and identify the source image, selection geometry, selection type, and associated description.
-2. Map each selection from Canvas coordinates or normalized coordinates to the exact source-image pixel grid.
-3. Write a geometry JSON file with `selections`; each item uses `type` (`rectangle`, `ellipse`, or `path`) and normalized `points` or `normalizedCorners`.
+2. Require each requested region's published `selectionGeometry`: `version:1`, explicit `type`, `coordinateSpace:'original-image-pixels'`, complete `sourceWidth`/`sourceHeight`, ordered `points`, `closed:true`, explicit `fillRule:'nonzero'` or `'evenodd'`, `sampling:'integer'` and `clipBounds`. Preserve the declared fill rule; do not remap, normalize, clamp vertices or infer missing contours.
+3. Save the unchanged published context and run the context adapter with the explicit image ID and requested region IDs. Its `selections` output is the mask input. Keep individual region masks distinguishable; request several IDs together only when the user explicitly authorizes their union.
 4. Build the hard mask with the bundled helper:
 
    `powershell.exe -NoProfile -File <this-skill-directory>/scripts/run-visual.ps1 mask geometry.json selection-mask.png <source-width> <source-height>`
 
-   The helper writes a same-size binary PNG mask with black outside and white inside every requested selection. Rectangles and paths are polygons; ellipses use their two corner points.
+   The helper writes a same-size binary PNG mask with black outside and white inside every requested selection. Rectangles and paths use their actual polygons; ellipses use their four affine-frame corners. Every requested selection must contain at least one sampled source pixel after crop/domain intersection.
 5. Call the image-generation capability to make a candidate. The candidate is provisional: prompt coordinates or a model-side mask are not evidence of exact containment.
 6. Always perform a raster composite after generation. Use the original image as the complete base, copy candidate pixels only where the binary mask is white, and copy the original pixels everywhere else. Use the bundled `run-visual.ps1 composite` command; do not use an SVG preview as the enforcement step.
 7. The composite must use the same source dimensions. If the candidate has another size, resize it only as an intermediate candidate before masking; never resize the source or the mask. Reject mismatched source/mask dimensions.

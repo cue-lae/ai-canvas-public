@@ -1,6 +1,6 @@
 {
   "schema": "ai-canvas-accepted-sources-v1",
-  "releaseVersion": "1.0.14",
+  "releaseVersion": "1.0.16",
   "sources": [
     {
       "path": "desktop-package/tests/DocumentSessionTests/DocumentSessionTests.csproj",
@@ -12,7 +12,7 @@
     },
     {
       "path": "src/App.tsx",
-      "sha256": "54d4b245eca044c8d39b8f441639af309afb2acf33bc1d9801410017c81ca550"
+      "sha256": "b5341a732d9ee51e1bec4d8bc5d3b079aad1882292da29cd6c8e84b574d22df8"
     },
     {
       "path": "src/domain/annotationSelection.test.ts",
@@ -40,7 +40,7 @@
     },
     {
       "path": "src/domain/codexContext.ts",
-      "sha256": "4e0b6784470b36a5fbe5dff2c39f987fb8dd43808076e7bf36c2cd3d3ded3ef0"
+      "sha256": "51d4735e2e9421929743af48c74b70faec9adf97c1797631914372d6a339309c"
     },
     {
       "path": "src/domain/descriptionImageBinding.test.ts",
@@ -64,7 +64,7 @@
     },
     {
       "path": "src/domain/focusedPublish.ts",
-      "sha256": "ecdb2bb4bdf60ad8c8b1b31874002cb0711d680460836b761d2a2469376e2564"
+      "sha256": "be6a8ca72a8c3879275af1e6b20c1158a7b10dc8af66a816ad9662eb11f69910"
     },
     {
       "path": "src/domain/folderNames.test.ts",
@@ -129,6 +129,14 @@
     {
       "path": "src/domain/reconcile.ts",
       "sha256": "b2575a3ae16453d96a33566ccb56d3526d9a4b3457d8b05756e7039a9dfa3a94"
+    },
+    {
+      "path": "src/domain/selectionContext.test.ts",
+      "sha256": "7319683cdc91e4b3b4ddbeb749fb0d9741e0274ef9d5b9efffb739e96ba20dbf"
+    },
+    {
+      "path": "src/domain/selectionContext.ts",
+      "sha256": "f6c05b91719460384a6fbef9687430c345bf9176408a763a98d612d47765c069"
     },
     {
       "path": "src/domain/types.ts",
@@ -252,7 +260,7 @@
     },
     {
       "path": "src/styles.css",
-      "sha256": "e8c8452e11c8520c0234d4a78ebd5f35ca8fa6cad7d1a1200d261ec7b200bbef"
+      "sha256": "140bade94d61433e0cd088741e9851b32af96a9b3dfd9dea13fb625b01ae982d"
     },
     {
       "path": "src/test/canvasClipboardFixture.ts",
@@ -316,11 +324,27 @@
     },
     {
       "path": "src/ui/QuickAnnotationOverlay.tsx",
-      "sha256": "77d04e7efe2db65e3ac1a6e26449585109e4f3b9a674c83b17615fa28f92729d"
+      "sha256": "0bdc7c5abd4ea8af824485d8976ff4e4c26076434ad11da2748a5a1267d2c777"
+    },
+    {
+      "path": "src/ui/ReadFocusImages.test.tsx",
+      "sha256": "0187b8171a76b4e4f6c0fa32d83bf3c2f7120a77cfe4d13b94c797fb168f3c9c"
+    },
+    {
+      "path": "src/ui/ReadFocusImages.tsx",
+      "sha256": "912a1b5d798c08cbbb4e2fc93eac52601019e366b63164ffd252b7e7ed98316a"
+    },
+    {
+      "path": "src/ui/ReadImagePreview.test.tsx",
+      "sha256": "39e083f146a8cff5b00a18762597bf626fc99cb80b398678b7def9ea0d68d68e"
+    },
+    {
+      "path": "src/ui/ReadImagePreview.tsx",
+      "sha256": "5af5c503ad29df7c784916d0a5e25998d180f5cda9eb245c4a3f7624d5fe03f0"
     },
     {
       "path": "src/ui/SelectionCanvasOverlay.tsx",
-      "sha256": "08265f46f1aba6c0a361a6ab20c4b16ca3a78e1a95f7c01ca2a90f3df1b221ae"
+      "sha256": "45e51a134444e9241544bac2eb51a126371772b2d0e0994bb330709bc633c635"
     },
     {
       "path": "src/ui/canvasCardShadowVisibility.test.ts",
@@ -511,16 +535,24 @@
       "sha256": "1c751341b9d2dd5f739ce2e02ded4a30058abaac7eafd366c1d4da691e0290a4"
     },
     {
-      "path": "src/ui/descriptionWorkspaceStyleContract.test.ts",
-      "sha256": "1baae7802bf0266a51aa3c6f4f0de747d9a861bfae2d1da732ffe8a4432a64d1"
+      "path": "src/ui/folderMiddlePan.test.ts",
+      "sha256": "78a38337a0972a2b48bcca168b5d2549b75c2bea29a1938b6d1290821228e5ca"
     },
     {
-      "path": "src/ui/folderMiddlePan.test.ts",
-      "sha256": "16b87de770b3dea4e632a4c73880c2238e3c9f6f99d6c09ee6c40cbb8d05fe35"
+      "path": "src/ui/folderPreviewAttachment.test.ts",
+      "sha256": "0cfe0e735a1ff83302ef9f166b77ffaeee0db36504e5adb081907ab682cd0af1"
     },
     {
       "path": "src/ui/folderPreviewAttachment.ts",
-      "sha256": "59a074ede107c54bdff9aaf078ab5e643ef2f5510ed88f14ea39a87c844dc1bf"
+      "sha256": "c754a6a676f874a57dfcce712b67852be87bb7d693bb25e18fcd2f3c7cfe1914"
+    },
+    {
+      "path": "src/ui/folderPreviewMaskBounds.test.ts",
+      "sha256": "411b1dd0fbbb386192c1a4169916896618488c6c0821b548bb5ef11dde7086d4"
+    },
+    {
+      "path": "src/ui/folderPreviewMaskBounds.ts",
+      "sha256": "835d23c8592ce95f1dab053890aa58f3bd08a9bd18fe5118ebe353222086abfd"
     },
     {
       "path": "src/ui/folderPreviewMotion.test.ts",
@@ -532,15 +564,15 @@
     },
     {
       "path": "src/ui/folderPreviewPresentation.test.ts",
-      "sha256": "14f84605f8a5144c913492032cee439a18b58b8ba5dd70dffe8f88d9bccf92f5"
+      "sha256": "25bd7656ce65f8e014276beed013a3f58208e10ccfad045f76c47db1168115e9"
     },
     {
       "path": "src/ui/folderWorkspace.test.tsx",
-      "sha256": "6d76ccef8dcca6b12495268b6758323bf0fd9d9b538f7f657e49d26b491df260"
+      "sha256": "2120f74ab9a38ebe0c12dd2c147176abe818db5f3c3b272be11c6c1da4dfac72"
     },
     {
       "path": "src/ui/folderWorkspace.tsx",
-      "sha256": "5ac308763e8ef4762c8672b5a5d1e56d2a3f4752a6e31a435e3af85bd9d2ffe3"
+      "sha256": "efbbda14b53dff191c272f33f893123fcdbb61c451275d043bf9cfdd95ff2567"
     },
     {
       "path": "src/ui/globalHistorySceneSync.test.ts",
@@ -556,7 +588,7 @@
     },
     {
       "path": "src/ui/nativeDisplay.css",
-      "sha256": "a526b999b495a38687459bde650cbf33bba60c7ab2fc00df9a066b2593148bc0"
+      "sha256": "609b0c142f820a7706f7dd06dc8d0470bcceed5e542c7f1afcb7e41974c68638"
     },
     {
       "path": "src/ui/nativeToolShortcutGuard.test.ts",
@@ -588,7 +620,7 @@
     },
     {
       "path": "src/ui/quickAnnotationPreviewInteraction.test.tsx",
-      "sha256": "24409a556974b900d8a4684320760fba420a1d6687f317f39ad1aa12d7518d56"
+      "sha256": "c4a670eb51998cea261e8105a13cd37a523dc2f5842420e1e06b00c17028caf1"
     },
     {
       "path": "src/ui/quickAnnotationVisualInteraction.test.ts",
@@ -601,6 +633,22 @@
     {
       "path": "src/ui/quickAnnotations.ts",
       "sha256": "2b2c22dc78c9bec8339f123c85f58f802f275d7656128835827c83f5715997be"
+    },
+    {
+      "path": "src/ui/readFocusCandidates.test.ts",
+      "sha256": "696d8082a7981314b176d86aa67c275f3528c0186ab53ea6e3b959eb7d5752c2"
+    },
+    {
+      "path": "src/ui/readFocusCandidates.ts",
+      "sha256": "d9cf66984ac7875b80d8acbf6778d7e017cca2dc91eb410225caab32c85bed93"
+    },
+    {
+      "path": "src/ui/readPublicationRequest.test.ts",
+      "sha256": "b461778280d75847868d528662e95bed8d697e5f478c027532ce733e407f82fd"
+    },
+    {
+      "path": "src/ui/readPublicationRequest.ts",
+      "sha256": "3c1f32f005d9785d8a6b300ac7692bfa7abd065695a287609e9c82f19b8db809"
     },
     {
       "path": "src/ui/rotationFeedbackPresentation.test.ts",
@@ -656,7 +704,7 @@
     },
     {
       "path": "src/ui/selectionOverlayContract.test.ts",
-      "sha256": "194ae436c4d90b294532f66ff9eba3bb9ed2b810aafe07e0dab1bd1f8ee97e32"
+      "sha256": "a8503df987ba4bcdd9609a297f55c2b2c3810fd68b906628998539be28602c1f"
     },
     {
       "path": "src/ui/selectionPathDraft.test.ts",
@@ -668,7 +716,7 @@
     },
     {
       "path": "src/ui/selectionPreviewMasks.test.tsx",
-      "sha256": "59fa4c49a261814b2a57984fe97853baffd482fb49b929653e447262c9208623"
+      "sha256": "0fb80cc5d681f7371b20f794a3455db064e205ed86b533f24f87aa907751ef94"
     },
     {
       "path": "src/ui/selectionToolFocus.test.ts",
@@ -732,7 +780,7 @@
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/DocumentCloseDialog.cs",
-      "sha256": "f9623fbbc83273fef81f5c3e4e13a94f961db10759dfffe4511d0c334504d7cf"
+      "sha256": "96c71ee98973ef7e8ac9eb05cb1d2126ad9966f9feed5ad34ceaa088a17daa8c"
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/DocumentCloseStateBarrier.cs",
@@ -845,12 +893,8 @@
     {
       "path": "webview-host/AiCanvas.WebViewHost/app.manifest",
       "sha256": "cc88b9efb4e937d0b00229967e628394893bc116d1bfc42547262db506e8780f"
-    },
-    {
-      "path": "webview-host/tests/HostContract.Tests.ps1",
-      "sha256": "d797e8476db602224daf91904500d36506fdb40edf3eda0074039372df69aac3"
     }
   ],
-  "basis": "Native preview readiness repair: prepare the same paused effects while actual images decode, then resume the existing group. Preserve animation parameters and prior masks; native readiness is not a GPU presentation fence. Source synchronization preparation only; formal installation and user acceptance remain separate.",
-  "upstreamPublicCommit": "8d96343fffaa9fcb5003d7ee231bf842235087cd"
+  "basis": "Cumulative 1.0.16 application sources: selection geometry handoff, Read and description UI, close prompt, information layout, folder entry and preview attachments. Exact 223 source hashes match the delivered 1.0.16 snapshot. Source preparation is separate from installation lifecycle and publication.",
+  "upstreamPublicCommit": "7b851ed0ea855b44a179fe97fa0f0770dd9cb58b"
 }

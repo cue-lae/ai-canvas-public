@@ -17,8 +17,8 @@ by this attribution. See THIRD_PARTY_NOTICES.md and third-party-licenses/.
 Third-party code, fonts, runtime libraries and tools retain their own licenses.
 The project license does not change those third-party terms.
 
-This release adds license/attribution and public documentation only; application
-runtime source is unchanged from the tested 1.0.4 source snapshot. The installer
-included in the release bundle is byte-identical to the independently rebuilt
-and user-accepted artifact. The accompanying source contains its build inputs
-plus the declared licensing/documentation metadata changes.
+1.0.16 local source-candidate correction: the historical statement that runtime
+source is unchanged from 1.0.4 does not apply to this cumulative source snapshot.
+This candidate includes later product changes and has not been publicly released.
+No claim of byte-identical installers, a new clean-environment rebuild, or full
+installation/user acceptance is made here. See docs/VERIFICATION.md for scope.

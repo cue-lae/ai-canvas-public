@@ -26,3 +26,7 @@ Assistant、Cascadia Code、Excalifont、Lilita、Nunito、Virgil、Xiaolai 有 
 ## 自有资产
 
 项目用户已授权所询自有代码、AC标志、文件图标和安装界面素材公开，统一公开署名cue-lae；适用项目GPL-3.0-only许可，其他第三方作品仍按原文。用户图片、画布、参考素材没有纳入候选。
+
+## Release screenshot demonstration photography
+
+The 1.0.16 screenshots contain third-party demonstration photographs. Photographer and original-page credits are recorded in [PHOTO-CREDITS](docs/releases/1.0.16/PHOTO-CREDITS.md); those photographs are not project-original assets and are not relicensed by the project code license.

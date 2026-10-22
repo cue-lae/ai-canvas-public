@@ -75,7 +75,7 @@ export async function register(appRoot,home) {
   const identity=JSON.parse(await readFile(join(appRoot,'installed-package.json'),'utf8'));
   if(identity.id!==packageId || identity.port!==43129) throw new Error('安装包身份不匹配，未登记插件。');
   const source=join(appRoot,'plugin'), sourceManifest=JSON.parse(await readFile(join(source,'.codex-plugin/plugin.json'),'utf8'));
-  if(sourceManifest.name!==pluginName || sourceManifest.version!=='1.0.0') throw new Error('插件版本或身份不匹配。');
+  if(sourceManifest.name!==pluginName || sourceManifest.version!=='1.0.1') throw new Error('插件版本或身份不匹配。');
   const files=await hashes(source), state=await preflight(home);
   await mkdir(dirname(state.target),{recursive:true}); await noLinks(state.target);
   const staged=join(dirname(state.target),'.ai-canvas-new-'+randomUUID());

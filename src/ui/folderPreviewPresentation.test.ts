@@ -22,7 +22,7 @@ beforeEach(() => {
     viewport: { zoom: 1, scrollX: 0, scrollY: 0, offsetLeft: 0, offsetTop: 0 },
     previewCoverBounds: { x: 20, y: 150, width: 108, height: 135 },
     previewMotion: { folderId: "f", images: [{ id: "i", imageUrl: "data:image/png;base64,", target: { x: 160, y: 50, width: 100, height: 100, scale: 1, angle: 0 } }], descriptions: [{ id: "d", label: "说明 1", text: "正文", target: { x: 160, y: 200, width: 100, height: 80, scale: 1 } }] },
-    onSelectFolder: vi.fn(), onEnterFolder: vi.fn(), onMoveFolder: vi.fn(), onDeleteFolder: vi.fn(), onUngroupFolder: vi.fn(), onSelectDescription: vi.fn(), onMoveDescription: vi.fn(), onPreviewClosed: vi.fn(), onPreviewReopen: vi.fn(),
+    onSelectFolder: vi.fn(), onEnterFolder: vi.fn(), onMoveFolder: vi.fn(), onOpenFolderContextMenu: vi.fn(), onSelectDescription: vi.fn(), onMoveDescription: vi.fn(), onPreviewClosed: vi.fn(), onPreviewReopen: vi.fn(),
   };
 });
 afterEach(() => { act(() => root.unmount()); host.remove(); vi.unstubAllGlobals(); });
@@ -61,23 +61,46 @@ describe("Folder preview presentation", () => {
     expect(props.onEnterFolder).toHaveBeenCalledExactlyOnceWith("f");
     expect(props.onSelectFolder).not.toHaveBeenCalled();
   });
-  it("keeps destructive actions behind More and supports keyboard dismissal", () => {
-    render(); expect(host.querySelector('[role="menu"]')).toBeNull();
-    act(() => (host.querySelector(".folder-workspace-more") as HTMLButtonElement).click());
-    const menu = host.querySelector('[role="menu"]')!;
-    expect(menu.textContent).toContain("解组"); expect(menu.textContent).toContain("删除");
-    expect(document.activeElement?.textContent).toBe("解组");
-    act(() => menu.dispatchEvent(new KeyboardEvent("keydown", { bubbles: true, key: "ArrowDown" })));
-    expect(document.activeElement?.textContent).toBe("删除");
-    act(() => menu.dispatchEvent(new KeyboardEvent("keydown", { bubbles: true, key: "Escape" })));
-    expect(host.querySelector('[role="menu"]')).toBeNull();
-    expect(document.activeElement?.className).toBe("folder-workspace-more");
-    expect(props.onDeleteFolder).not.toHaveBeenCalled();
+  it.each([false, true])("has no floating actions for empty=%s", (empty) => {
+    const items = props.items.map(item => ({ ...item, folder: { ...item.folder,
+      imageAssetIds: empty ? [] : ["i"], descriptionIds: empty ? [] : ["d"] } }));
+    render({ items });
+    expect(host.querySelector("[data-folder-preview-actions], .folder-workspace-more, [role='menu']")).toBeNull();
+    expect(host.querySelector(".folder-workspace-hit-target")).not.toBeNull();
   });
-  it("reuses management callbacks and allows reversing a close on the folder", () => {
-    render(); act(() => (host.querySelector(".folder-workspace-more") as HTMLButtonElement).click());
-    act(() => (host.querySelector(".folder-workspace-ungroup") as HTMLButtonElement).click());
-    expect(props.onUngroupFolder).toHaveBeenCalledExactlyOnceWith("f");
+  it.each(["overview", "preview"] as const)("enters once from the focused cover in %s", (layer) => {
+    render({ navigation: layer === "preview" ? props.navigation : { layer, selectedFolderId: null } });
+    const cover = host.querySelector<HTMLButtonElement>(".folder-workspace-hit-target")!;
+    const event = new KeyboardEvent("keydown", { key: "Enter", bubbles: true, cancelable: true });
+    act(() => { cover.focus(); cover.dispatchEvent(event); });
+    expect(event.defaultPrevented).toBe(true);
+    expect(props.onEnterFolder).toHaveBeenCalledExactlyOnceWith("f");
+    act(() => cover.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", repeat: true, bubbles: true, cancelable: true })));
+    expect(props.onEnterFolder).toHaveBeenCalledTimes(1);
+  });
+  it.each([{ key: "ContextMenu" }, { key: "F10", shiftKey: true }])("anchors keyboard management to the focused cover: %j", (keys) => {
+    render(); const cover = host.querySelector<HTMLButtonElement>(".folder-workspace-hit-target")!;
+    vi.spyOn(cover, "getBoundingClientRect").mockReturnValue(new DOMRect(12, 25, 40, 70));
+    const event = new KeyboardEvent("keydown", { ...keys, bubbles: true, cancelable: true });
+    act(() => { cover.focus(); cover.dispatchEvent(event); });
+    expect(event.defaultPrevented).toBe(true);
+    expect(props.onOpenFolderContextMenu).toHaveBeenCalledExactlyOnceWith("f", { x: 12, y: 95 });
+    expect(props.onEnterFolder).not.toHaveBeenCalled();
+  });
+  it.each([{ disabled: true }, { navigation: { layer: "preview", selectedFolderId: "other" } } as Partial<Props>])("does not activate unavailable covers: %j", (extra) => {
+    render(extra); const cover = host.querySelector<HTMLButtonElement>(".folder-workspace-hit-target")!;
+    act(() => { cover.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true, cancelable: true }));
+      cover.dispatchEvent(new KeyboardEvent("keydown", { key: "ContextMenu", bubbles: true, cancelable: true })); });
+    expect(props.onEnterFolder).not.toHaveBeenCalled();
+    expect(props.onOpenFolderContextMenu).not.toHaveBeenCalled();
+  });
+  it.each([{ key: "Enter", ctrlKey: true }, { key: "Enter", altKey: true }, { key: "Enter", metaKey: true }, { key: "Enter", isComposing: true }, { key: "F10" }])("preserves composition and unrelated shortcuts: %j", (keys) => {
+    render(); const cover = host.querySelector<HTMLButtonElement>(".folder-workspace-hit-target")!;
+    act(() => cover.dispatchEvent(new KeyboardEvent("keydown", { ...keys, bubbles: true, cancelable: true })));
+    expect(props.onEnterFolder).not.toHaveBeenCalled();
+    expect(props.onOpenFolderContextMenu).not.toHaveBeenCalled();
+  });
+  it("allows reversing a close on the folder", () => {
     render({ previewClosing: true });
     act(() => (host.querySelector(".folder-workspace-hit-target") as HTMLButtonElement).click());
     expect(props.onPreviewReopen).toHaveBeenCalledTimes(1);

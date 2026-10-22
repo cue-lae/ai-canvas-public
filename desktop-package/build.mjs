@@ -1,12 +1,13 @@
+// Adapted from the public 1.0.14 portable builder for the explicit 1.0.16 source-input manifest.
 import { readFile, writeFile, mkdir, cp, readdir, stat } from 'node:fs/promises';
 import { dirname, resolve, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
-import { spawn, execFileSync } from 'node:child_process';
+import { spawn } from 'node:child_process';
 import { verifyAcceptedSources } from './accepted-source-policy.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-if (process.cwd().toLowerCase() !== root.toLowerCase()) throw new Error('Build must run in the canonical repository root.');
+if (process.cwd().toLowerCase() !== root.toLowerCase()) throw new Error('Build must run from this source snapshot root.');
 const buildId = process.argv[2];
 if (!/^build-[0-9]{3}$/.test(buildId ?? '')) throw new Error('Supply a new build-NNN identifier.');
 const timingDiagnostics = process.argv[3] === '--timing';
@@ -22,6 +23,37 @@ const sourceDirtyPaths = [];
 const sourceApproval = JSON.parse(await readFile(join(root, 'desktop-package/accepted-source-inputs.json'), 'utf8'));
 if (sourceApproval.releaseVersion !== release.version) throw new Error('Approved source version mismatch');
 const acceptedSources = await verifyAcceptedSources(root, sourceApproval);
+
+// This list is generated when the public source snapshot is finalized; it does
+// not enumerate private worktrees, Git state, profiles, or arbitrary source files.
+const sourceInputManifestPath = join(root, 'SOURCE-INPUTS.json');
+const sourceInputManifestBytes = await readFile(sourceInputManifestPath);
+const sourceInputManifest = JSON.parse(sourceInputManifestBytes.toString('utf8'));
+if (sourceInputManifest.schema !== 'ai-canvas-packaging-inputs-v1' ||
+    sourceInputManifest.releaseVersion !== release.version || !Array.isArray(sourceInputManifest.files))
+  throw new Error('Invalid source-input manifest or release version');
+const sourceInputManifestSha256 = createHash('sha256').update(sourceInputManifestBytes).digest('hex');
+const seenSourcePaths = new Set();
+const sourceInputs = [];
+for (const entry of sourceInputManifest.files) {
+  const p = entry.path;
+  if (typeof p !== 'string' || p.includes('\\') || /[:\0]/.test(p) ||
+      p.split('/').some(part => !part || part === '.' || part === '..') ||
+      seenSourcePaths.has(p) || !/^[a-f0-9]{64}$/.test(entry.sha256 ?? '') ||
+      /(^|\/)(\.git|\.codex|\.agents|node_modules|\.build|\.pnpm-store|outputs|temp|inbox|reports|candidate-data|bin|obj)(\/|$)|(^|\/)\.env(?:\.|$)/i.test(p) ||
+      (p.startsWith('working/') && p !== 'working/installer-experience-preview-20260928/installer-flow-preview.html') ||
+      p === 'docs/PROJECT_LOCAL_CREDENTIALS.md' || p === 'SOURCE-INPUTS.json' || p === 'SOURCE_MANIFEST.json')
+    throw new Error('Invalid or private source-input path');
+  seenSourcePaths.add(p);
+  const bytes = await readFile(join(root, p));
+  if (createHash('sha256').update(bytes).digest('hex') !== entry.sha256 ||
+      (entry.size !== undefined && entry.size !== bytes.length))
+    throw new Error('Source-input hash/size mismatch: ' + p);
+  sourceInputs.push({ path: p, sha256: entry.sha256 });
+}
+if (sourceInputs.length === 0) throw new Error('Source-input manifest is empty');
+const sourceFiles = sourceInputs.map(input => input.path).sort();
+
 const documentOpenAssets = {
   'webview-host/AiCanvas.WebViewHost/Assets/AI-Canvas-Document-A.ico': '74b43c1b8e9bb14e04489296c28a75eb7a2f268ecce64d103199cf663097b31e',
   'webview-host/AiCanvas.WebViewHost/Assets/AI-Canvas-Document-A.svg': '6932d2433e3a0919319dd765ae076d5c787e5cbc933cf711be86ad6defbe990e',
@@ -44,7 +76,7 @@ await mkdir(payload);
 const node = process.execPath;
 const modulesRoot = resolve(process.env.CANVAS_DEPS_ROOT ?? join(root, 'node_modules')); // Explicit warmed-build input only.
 const dotnet = process.env.CANVAS_DOTNET ?? 'dotnet';
-const nuget = resolve(process.env.CANVAS_NUGET_CACHE ?? join(task, 'nuget'));
+const nuget = resolve(process.env.CANVAS_NUGET_CACHE ?? join(root, '.pnpm-store/ai-canvas-nuget'));
 const nugetFeed = process.env.CANVAS_NUGET_SOURCE;
 const dotnetEnvironment = { NUGET_PACKAGES: nuget, DOTNET_CLI_TELEMETRY_OPTOUT: '1', ...(process.env.CANVAS_DOTNET ? { DOTNET_ROOT: dirname(dotnet) } : {}) }; 
 const iscc = process.env.CANVAS_ISCC ?? resolve(process.env.LOCALAPPDATA, 'Programs/Inno Setup 7/ISCC.exe');
@@ -83,6 +115,20 @@ await cp(join(root, 'desktop-package/installer-file-association.ps1'), join(payl
 await writeFile(join(payload, 'README-ZH.txt'), (await readFile(join(root, 'desktop-package/README-ZH.txt'), 'utf8')).replaceAll('{{PACKAGE_VERSION}}', release.packageVersion));
 await writeFile(join(payload, 'AI Canvas 安装说明.txt'), '\uFEFF' + (await readFile(join(root, 'desktop-package/CONNECTION-GUIDE-ZH.md'), 'utf8')).replaceAll('{{PACKAGE_VERSION}}', release.packageVersion));
 await writeFile(join(payload, 'installed-package.json'), JSON.stringify({ id: 'ai-canvas-desktop-test', version: release.packageVersion, buildId, timingDiagnostics, port: 43129, nodeVersion: version, dotnetVersion: '8.0.31', productBase }, null, 2));
+
+// Project notices accompany installed payloads as well as the outer source archive.
+for (const name of ['LICENSE', 'NOTICE', 'THIRD_PARTY_NOTICES.md'])
+  await cp(join(root, name), join(payload, name));
+await writeFile(join(payload, 'SOURCE-CODE.txt'), [
+  'AI Canvas ' + release.version + ' - corresponding source',
+  'Project-owned code and assets: GPL-3.0-only; attribution: cue-lae.',
+  'Matching source archive: AI-Canvas-' + release.version + '-source.zip.',
+  'The distributor provides this archive with the Windows release bundle.',
+  'Public project: https://github.com/cue-lae/ai-canvas-public',
+  'This reference does not claim that a local candidate has already been published.',
+  'See LICENSE, NOTICE and THIRD_PARTY_NOTICES.md for terms and third-party notices.',
+  '',
+].join('\n'));
 
 // Preserve third-party license originals; never synthesize license grants.
 const licenses = join(payload, 'licenses'); await mkdir(licenses);
@@ -152,20 +198,6 @@ for (const file of await walk(payload)) {
   hashes.push({ path: rel, size: (await stat(file)).size, sha256: digest(bytes) });
 }
 await writeFile(join(payload, 'FILES.sha256.json'), JSON.stringify(hashes, null, 2));
-const excludedRoots = new Set(['.git', '.build', 'node_modules', 'runtime', '.pnpm-store', 'temp', 'dist', 'coverage']);
-async function sourceWalk(folder) {
-  const files = [];
-  for (const entry of await readdir(folder, { withFileTypes: true })) {
-    if (entry.isSymbolicLink()) throw new Error('Source snapshot contains a link');
-    if (entry.isDirectory() && (excludedRoots.has(entry.name) || ['bin','obj'].includes(entry.name))) continue;
-    const path = join(folder, entry.name);
-    if (entry.isDirectory()) files.push(...await sourceWalk(path));
-    else if (entry.isFile()) files.push(relative(root,path).replaceAll('\\','/'));
-  }
-  return files;
-}
-const sourceFiles = (await sourceWalk(root)).sort();
-const sourceInputs = await Promise.all(sourceFiles.map(async path => ({ path, sha256: digest(await readFile(join(root, path))) })));
 const trackedSourcePaths = new Set(sourceFiles);
 const sourceUntrackedPaths = sourceFiles.filter(path => !trackedSourcePaths.has(path));
 const installerName = `AI-Canvas-${release.version}-Setup.exe`;
@@ -179,8 +211,10 @@ await cp(join(run, 'shell/AI-Canvas-Setup.exe'), join(run, 'installer', installe
 const installer = join(run, 'installer', installerName);
 const installerSha256 = digest(await readFile(installer));
 await verifyAcceptedSources(root, sourceApproval);
+if (digest(await readFile(sourceInputManifestPath)) !== sourceInputManifestSha256)
+  throw new Error('Source-input manifest changed during packaging');
 for (const input of sourceInputs)
   if (digest(await readFile(join(root, input.path))) !== input.sha256) throw new Error(`Source changed during packaging: ${input.path}`);
-await writeFile(join(run, 'BUILD-REPORT.json'), JSON.stringify({ productBase, packageVersion: release.packageVersion, buildId, timingDiagnostics, sourceDirtyPaths, sourceUntrackedPaths, sourceInputs, dependencyInput: process.env.CANVAS_DEPS_ROOT ? 'explicit-existing-dependencies' : 'checkout-node_modules', nodeSource: `https://nodejs.org/dist/v${version}/`, expectedNodeZip, commands, fileCount: hashes.length, files: hashes, engine: { name: installerName, sha256: engineSha256 }, installer: { name: installerName, sha256: installerSha256 } }, null, 2));
+await writeFile(join(run, 'BUILD-REPORT.json'), JSON.stringify({ productBase, packageVersion: release.packageVersion, buildId, timingDiagnostics, sourceDirtyPaths, sourceUntrackedPaths, sourceInputs, sourceInputManifestSha256, sourceInputManifestSchema: sourceInputManifest.schema, dependencyInput: process.env.CANVAS_DEPS_ROOT ? 'explicit-existing-dependencies' : 'checkout-node_modules', nodeSource: `https://nodejs.org/dist/v${version}/`, expectedNodeZip, commands, fileCount: hashes.length, files: hashes, engine: { name: installerName, sha256: engineSha256 }, installer: { name: installerName, sha256: installerSha256 } }, null, 2));
 await writeFile(join(run, 'installer/SHA256.txt'), `${installerSha256}  ${installerName}\n`);
 console.log(`TEST_INSTALLER_READY: ${installer}`);

@@ -37,19 +37,25 @@ describe("Selection overlay presentation contract", () => {
     const groupStart = source.indexOf(
       "<g\n              key={selection.regionId}",
     );
-    const shapeStart = source.indexOf('{kind === "ellipse" ?', groupStart);
-    const groupOpening = source.slice(groupStart, shapeStart);
+    const shapeStart = source.indexOf('const shape = (kind === "ellipse" ?');
+    const handlesStart = source.indexOf("const handles = (selected &&", shapeStart);
+    const groupOpening = source.slice(groupStart, source.indexOf("            >", groupStart));
     const shapeMaskToken =
       "mask={\n                    occlusionMask ? `url(#${occlusionMask.id})` : undefined\n                  }";
     const shapeBlock = source.slice(
       shapeStart,
-      source.indexOf("{selected &&", shapeStart),
+      handlesStart,
     );
 
     expect(groupStart).toBeGreaterThanOrEqual(0);
-    expect(shapeStart).toBeGreaterThan(groupStart);
+    expect(shapeStart).toBeGreaterThanOrEqual(0);
+    expect(handlesStart).toBeGreaterThan(shapeStart);
     expect(groupOpening).not.toContain("mask=");
     expect(shapeBlock.split(shapeMaskToken)).toHaveLength(3);
+    const handlesBlock = source.slice(handlesStart, source.indexOf("          return (", handlesStart));
+    expect(handlesBlock).not.toContain("mask=");
+    expect(handlesBlock).not.toContain("clipPath=");
+    expect(source).toContain("previewFrame(handles, selection.imageId)");
   });
 
   it("preserves shrink scaling and gently caps handle growth when zooming in", () => {
@@ -144,7 +150,13 @@ describe("Selection overlay presentation contract", () => {
     expect(overlaySource).toContain("layout.separatorXs.map");
     expect(overlaySource).toContain("selectHighestScreenPoint");
     expect(overlaySource).toContain("Object.values(ellipseHandles)");
-    expect(overlaySource).not.toContain("panelBounds.width");
+    // Panel measurements may bound masks, but must never reposition badges.
+    const badgeLayoutSource = overlaySource.slice(
+      overlaySource.indexOf("const bindingBadgeRows ="),
+      overlaySource.indexOf("const selectionOcclusionMasks ="),
+    );
+    expect(badgeLayoutSource.length).toBeGreaterThan(0);
+    expect(badgeLayoutSource).not.toContain("panelBounds.width");
     expect(overlaySource).not.toContain("viewportWidth");
     expect(badgeSource).not.toContain("viewportWidth");
     expect(badgeSource).not.toContain("groupLeft");

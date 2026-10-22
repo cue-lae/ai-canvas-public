@@ -8,6 +8,11 @@ import {
   quickAnnotationContextsForImage,
   type QuickAnnotationContext,
 } from "../ui/quickAnnotations";
+import {
+  buildPublishedSelectionGeometry,
+  type PublishedSceneElement,
+  type PublishedSelectionGeometry,
+} from "./selectionContext";
 
 export const bridgePublishableImageFormatsLabel = "PNG、JPEG、WebP";
 
@@ -51,6 +56,7 @@ export interface CodexVisualContext {
         clippedPixelBounds: Bounds;
         normalizedCorners: Point[];
         isClipped: boolean;
+        selectionGeometry?: PublishedSelectionGeometry | null;
         crop: {
           filename: string;
           mimeType: "image/png";
@@ -135,6 +141,7 @@ export const buildCodexVisualContext = ({
   question,
   crop,
   canvasSnapshot,
+  sceneElements,
   generatedAt = new Date().toISOString(),
 }: {
   business: BusinessState;
@@ -146,6 +153,7 @@ export const buildCodexVisualContext = ({
     bytes: number;
   };
   canvasSnapshot: CanvasSnapshot;
+  sceneElements?: readonly PublishedSceneElement[];
   generatedAt?: string;
 }): CodexVisualContext => {
   const snapshot = assertCanvasSnapshot(canvasSnapshot);
@@ -195,6 +203,11 @@ export const buildCodexVisualContext = ({
       clippedPixelBounds: region.geometry.clippedPixelBounds,
       normalizedCorners: region.geometry.normalizedCorners,
       isClipped: region.geometry.isClipped,
+      selectionGeometry: buildPublishedSelectionGeometry({
+        business,
+        sceneElements,
+        regionId: region.id,
+      }),
       crop: {
         filename: `${region.id}-crop.png`,
         mimeType: "image/png",

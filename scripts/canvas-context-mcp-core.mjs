@@ -61,6 +61,53 @@ const validateBounds = (value, label) => {
   finiteNumber(bounds.height, `${label}.height`, { min: 0.000001 });
 };
 
+const validateSelectionGeometry = (value, label, image) => {
+  // Legacy snapshots remain readable, but absence never grants exact-mask data.
+  if (value === undefined || value === null) return;
+  const geometry = objectValue(value, label);
+  const invalid = (message) => fail(400, "INVALID_SELECTION_GEOMETRY", `${label}: ${message}`);
+  if (
+    geometry.version !== 1 ||
+    !["rectangle", "ellipse", "path"].includes(geometry.type) ||
+    geometry.coordinateSpace !== "original-image-pixels" ||
+    geometry.closed !== true || !["nonzero", "evenodd"].includes(geometry.fillRule) ||
+    geometry.sampling !== "integer"
+  ) invalid("不支持的精确选区协议。");
+  for (const dimension of ["sourceWidth", "sourceHeight"]) {
+    if (!Number.isInteger(geometry[dimension]) || geometry[dimension] < 1 || geometry[dimension] > 32_768) {
+      invalid("原图尺寸必须为允许范围内的正整数。");
+    }
+  }
+  if (image && (geometry.sourceWidth !== image.naturalWidth || geometry.sourceHeight !== image.naturalHeight)) {
+    fail(400, "SELECTION_IMAGE_MISMATCH", `${label} 的尺寸与所属原图不一致。`);
+  }
+  const points = geometry.points;
+  if (!Array.isArray(points) || points.length > 10_000 ||
+      points.length < (geometry.type === "path" ? 3 : 4) ||
+      (geometry.type !== "path" && points.length !== 4) ||
+      points.some((point) => !point || typeof point.x !== "number" || typeof point.y !== "number" ||
+        !Number.isFinite(point.x) || !Number.isFinite(point.y))) {
+    invalid("必须提供完整、有序且有限的原图像素点。");
+  }
+  const clip = geometry.clipBounds;
+  if (!clip || typeof clip !== "object" ||
+      ["x", "y", "width", "height"].some((key) => typeof clip[key] !== "number" || !Number.isFinite(clip[key])) ||
+      clip.x < 0 || clip.y < 0 || clip.width <= 0 || clip.height <= 0 ||
+      clip.x + clip.width > geometry.sourceWidth || clip.y + clip.height > geometry.sourceHeight) {
+    invalid("原图裁切域必须位于完整原图内。");
+  }
+  if (geometry.type !== "path") {
+    const a = { x: points[1].x - points[0].x, y: points[1].y - points[0].y };
+    const b = { x: points[3].x - points[0].x, y: points[3].y - points[0].y };
+    const scale = Math.max(1, Math.hypot(a.x, a.y), Math.hypot(b.x, b.y));
+    const det = a.x * b.y - a.y * b.x;
+    if (!Number.isFinite(det) || Math.abs(det) <= Number.EPSILON * scale * scale * 8 ||
+        Math.hypot(points[2].x - points[0].x - a.x - b.x, points[2].y - points[0].y - a.y - b.y) > 1e-7 * scale) {
+      invalid("矩形与椭圆必须保留四个有序、非退化仿射角点。");
+    }
+  }
+};
+
 const validateIsoDate = (value, label) => {
   stringValue(value, label, 64);
   if (!Number.isFinite(Date.parse(value))) {
@@ -325,9 +372,13 @@ const validateQuickAnnotations = (image, label) => {
   });
 };
 
-const validateFocusedAnnotationContext = (value, label, limits) => {
+const validateFocusedAnnotationContext = (value, label, limits, image) => {
   const annotation = objectValue(value, label);
   stringValue(annotation.regionId, `${label}.regionId`, 128);
+  if (Object.hasOwn(annotation, "imageId") && annotation.imageId !== image.imageId) {
+    fail(400, "CONTEXT_RELATION_MISMATCH", `${label}.imageId 与所属重点原图不一致。`);
+  }
+  validateSelectionGeometry(annotation.selectionGeometry, `${label}.selectionGeometry`, image);
   if (typeof annotation.selectionVisible !== "boolean") {
     fail(400, "INVALID_PAYLOAD", `${label}.selectionVisible 必须为布尔值。`);
   }
@@ -437,6 +488,11 @@ const validateDescriptionContextExtension = (context, focusImages, limits) => {
     }
     regionIds.add(regionId);
     stringValue(scope.imageId, `${label}.imageId`, 128);
+    validateSelectionGeometry(
+      scope.selectionGeometry,
+      `${label}.selectionGeometry`,
+      focusImages.find((image) => image.imageId === scope.imageId),
+    );
     validateBounds(scope.originalPixelBounds, `${label}.originalPixelBounds`);
     validateBounds(scope.clippedPixelBounds, `${label}.clippedPixelBounds`);
     if (
@@ -561,6 +617,7 @@ const validateFocusedContext = (contextValue, limits) => {
         annotation,
         `context.focusImages[${index}].visibleAnnotations[${annotationIndex}]`,
         limits,
+        image,
       ),
     );
     validateQuickAnnotations(image, `context.focusImages[${index}]`).forEach(
@@ -651,6 +708,7 @@ const validateReadyPayload = (payload, limits) => {
       "选区 imageId 与原图 imageId 不一致。",
     );
   }
+  validateSelectionGeometry(selection.selectionGeometry, "context.selection.selectionGeometry", image);
   validateBounds(
     selection.originalPixelBounds,
     "context.selection.originalPixelBounds",

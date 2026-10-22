@@ -91,4 +91,58 @@ describe("quick annotation read-only preview", () => {
       expect(part.style.animationDelay).toBe("");
     });
   });
+  it("counter-rotates only read-only rectangle content and the image-sized marker interior", () => {
+    const angle = Math.PI / 2;
+    props.elements = [{ ...props.elements[0], angle }] as Props["elements"];
+    const previewMotion = {
+      sourceRect: { left: 20, top: 50 }, imageIds: new Set(["image-a"]),
+      targets: new Map([["image-a", { left: 100, top: 100, width: 200, height: 100, angle }]]),
+    };
+    render({ readOnly: true, previewMotion });
+    const rectangle = host.querySelector(".quick-annotation-overlay__rectangle")!;
+    expect(rectangle.parentElement?.getAttribute("transform")).toBe("rotate(-90 200 150)");
+    const outer = rectangle.parentElement?.parentElement as unknown as SVGElement;
+    expect(outer.style.rotate).toBe(`${angle}rad`);
+    expect(outer.dataset.folderMotion).toBe("member");
+    const marker = host.querySelector(".quick-annotation-overlay__preview-marker")!;
+    const inner = marker.parentElement as HTMLElement;
+    expect(inner.style.width).toBe("200px");
+    expect(inner.style.height).toBe("100px");
+    expect(inner.style.transformOrigin).toBe("100px 50px");
+    expect(inner.style.transform).toBe(`rotate(${-angle}rad)`);
+    expect(inner.dataset.folderMotion).toBeUndefined();
+    expect(host.querySelectorAll("[data-folder-motion]")).toHaveLength(3);
+    expect(host.querySelectorAll(".quick-annotation-preview-counter-rotation")).toHaveLength(2);
+    expect(host.querySelector(".quick-annotation-overlay__connector")).toBeNull();
+    expect(host.querySelector(".quick-annotation-overlay__label-layer")).toBeNull();
+    expect(host.querySelector("mask, clipPath")).toBeNull();
+
+    const changed = { ...previewMotion, targets: new Map([["image-a", {
+      left: 120, top: 80, width: 260, height: 130, angle: -Math.PI / 2,
+    }]]) };
+    render({ readOnly: true, previewMotion: changed });
+    expect(rectangle.parentElement?.getAttribute("transform")).toBe("rotate(90 250 145)");
+    expect(inner.style.width).toBe("260px");
+    expect(inner.style.height).toBe("130px");
+    expect(inner.style.transformOrigin).toBe("130px 65px");
+    expect(inner.style.transform).toBe(`rotate(${angle}rad)`);
+
+    render({ readOnly: false, previewMotion: null });
+    expect(host.querySelector(".quick-annotation-preview-counter-rotation")).toBeNull();
+    expect(host.querySelector(".quick-annotation-overlay__preview-marker")).toBeNull();
+    expect(host.querySelector(".quick-annotation-overlay__connector")).not.toBeNull();
+    expect(host.querySelector(".quick-annotation-overlay__range-hit")).not.toBeNull();
+  });
+  it("keeps non-owner and target-less previews on the original uncorrected fallback", () => {
+    for (const previewMotion of [
+      { sourceRect: { left: 20, top: 50 }, imageIds: new Set(["image-a"]) },
+      { sourceRect: { left: 20, top: 50 }, imageIds: new Set(["other"]),
+        targets: new Map([["image-a", { left: 100, top: 100, width: 200, height: 100, angle: 0.3 }]]) },
+    ]) {
+      render({ readOnly: true, previewMotion });
+      expect(host.querySelector(".quick-annotation-preview-counter-rotation")).toBeNull();
+      expect(host.querySelector(".quick-annotation-overlay__preview-marker-motion")).toBeNull();
+      expect(host.querySelector(".quick-annotation-overlay__preview-marker")).not.toBeNull();
+    }
+  });
 });
