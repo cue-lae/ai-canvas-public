@@ -3,13 +3,30 @@
   "releaseVersion": "1.0.17",
   "publicBaseline": "a551e00793572319307f6816be2e0a788a645fac",
   "sourceArchiveSha256": "0cbcb6516c8f8a08d68f2f25a1daae6ff33be26a22fc8329df9c41b62fe02fd4",
-  "basis": "Public-only source and documentation adaptation over the clean public 1.0.16 baseline, matching all 223 application inputs of the immutable local 1.0.17 source archive. The application source commit has been fast-forward synchronized to main; installer assets and the 1.0.17 tag/Release remain unpublished.",
+  "basis": "Existing immutable 1.0.17 package assets published as the latest release; server SHA256 and complete anonymous downloads verified before this documentation update is applied. The public tag targets the synchronized application source commit; download documentation updates do not move it. All 223 application inputs remain unchanged; no new native or user acceptance is claimed.",
   "adaptations": [
     "Copy only the two approved Read CSS corrections and 1.0.17 release metadata from the local package source.",
     "Retain the public five-key portable accepted metadata format without internal history, authorization narrative or machine paths.",
-    "Preserve nine actual 1.0.16 screenshots, their labels and credits, notices, third-party licenses and the existing 1.0.16 release links.",
+    "Preserve all nine actual 1.0.16 screenshots, labels, credits, notices and third-party licenses; additions/replacements/deletions are all zero. Update only current download links from 1.0.16 to 1.0.17, preserving historical release links.",
     "Describe prior build and offline browser evidence without claiming new execution or native/user acceptance.",
-    "Regenerate public-only input and source manifests for the exact retained public file set; preserve all original package bytes."
+    "Regenerate public-only input and source manifests for the exact retained public file set; preserve all original package bytes.",
+    "Publish the already prepared Windows ZIP (containing Setup), source ZIP and SHA256SUMS.txt without rebuilding or replacing their bytes; source archive remains 677 files while public directory contains 697 files."
   ],
-  "applicationSourceCommit": "12f5b18bd146963805bb8e8d1d1a4f39b6164f64"
+  "applicationSourceCommit": "12f5b18bd146963805bb8e8d1d1a4f39b6164f64",
+  "history": [
+    {
+      "stage": "application-source-synchronized-package-not-published",
+      "basis": "Public-only source and documentation adaptation over the clean public 1.0.16 baseline, matching all 223 application inputs of the immutable local 1.0.17 source archive. The application source commit has been fast-forward synchronized to main; installer assets and the 1.0.17 tag/Release remain unpublished.",
+      "adaptations": [
+        "Copy only the two approved Read CSS corrections and 1.0.17 release metadata from the local package source.",
+        "Retain the public five-key portable accepted metadata format without internal history, authorization narrative or machine paths.",
+        "Preserve nine actual 1.0.16 screenshots, their labels and credits, notices, third-party licenses and the existing 1.0.16 release links.",
+        "Describe prior build and offline browser evidence without claiming new execution or native/user acceptance.",
+        "Regenerate public-only input and source manifests for the exact retained public file set; preserve all original package bytes."
+      ],
+      "applicationSourceCommit": "12f5b18bd146963805bb8e8d1d1a4f39b6164f64"
+    }
+  ],
+  "releaseUrl": "https://github.com/cue-lae/ai-canvas-public/releases/tag/v1.0.17",
+  "tagCommit": "29dcfea5f82320f7133f5b96adaf5d120a670331"
 }

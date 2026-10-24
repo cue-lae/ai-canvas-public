@@ -1,10 +1,10 @@
 {
   "releaseVersion": "1.0.17",
-  "revision": "application-source-synchronized-package-not-published",
+  "revision": "application-source-and-installer-published",
   "date": "2026-10-24",
   "license": "GPL-3.0-only",
   "publicAttribution": "cue-lae",
-  "basis": "Two Read CSS corrections and 1.0.17 source metadata synchronized from the reviewed public baseline. Local 1.0.17 packages are unchanged and not published; existing download links and nine actual 1.0.16 screenshots remain. Public-only documentation and manifests are separate from original source archive bytes.",
+  "basis": "The existing immutable 1.0.17 installer and source assets are published as latest; current download documentation is updated after server digest and full anonymous download verification. Public directory contains 697 files; SOURCE-INPUTS covers 695 and this manifest covers 696. All 223 application inputs and nine actual 1.0.16 screenshots remain unchanged. Original 677-file source archive bytes remain separate and unchanged.",
   "manifestSelfExcluded": true,
   "files": [
     {
@@ -494,8 +494,8 @@
     },
     {
       "path": "docs/VERIFICATION.md",
-      "size": 19236,
-      "sha256": "4304b7b760fc2ab1a6815602b326aadef3c3e2b416fbcf4512ba5d8ca934f70e"
+      "size": 19853,
+      "sha256": "b2d1980b5771500c0dda5a71263ee07827447e78c5c3d6eeb891bf1c553fac2b"
     },
     {
       "path": "index.html",
@@ -529,8 +529,8 @@
     },
     {
       "path": "README.md",
-      "size": 6852,
-      "sha256": "fb9a4ed9ca56d5e030136f22fcb55e8a86db30a9fa582128f2a228aa5c569e94"
+      "size": 6903,
+      "sha256": "5a90838cc0aa20064b9c8a46dd9e3d94ffcf9d4ec4e96c60dfa283b644394e48"
     },
     {
       "path": "scripts/ai-canvas-local.mjs",
@@ -590,12 +590,12 @@
     {
       "path": "SOURCE-INPUTS.json",
       "size": 126020,
-      "sha256": "2604a079dc9c4f8cd11dfd7e728cffd40551d1144ae0beb7f10a5d495d734c28"
+      "sha256": "628cc9e087e8935c85596db52bfb0ff70d3eea048e26595750c173258e39f3e8"
     },
     {
       "path": "SOURCE-README-PROVENANCE.json",
-      "size": 1304,
-      "sha256": "40b539f3852878eca634aae6d045edabfa1831c87013f5ac48a99f82ce4cd45f"
+      "size": 3038,
+      "sha256": "f029dddc279301ba0407f1acb27f472ced06e918042533f7aeceefc351d6e565"
     },
     {
       "path": "src/App.tsx",

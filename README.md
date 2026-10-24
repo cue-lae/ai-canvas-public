@@ -2,14 +2,14 @@
 
 AI Canvas 是面向图片、说明与局部视觉任务的桌面画布，支持多文档标签、选区、快速标注和文件夹组织。
 
-**AI Canvas 源码 1.0.17 · cue-lae · GPL-3.0-only。**
+**AI Canvas 1.0.17 · cue-lae · GPL-3.0-only。**
 
-## 1.0.17 源码更新（安装包待发布）
+## 1.0.17 更新
 
 - 取消 Read 详情展开／收起的过渡动画。
 - 让连接说明文字与连接状态文字左缘对齐，保留状态绿点位置和正式信息栏布局。
 
-1.0.17 源码已同步至本仓库 main，正式版本地更新包已制作；1.0.17 安装包尚未在 Releases 发布。下方正式下载继续保持 1.0.16；九张截图仍标注其实际来源 1.0.16，不作为 1.0.17 新截图。
+1.0.17 原安装包、对应源码 ZIP 和 SHA256SUMS.txt 已发布，并设为最新版本；下方正式下载已更新到 1.0.17。原包未重新制作。九张截图仍来自实际 1.0.16，本轮新增／替换／删除均为 0，不作为 1.0.17 新截图。
 
 公开目录的 223 项应用输入与本地 1.0.17 原源码包一致；公开说明、便携 accepted 元数据和目录清单单独适配，不表示整个公开目录与原源码 ZIP 逐字节相同。已有构建和离线浏览器证据及未验证项见[验证记录](docs/VERIFICATION.md)。
 
@@ -23,7 +23,7 @@ AI Canvas 是面向图片、说明与局部视觉任务的桌面画布，支持�
 
 本次累计包含此前仅本地交付的 1.0.15 改动，无须另发 1.0.15。查看[九组实际界面截图](docs/releases/1.0.16/SCREENSHOTS.md)和[验证记录](docs/VERIFICATION.md)。
 
-1.0.16 安装包、对应源码和九张实际界面截图已发布，下方下载入口已更新到 1.0.16。公开 Git 目录使用 `SOURCE_MANIFEST.json` 核对完整文件，`SOURCE-INPUTS.json` 核对当前源码输入。原 1.0.16 源码 ZIP 则由其包内 `SOURCE-INPUTS.json` 记录 676 项，不含 repo 专用的 `SOURCE_MANIFEST.json`。两者因公开说明和清单适配存在元数据差异，应用源码相同。
+在 1.0.16 发布时点，安装包、对应源码和九张实际界面截图已发布，当时下载入口更新到 1.0.16；当前下载以本页 1.0.17 入口为准。公开 Git 目录使用 `SOURCE_MANIFEST.json` 核对完整文件，`SOURCE-INPUTS.json` 核对当前源码输入。原 1.0.16 源码 ZIP 则由其包内 `SOURCE-INPUTS.json` 记录 676 项，不含 repo 专用的 `SOURCE_MANIFEST.json`。两者因公开说明和清单适配存在元数据差异，应用源码相同。
 
 ## 1.0.14 预览动画时序修复
 
@@ -61,7 +61,7 @@ AI Canvas 是面向图片、说明与局部视觉任务的桌面画布，支持�
 
 ## 下载
 
-[下载 AI Canvas 1.0.16（Windows x64）](https://github.com/cue-lae/ai-canvas-public/releases/download/v1.0.16/AI-Canvas-1.0.16-Windows-x64.zip) · [版本说明及源码](https://github.com/cue-lae/ai-canvas-public/releases/tag/v1.0.16)
+[下载 AI Canvas 1.0.17（Windows x64）](https://github.com/cue-lae/ai-canvas-public/releases/download/v1.0.17/AI-Canvas-1.0.17-Windows-x64.zip) · [版本说明及源码](https://github.com/cue-lae/ai-canvas-public/releases/tag/v1.0.17)
 
 Windows ZIP 包含安装器、许可与第三方声明、对应源码 ZIP。安装由用户操作；请先保存并关闭画布，按安装程序的安全检查继续。旧版本在 [Releases](https://github.com/cue-lae/ai-canvas-public/releases) 保留。
 
