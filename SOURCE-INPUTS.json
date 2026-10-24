@@ -489,8 +489,8 @@
     },
     {
       "path": "docs/VERIFICATION.md",
-      "size": 19131,
-      "sha256": "403dd0d3eac976e93bf998d01da80c0cc07c9c8df95df627ecf10dfdd937b003"
+      "size": 19236,
+      "sha256": "4304b7b760fc2ab1a6815602b326aadef3c3e2b416fbcf4512ba5d8ca934f70e"
     },
     {
       "path": "index.html",
@@ -524,8 +524,8 @@
     },
     {
       "path": "README.md",
-      "size": 6833,
-      "sha256": "8d64eccd51218d647da664dabdf6e89c9ce773ad0d739d640e0bdda903ad55ea"
+      "size": 6852,
+      "sha256": "fb9a4ed9ca56d5e030136f22fcb55e8a86db30a9fa582128f2a228aa5c569e94"
     },
     {
       "path": "scripts/ai-canvas-local.mjs",
@@ -584,8 +584,8 @@
     },
     {
       "path": "SOURCE-README-PROVENANCE.json",
-      "size": 1140,
-      "sha256": "47c2453335da0a341b672fabd898e9636178fd36a4ec0347a1d68081fb3b7c55"
+      "size": 1304,
+      "sha256": "40b539f3852878eca634aae6d045edabfa1831c87013f5ac48a99f82ce4cd45f"
     },
     {
       "path": "src/App.tsx",
