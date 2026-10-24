@@ -1,13 +1,14 @@
 {
   "schema": "ai-canvas-public-document-provenance-v1",
-  "releaseVersion": "1.0.16",
-  "publicBaseline": "7b851ed0ea855b44a179fe97fa0f0770dd9cb58b",
-  "sourceArchiveSha256": "19cf75a822849f2b7c2294834b92ec6795f999f4de3a925e8dbb40b7aa18876f",
-  "basis": "Public repository metadata and screenshot adaptation over the immutable delivered 1.0.16 source archive; application source bytes retained.",
+  "releaseVersion": "1.0.17",
+  "publicBaseline": "a551e00793572319307f6816be2e0a788a645fac",
+  "sourceArchiveSha256": "0cbcb6516c8f8a08d68f2f25a1daae6ff33be26a22fc8329df9c41b62fe02fd4",
+  "basis": "Public-only source and documentation adaptation over the clean public 1.0.16 baseline, matching all 223 application inputs of the immutable local 1.0.17 source archive. Prepared only; no Git mutation or publication.",
   "adaptations": [
-    "Preserve public history, tools, attributes and ignore rules omitted from archive.",
-    "Use portable accepted metadata without private history or authorization narrative.",
-    "Correct original archive manifest documentation and retain all package hashes.",
-    "Add nine actual application screenshots with third-party photograph credits."
+    "Copy only the two approved Read CSS corrections and 1.0.17 release metadata from the local package source.",
+    "Retain the public five-key portable accepted metadata format without internal history, authorization narrative or machine paths.",
+    "Preserve nine actual 1.0.16 screenshots, their labels and credits, notices, third-party licenses and the existing 1.0.16 release links.",
+    "Describe prior build and offline browser evidence without claiming new execution or native/user acceptance.",
+    "Regenerate public-only input and source manifests for the exact retained public file set; preserve all original package bytes."
   ]
 }

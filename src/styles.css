@@ -3047,6 +3047,10 @@ body {
   --ui-read-paragraph-font-size: var(--ui-font-caption, var(--ui-font-body, 12px));
   --ui-read-paragraph-line-height: var(--ui-line-caption, var(--ui-line-body, 1.65));
 }
+.app-shell--overview-reference .context-panel--bottom.is-expanded
+  .canvas-bridge-connection__copy > p {
+  margin-inline-start: calc(6px + var(--ui-action-gap, 7px));
+}
 .canvas-bridge-connection__dot { width: 6px; height: 6px; flex: 0 0 6px; border-radius: 50%; background: var(--canvas-muted-text); }
 .canvas-bridge-connection__dot.is-connected { background: #4d9570; }
 .canvas-bridge-connection__dot.is-disconnected { background: #b9784c; }
@@ -5169,10 +5173,7 @@ body {
   height: 44px;
   max-height: 44px;
   border-radius: 15px;
-  transition:
-    height 180ms ease,
-    max-height 180ms ease,
-    transform 180ms ease;
+  transition: none;
 }
 
 .app-shell--overview-reference .context-panel--bottom.is-collapsed {

@@ -1,6 +1,6 @@
 {
   "schema": "ai-canvas-packaging-inputs-v1",
-  "releaseVersion": "1.0.16",
+  "releaseVersion": "1.0.17",
   "files": [
     {
       "path": ".gitattributes",
@@ -19,8 +19,8 @@
     },
     {
       "path": "desktop-package/accepted-source-inputs.json",
-      "size": 34290,
-      "sha256": "0f12a5b6b32133ec217b315c51ae73df8e4895d88f33816262cc817d102ed32b"
+      "size": 34301,
+      "sha256": "05d1ef29bf047c54c5e930b924b5178d2572cb1d03a717a91c22a6bf5adff6f1"
     },
     {
       "path": "desktop-package/accepted-source-policy.mjs",
@@ -324,8 +324,8 @@
     },
     {
       "path": "desktop-package/release.json",
-      "size": 55,
-      "sha256": "9f3c5c3e84646f01a89008a70746199d621cac441d9d2a4f8a8ddac1710e057d"
+      "size": 60,
+      "sha256": "a82c21618f08d66f99082b9221eba861c22414b7e70f1c07b2472457b5f0b052"
     },
     {
       "path": "desktop-package/tests/accepted-source-policy.test.mjs",
@@ -489,8 +489,8 @@
     },
     {
       "path": "docs/VERIFICATION.md",
-      "size": 16623,
-      "sha256": "d1618449929f5af2ba3dabddf711f3ece5dd183ba5cc8491e778bb8333689742"
+      "size": 19131,
+      "sha256": "403dd0d3eac976e93bf998d01da80c0cc07c9c8df95df627ecf10dfdd937b003"
     },
     {
       "path": "index.html",
@@ -524,8 +524,8 @@
     },
     {
       "path": "README.md",
-      "size": 6099,
-      "sha256": "934cf6948de1185544767749d2f73c87a51287e547f70d3c35dd9dc5db7f697d"
+      "size": 6833,
+      "sha256": "8d64eccd51218d647da664dabdf6e89c9ce773ad0d739d640e0bdda903ad55ea"
     },
     {
       "path": "scripts/ai-canvas-local.mjs",
@@ -584,8 +584,8 @@
     },
     {
       "path": "SOURCE-README-PROVENANCE.json",
-      "size": 771,
-      "sha256": "465f44ff88a97d148d7333e2316f0f6bc502d65367cad49c1b30e315ad715f0c"
+      "size": 1140,
+      "sha256": "47c2453335da0a341b672fabd898e9636178fd36a4ec0347a1d68081fb3b7c55"
     },
     {
       "path": "src/App.tsx",
@@ -899,8 +899,8 @@
     },
     {
       "path": "src/styles.css",
-      "size": 202739,
-      "sha256": "140bade94d61433e0cd088741e9851b32af96a9b3dfd9dea13fb625b01ae982d"
+      "size": 202840,
+      "sha256": "3187e47e88767682ae26244b801ac9dd81f4eea0977e3aa3e7558d953b8cc68f"
     },
     {
       "path": "src/test/canvasClipboardFixture.ts",
