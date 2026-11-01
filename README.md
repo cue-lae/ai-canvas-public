@@ -4,6 +4,14 @@ AI Canvas 是面向图片、说明与局部视觉任务的桌面画布，支持�
 
 **AI Canvas 1.0.17 · cue-lae · GPL-3.0-only。**
 
+## 演示
+
+[![AI Canvas 演示视频封面](docs/assets/demo-poster.jpg)](https://cue-lae.github.io/ai-canvas-public/)
+
+[▶ 在线播放完整演示（04:51）](https://cue-lae.github.io/ai-canvas-public/) · [下载原视频](https://github.com/cue-lae/ai-canvas-public/releases/download/v1.0.17/AI-Canvas-Bakka-fine-r1-minus16LUFS.mp4)
+
+点击封面进入播放页，可使用进度条和全屏观看。
+
 ## 1.0.17 更新
 
 - 取消 Read 详情展开／收起的过渡动画。
