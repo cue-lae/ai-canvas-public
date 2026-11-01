@@ -1,6 +1,6 @@
 {
   "schema": "ai-canvas-packaging-inputs-v1",
-  "releaseVersion": "1.0.17",
+  "releaseVersion": "1.0.18",
   "files": [
     {
       "path": ".gitattributes",
@@ -24,8 +24,8 @@
     },
     {
       "path": "README.md",
-      "size": 7311,
-      "sha256": "8abe297cfe6ada4b26649dea0afb75310ee98d8fa5d385f60395432339dfdddb"
+      "size": 8108,
+      "sha256": "e565355686d12d9681be2ad034327494ab169fa119cf6822bb30d5a457f885db"
     },
     {
       "path": "SOURCE-README-PROVENANCE.json",
@@ -54,8 +54,8 @@
     },
     {
       "path": "desktop-package/accepted-source-inputs.json",
-      "size": 34301,
-      "sha256": "05d1ef29bf047c54c5e930b924b5178d2572cb1d03a717a91c22a6bf5adff6f1"
+      "size": 35154,
+      "sha256": "858fd4085526774af803d6c446f19237eb59da6c9723ec813d5a390fca936a23"
     },
     {
       "path": "desktop-package/accepted-source-policy.mjs",
@@ -349,8 +349,8 @@
     },
     {
       "path": "desktop-package/release.json",
-      "size": 60,
-      "sha256": "a82c21618f08d66f99082b9221eba861c22414b7e70f1c07b2472457b5f0b052"
+      "size": 56,
+      "sha256": "733c5bf853e88effca3d8fcb37c07a5c3ea98dc4d9a3719cbb924a84ecf43054"
     },
     {
       "path": "desktop-package/tests/DocumentSessionTests/DocumentSessionTests.csproj",
@@ -464,8 +464,8 @@
     },
     {
       "path": "docs/VERIFICATION.md",
-      "size": 21224,
-      "sha256": "5d18247905ebf10301323a632f4a5eb1ec66c63d1964b048b6f7e878b58c5b23"
+      "size": 22746,
+      "sha256": "3cbc4f2592fd1151bdee2232c77b24ae1c5f4d3efde663fce2a42ca6b0b85bae"
     },
     {
       "path": "docs/assets/ai-canvas-demo.mp4",
@@ -924,8 +924,8 @@
     },
     {
       "path": "src/styles.css",
-      "size": 202840,
-      "sha256": "3187e47e88767682ae26244b801ac9dd81f4eea0977e3aa3e7558d953b8cc68f"
+      "size": 202856,
+      "sha256": "f1598b0d679753c3cc0fa7ed8c315a2738b4151a4aae2df00d6feaa5668ee713"
     },
     {
       "path": "src/test/canvasClipboardFixture.ts",
@@ -3315,7 +3315,7 @@
     {
       "path": "webview-host/AiCanvas.WebViewHost/DocumentCloseDialog.cs",
       "size": 10485,
-      "sha256": "96c71ee98973ef7e8ac9eb05cb1d2126ad9966f9feed5ad34ceaa088a17daa8c"
+      "sha256": "23f27f2b35f10c9eda34f8d05354c72fc2e3af57b849e3ba844ac7c7d8f00526"
     },
     {
       "path": "webview-host/AiCanvas.WebViewHost/DocumentCloseStateBarrier.cs",

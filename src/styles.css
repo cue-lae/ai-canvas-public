@@ -6651,6 +6651,7 @@ body {
 
 .app-shell--overview-reference .context-panel--bottom.is-expanded {
   top: 50%;
+  z-index: 47;
   right: auto;
   bottom: auto;
   left: 50%;

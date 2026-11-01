@@ -43,7 +43,7 @@ internal static class DocumentCloseDialog
         return new Window { Owner = owner, Title = title, Tag = palette, Width = Math.Min(440, Math.Max(320, owner.ActualWidth - 32)),
             SizeToContent = SizeToContent.Height, WindowStyle = WindowStyle.None, AllowsTransparency = true, Background = Brushes.Transparent,
             ShowInTaskbar = false, ResizeMode = ResizeMode.NoResize, WindowStartupLocation = WindowStartupLocation.CenterOwner,
-            Content = new Border { CornerRadius = new CornerRadius(14), Background = closePrompt ? ClosePromptToken(palette, "surface", .70) : Token(palette, "surface"),
+            Content = new Border { CornerRadius = new CornerRadius(14), Background = closePrompt ? ClosePromptToken(palette, "surface", .90) : Token(palette, "surface"),
                 BorderBrush = closePrompt ? ClosePromptToken(palette, "mutedText", .22) : Token(palette, "border"), BorderThickness = new Thickness(1), Child = panel } };
     }
     private static TextBlock Text(string text, IReadOnlyDictionary<string, string> palette, bool title = false) => new()
