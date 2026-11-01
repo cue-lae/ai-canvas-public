@@ -24,8 +24,8 @@
     },
     {
       "path": "README.md",
-      "size": 8108,
-      "sha256": "e565355686d12d9681be2ad034327494ab169fa119cf6822bb30d5a457f885db"
+      "size": 8277,
+      "sha256": "2edd02d3f9f1a4cdc906dd935dd89c537e5b3494ed60392e5cb6dc77c3f4c6c9"
     },
     {
       "path": "SOURCE-README-PROVENANCE.json",
@@ -464,8 +464,8 @@
     },
     {
       "path": "docs/VERIFICATION.md",
-      "size": 22746,
-      "sha256": "3cbc4f2592fd1151bdee2232c77b24ae1c5f4d3efde663fce2a42ca6b0b85bae"
+      "size": 24054,
+      "sha256": "922549b61cb87fc3bf43940b8a986d2cd2fece0de123310a2666f956662f6141"
     },
     {
       "path": "docs/assets/ai-canvas-demo.mp4",

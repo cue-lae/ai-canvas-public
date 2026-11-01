@@ -17,7 +17,7 @@ AI Canvas 是面向图片、说明与局部视觉任务的桌面画布，支持�
 - 修复窄窗口中展开的 Codex Read 被工具栏、页头遮挡及抢占点击。
 - 关闭保存提示底板调整为90%不透明度，保留按钮、文字、圆角与原有行为。
 
-1.0.18源码已同步，原安装包正在准备发布；下方正式下载暂保留1.0.17。原视频、黑底在线播放页及历史版本保持。九张实机截图仍来自1.0.16，本轮新增／替换／删除均为0，不作为1.0.18新截图。
+1.0.18源码、原安装包、对应源码ZIP与SHA256SUMS.txt已发布，并设为最新版本；下方正式下载已更新到1.0.18。原视频、黑底在线播放页及历史版本保持。九张实机截图仍来自1.0.16，本轮新增／替换／删除均为0，不作为1.0.18新截图。
 
 223项应用源码与本地1.0.18源码ZIP逐项摘要一致；公开说明、便携accepted元数据及701／699／700目录清单单独适配。既有制包验证通过，正式新包安装、升级、卸载、原生Read／MCP与用户实机验收未运行；详见[验证记录](docs/VERIFICATION.md)。
 
@@ -78,7 +78,7 @@ AI Canvas 是面向图片、说明与局部视觉任务的桌面画布，支持�
 
 ## 下载
 
-[下载 AI Canvas 1.0.17（Windows x64）](https://github.com/cue-lae/ai-canvas-public/releases/download/v1.0.17/AI-Canvas-1.0.17-Windows-x64.zip) · [版本说明及源码](https://github.com/cue-lae/ai-canvas-public/releases/tag/v1.0.17)
+[下载 AI Canvas 1.0.18（Windows x64）](https://github.com/cue-lae/ai-canvas-public/releases/download/v1.0.18/AI-Canvas-1.0.18-Windows-x64.zip) · [直接下载安装器](https://github.com/cue-lae/ai-canvas-public/releases/download/v1.0.18/AI-Canvas-1.0.18-Setup.exe) · [版本说明及源码](https://github.com/cue-lae/ai-canvas-public/releases/tag/v1.0.18)
 
 Windows ZIP 包含安装器、许可与第三方声明、对应源码 ZIP。安装由用户操作；请先保存并关闭画布，按安装程序的安全检查继续。旧版本在 [Releases](https://github.com/cue-lae/ai-canvas-public/releases) 保留。
 

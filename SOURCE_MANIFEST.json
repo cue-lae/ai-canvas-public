@@ -1,10 +1,10 @@
 {
   "releaseVersion": "1.0.18",
-  "revision": "1.0.18-source-and-release-preparation",
+  "revision": "1.0.18-published-downloads",
   "date": "2026-11-02",
   "license": "GPL-3.0-only",
   "publicAttribution": "cue-lae",
-  "basis": "1.0.18 source update: Read expanded layer 47 and close prompt opacity .90. Public directory remains 701 files, SOURCE-INPUTS 699 and this manifest 700. Existing demonstration page/media and nine actual 1.0.16 screenshots are unchanged. Release package publication is a separate subsequent step.",
+  "basis": "1.0.18 original release assets have been published and anonymously downloaded and SHA256 verified. Public application inputs match all 223 hashes in the immutable package sources. Directory701, source inputs699, manifest700. Black demonstration page/media and original nine 1.0.16 screenshots unchanged. New tag remains on the source commit, separate from download documentation.",
   "manifestSelfExcluded": true,
   "files": [
     {
@@ -29,13 +29,13 @@
     },
     {
       "path": "README.md",
-      "size": 8108,
-      "sha256": "e565355686d12d9681be2ad034327494ab169fa119cf6822bb30d5a457f885db"
+      "size": 8277,
+      "sha256": "2edd02d3f9f1a4cdc906dd935dd89c537e5b3494ed60392e5cb6dc77c3f4c6c9"
     },
     {
       "path": "SOURCE-INPUTS.json",
       "size": 130146,
-      "sha256": "a61a9308f8621189e55f3d159a175ea479fad240490762d316ddc230e28e41d3"
+      "sha256": "7f6e56ab789814bda466cb864c9ac31cc3dc7b62eb611dbd4c047cf0d2868346"
     },
     {
       "path": "SOURCE-README-PROVENANCE.json",
@@ -474,8 +474,8 @@
     },
     {
       "path": "docs/VERIFICATION.md",
-      "size": 22746,
-      "sha256": "3cbc4f2592fd1151bdee2232c77b24ae1c5f4d3efde663fce2a42ca6b0b85bae"
+      "size": 24054,
+      "sha256": "922549b61cb87fc3bf43940b8a986d2cd2fece0de123310a2666f956662f6141"
     },
     {
       "path": "docs/assets/ai-canvas-demo.mp4",
