@@ -1,10 +1,10 @@
 {
   "releaseVersion": "1.0.18",
-  "revision": "1.0.18-published-downloads",
+  "revision": "1.0.18-public-copy-correction",
   "date": "2026-11-02",
   "license": "GPL-3.0-only",
   "publicAttribution": "cue-lae",
-  "basis": "1.0.18 original release assets have been published and anonymously downloaded and SHA256 verified. Public application inputs match all 223 hashes in the immutable package sources. Directory701, source inputs699, manifest700. Black demonstration page/media and original nine 1.0.16 screenshots unchanged. New tag remains on the source commit, separate from download documentation.",
+  "basis": "Public release checksum blocks replaced with checksum-file links and demonstration link labels unified. Installer, source archive, application and media bytes unchanged. Directory701/input699/manifest700.",
   "manifestSelfExcluded": true,
   "files": [
     {
@@ -29,13 +29,13 @@
     },
     {
       "path": "README.md",
-      "size": 8277,
-      "sha256": "2edd02d3f9f1a4cdc906dd935dd89c537e5b3494ed60392e5cb6dc77c3f4c6c9"
+      "size": 8261,
+      "sha256": "f02ce213b8f63c7bb9e7f2aa9da7c0aaec4d89ac3b28bd80bda7bb05617ef00f"
     },
     {
       "path": "SOURCE-INPUTS.json",
       "size": 130146,
-      "sha256": "7f6e56ab789814bda466cb864c9ac31cc3dc7b62eb611dbd4c047cf0d2868346"
+      "sha256": "f7e0fdc04e752eed71af8e6e6d2c65f9cafa898f104161974e81b1490f3f0659"
     },
     {
       "path": "SOURCE-README-PROVENANCE.json",
@@ -474,8 +474,8 @@
     },
     {
       "path": "docs/VERIFICATION.md",
-      "size": 24054,
-      "sha256": "922549b61cb87fc3bf43940b8a986d2cd2fece0de123310a2666f956662f6141"
+      "size": 24042,
+      "sha256": "0b72fffb161b2e5823d6c804d2a879907d5f74af23036aa8ce96302f2aea368c"
     },
     {
       "path": "docs/assets/ai-canvas-demo.mp4",

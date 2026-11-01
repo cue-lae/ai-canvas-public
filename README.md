@@ -8,7 +8,7 @@ AI Canvas 是面向图片、说明与局部视觉任务的桌面画布，支持�
 
 [![AI Canvas 演示视频封面](docs/assets/demo-poster.jpg)](https://cue-lae.github.io/ai-canvas-public/)
 
-[▶ 在线播放完整演示（04:51）](https://cue-lae.github.io/ai-canvas-public/) · [下载原视频](https://github.com/cue-lae/ai-canvas-public/releases/download/v1.0.17/AI-Canvas-Bakka-fine-r1-minus16LUFS.mp4)
+[在线播放演示](https://cue-lae.github.io/ai-canvas-public/)（04:51） · [下载原视频](https://github.com/cue-lae/ai-canvas-public/releases/download/v1.0.17/AI-Canvas-Bakka-fine-r1-minus16LUFS.mp4)
 
 点击封面进入播放页，可使用进度条和全屏观看。
 
@@ -17,7 +17,7 @@ AI Canvas 是面向图片、说明与局部视觉任务的桌面画布，支持�
 - 修复窄窗口中展开的 Codex Read 被工具栏、页头遮挡及抢占点击。
 - 关闭保存提示底板调整为90%不透明度，保留按钮、文字、圆角与原有行为。
 
-1.0.18源码、原安装包、对应源码ZIP与SHA256SUMS.txt已发布，并设为最新版本；下方正式下载已更新到1.0.18。原视频、黑底在线播放页及历史版本保持。九张实机截图仍来自1.0.16，本轮新增／替换／删除均为0，不作为1.0.18新截图。
+1.0.18源码、原安装包、对应源码ZIP与SHA256SUMS.txt已发布，并设为最新版本；下方正式下载已更新到1.0.18。原视频、在线播放页及历史版本保持。九张实机截图仍来自1.0.16，本轮新增／替换／删除均为0，不作为1.0.18新截图。
 
 223项应用源码与本地1.0.18源码ZIP逐项摘要一致；公开说明、便携accepted元数据及701／699／700目录清单单独适配。既有制包验证通过，正式新包安装、升级、卸载、原生Read／MCP与用户实机验收未运行；详见[验证记录](docs/VERIFICATION.md)。
 
